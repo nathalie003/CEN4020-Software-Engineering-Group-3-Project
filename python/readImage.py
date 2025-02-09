@@ -31,8 +31,13 @@ text = pytesseract.image_to_string(img)
 print(text[:-1])
 
 address_pattern = r"^\d{1,5}\s[A-Z\s]+(?:AVE|ST|BLVD|DR|RD)\n[A-Z\s]+,\s[A-Z]{2}\s\d{5}$"
+phone_pattern = r"[:\s]*\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}\b"
 
 match = re.search(address_pattern, text, re.IGNORECASE | re.MULTILINE)
+match2 = re.search(phone_pattern, text)
 
 if match:
     print("\nAddress:", match.group())
+
+if match2:
+    print("\nPhone:", match2.group())
