@@ -1,0 +1,12 @@
+function App() {
+  return (
+    <div className="App">hello
+      <Router>
+        <Navbar />
+        <Routes>
+          <Route path='/' exact element={<Home />} />
+        </Routes>
+      </Router>
+    </div>
+  );
+}
