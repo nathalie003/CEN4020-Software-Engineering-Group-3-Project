@@ -2,8 +2,9 @@ from PIL import Image
 from pytesseract import pytesseract 
 from pdf2image import convert_from_path
 import os
+import re
 
-image_path = r"C:\SWE-Project\EERIS-3v2\CEN4020-Software-Engineering-Group-3-Project\python\Receipts\Orders & Purchases _ Costco.pdf"
+image_path = r"C:\SWE-Project\EERIS-3v2\CEN4020-Software-Engineering-Group-3-Project\python\Receipts\Pub2.pdf"
 if not os.path.exists(image_path):
     print("File not found:", image_path)
 else:
@@ -28,3 +29,10 @@ text = pytesseract.image_to_string(img)
   
 # Displaying the extracted text 
 print(text[:-1])
+
+address_pattern = r"^\d{1,5}\s[A-Z\s]+(?:AVE|ST|BLVD|DR|RD)\n[A-Z\s]+,\s[A-Z]{2}\s\d{5}$"
+
+match = re.search(address_pattern, text, re.IGNORECASE | re.MULTILINE)
+
+if match:
+    print("\nAddress:", match.group())
