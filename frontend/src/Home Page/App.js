@@ -41,7 +41,7 @@ function App() {
               </>
             ) : (
               <>
-                <h2>Create Your Account</h2>
+                <h2>Create New Account</h2>
                 <form className="create-account-form">
                   <input type="text" placeholder="Full Name" required />
                   <input type="email" placeholder="Email" required />
