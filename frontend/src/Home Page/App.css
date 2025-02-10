@@ -1,0 +1,155 @@
+/* Color theme inspired by Expensify */
+:root {
+  --primary-blue: #008fdb;
+  --light-blue: #98c1d9;
+  --dark-blue: #3d5a80;
+  --pastel-blue: #e0fbfc;
+  --secondary-blue: #005f8a;
+  --accent-orange: #ee6c4d;
+  --hover-orange: #ce3e1a;
+  --neutral-gray: #6c757d;
+  --background-gray: #f8f9fa;
+  --white: #ffffff;
+}
+
+/* General App layout */
+.App {
+  text-align: center;
+  background-color: var(--light-blue);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+.App-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  background-color: var(--pastel-blue);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  max-width: 450px;
+  width: 100%;
+}
+
+.App-logo {
+  width: 150px;
+  height: auto;
+  margin-bottom: 20px;
+}
+
+.App-header h1 {
+  font-size: 2.5rem;
+  color: var(--primary-blue);
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  color: var(--neutral-gray);
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+}
+
+.buttons {
+  margin-top: 20px;
+}
+
+/* Button styles */
+.btn {
+  padding: 15px 35px;
+  border: none;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  margin: 10px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.create-account-btn {
+  background-color: var(--accent-orange);
+  color: var(--white);
+}
+
+.create-account-btn:hover {
+  background-color: var(--hover-orange);
+}
+
+.login-btn {
+  background-color: var(--white);
+  color: var(--accent-orange);
+  border: 2px solid var(--accent-orange);
+}
+
+.login-btn:hover {
+  background-color: var(--accent-orange);
+  color: var(--white);
+}
+
+/* Modal overlay and content */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  background-color: var(--white);
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  width: 350px;
+  text-align: center;
+}
+
+.login-form, .create-account-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.login-form input, .create-account-form input {
+  margin: 10px 0;
+  padding: 12px;
+  font-size: 1rem;
+  border: 1px solid var(--neutral-gray);
+  border-radius: 5px;
+}
+
+.login-btn-submit, .create-account-btn-submit {
+  background-color: var(--accent-orange);
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  font-size: 1.1rem;
+}
+
+.login-btn-submit:hover, .create-account-btn-submit:hover {
+  background-color: var(--hover-orange);
+}
+
+.close-btn {
+  background-color: var(--primary-blue);
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.close-btn:hover {
+  background-color: var(--dark-blue);
+}
