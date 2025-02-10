@@ -101,7 +101,7 @@
 
 /* Button styles */
 .btn {
-  padding: 15px 25px;
+  padding: 8px 20px;
   border: none;
   border-radius: 50px;
   font-size: 1.1rem;
@@ -113,9 +113,10 @@
 .create-account-btn {
   background-color: var(--accent-orange);
   color: var(--white);
+  border: 2px solid var(--accent-orange);
   position: relative;
-  left: 80px;
-  top: -5px;
+  left: 740px;
+  top: -9px;
 }
 
 .create-account-btn:hover {
@@ -126,9 +127,9 @@
   background-color: var(--white);
   color: var(--accent-orange);
   border: 2px solid var(--accent-orange);
-  position: fixed;
-  left: 680px;
-  top: 5px;
+  position: relative;
+  left: 740px;
+  top: -9px;
 }
 
 .login-btn:hover {
