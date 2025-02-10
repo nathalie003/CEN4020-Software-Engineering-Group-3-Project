@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "node": "^23.7.0",
+    "yarn": "^1.22.22"
+  },
+  "devDependencies": {
+    "web-vitals": "^4.2.4"
+  }
+}
