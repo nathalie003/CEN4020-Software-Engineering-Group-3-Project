@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './App.css';
-import logo from '../expense logo image.png'; // Assuming you have a logo.png in the src folder
+import logo from '../Cash Pilot New.png'; // Assuming you have a logo.png in the src folder
 
 function App() {
   const [showModal, setShowModal] = useState(false);
@@ -14,10 +14,35 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <h1>MoneyCat: Expenses Made Easy</h1>
-        <p className="subtitle">Simplify your financial life.</p>
-        <div className="buttons">
+        {/* White top bar with logo and dropdowns */}
+        <nav className="navbar">
+          <img src={logo} className="navbar-logo" alt="logo" />
+          <div className="navbar-dropdowns">
+            <div className="dropdown">
+              <button className="dropbtn">Features</button>
+              <div className="dropdown-content">
+                <a href="#">Feature 1</a>
+                <a href="#">Feature 2</a>
+                <a href="#">Feature 3</a>
+              </div>
+            </div>
+            <div className="dropdown">
+              <button className="dropbtn">About</button>
+              <div className="dropdown-content">
+                <a href="#">Our Story</a>
+                <a href="#">Mission</a>
+                <a href="#">Team</a>
+              </div>
+            </div>
+            <div className="dropdown">
+              <button className="dropbtn">Roles</button>
+              <div className="dropdown-content">
+                <a href="#">User Roles</a>
+                <a href="#">Admin Roles</a>
+              </div>
+            </div>
+          </div>
+          <div className="buttons">
           <button className="btn create-account-btn" onClick={() => toggleModal('createAccount')}>
             Get Started
           </button>
@@ -25,6 +50,10 @@ function App() {
             Sign In
           </button>
         </div>
+        </nav>
+        <h1>MoneyCat: Expenses Made Easy</h1>
+        <p className="subtitle">Simplify your financial life.</p>
+        
       </header>
 
       {showModal && (
