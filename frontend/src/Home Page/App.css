@@ -30,7 +30,7 @@
   background-color: var(--white);
   padding: 0 20px;
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
   position: absolute;
   top: 0;
@@ -39,14 +39,24 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
+.navbar-logo-container {
+  flex: 1; /* Takes up available space */
+  display: flex;
+  justify-content: flex-start; /* Aligns left */
+}
 /* Logo in the navbar */
 .navbar-logo {
   height: 170px;
+  margin-right: 20px;
 }
 
 /* Dropdown menu styling */
 .navbar-dropdowns {
   display: flex;
+  justify-content: flex-start;
+  flex-grow: 10;
+  margin-left: auto;
+  
 }
 
 .dropdown {
@@ -64,7 +74,6 @@
   border: none;
   cursor: pointer;
   font-weight: bold;
-
 }
 
 .dropbtn:hover {
@@ -96,7 +105,7 @@
 }
 .buttons {
   margin-top: 20px;
-  display:flexbox;
+  display: flex;
 }
 
 /* Button styles */
@@ -108,6 +117,10 @@
   cursor: pointer;
   margin: 10px;
   transition: background-color 0.3s ease, color 0.3s ease;
+  margin-left: auto;
+  margin-right: -10px;
+  display: flex;
+  align-items: center;
 }
 
 .create-account-btn {
@@ -115,7 +128,8 @@
   color: var(--white);
   border: 2px solid var(--accent-orange);
   position: relative;
-  left: 740px;
+  float: right;
+  right: 45px;
   top: -9px;
 }
 
@@ -128,7 +142,7 @@
   color: var(--accent-orange);
   border: 2px solid var(--accent-orange);
   position: relative;
-  left: 740px;
+  right: 10px;
   top: -9px;
 }
 
@@ -224,3 +238,71 @@
   margin-bottom: 20px;
 }
 
+
+.menu-toggle {
+  font-size: 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--primary-blue);
+  display: none;
+}
+
+
+@media (max-width: 768px) { /* Adjust breakpoint as needed */
+  .navbar-dropdowns {
+    flex-direction: column; /* Stack dropdowns vertically */
+    position: absolute;
+    top: 80px; /* Below navbar */
+    left: 0;
+    width: 150px;
+    background-color: var(--white);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: none; /* Initially hidden */
+  }
+  .navbar {
+    justify-content: center; /* Centers everything */
+    position: absolute;
+  }
+  .navbar-logo-container {
+    justify-content: center; /* Centers logo */
+    margin-left: -15px;
+  }
+  .create-account-btn {
+    margin-right: -25px;
+  }
+
+  /* Show dropdowns when menu is open */
+  .navbar-dropdowns.show {
+    display: flex;
+    
+  }
+
+  /* Dropdown styling */
+  .dropdown {
+    width: 50%;
+    text-align: left;
+
+  }
+
+  .dropbtn {
+    margin-left: -10px;
+    text-align: center;
+    padding: 12px;
+  }
+
+
+
+  .buttons {
+    margin-left: auto; /* Buttons stay on the right */
+  }
+
+  /* Optional: Add a menu icon */
+  .menu-toggle {
+    display: block;
+    cursor: pointer;
+    font-size: 24px;
+    position: absolute;
+    left: 20px;
+  }
+}

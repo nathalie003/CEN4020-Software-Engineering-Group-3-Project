@@ -4,20 +4,31 @@ import logo from '../Cash Pilot New.png'; // Assuming you have a logo.png in the
 
 function App() {
   const [showModal, setShowModal] = useState(false);
-  const [modalType, setModalType] = useState(''); // Track which modal is open
+  const [modalType, setModalType] = useState(''); 
+  const [menuOpen, setMenuOpen] = useState(false); // Track mobile menu state
 
   const toggleModal = (type = '') => {
     setModalType(type);
     setShowModal(!showModal);
   };
 
+
+
   return (
     <div className="App">
       <header className="App-header">
-        {/* White top bar with logo and dropdowns */}
         <nav className="navbar">
-          <img src={logo} className="navbar-logo" alt="logo" />
-          <div className="navbar-dropdowns">
+          <div className="navbar-logo-container">
+            <img src={logo} className="navbar-logo" alt="logo" />
+          </div>
+
+          {/* Hamburger Menu for Mobile */}
+          <div className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)}>
+            ☰
+          </div>
+
+          {/* Dropdowns - Show/Hide Based on Menu State */}
+          <div className={`navbar-dropdowns ${menuOpen ? "show" : ""}`}>
             <div className="dropdown">
               <button className="dropbtn">Features</button>
               <div className="dropdown-content">
@@ -42,18 +53,20 @@ function App() {
               </div>
             </div>
           </div>
+
+          {/* Buttons (Always Stay on the Right) */}
           <div className="buttons">
-          <button className="btn create-account-btn" onClick={() => toggleModal('createAccount')}>
-            Get Started
-          </button>
-          <button className="btn login-btn" onClick={() => toggleModal('logIn')}>
-            Sign In
-          </button>
-        </div>
+            <button className="btn create-account-btn" onClick={() => toggleModal('createAccount')}>
+              Get Started
+            </button>
+            <button className="btn login-btn" onClick={() => toggleModal('logIn')}>
+              Sign In
+            </button>
+          </div>
         </nav>
+
         <h1>MoneyCat: Expenses Made Easy</h1>
         <p className="subtitle">Simplify your financial life.</p>
-        
       </header>
 
       {showModal && (
@@ -85,6 +98,6 @@ function App() {
       )}
     </div>
   );
-}
+}   
 
 export default App;
