@@ -1,18 +1,39 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
-import logo from '../Cash Pilot New.png'; // Assuming you have a logo.png in the src folder
-
+import logo from '../../Components/Images/CashPilot.png';
+import firstPic from '../../Components/Images/test.jpg';
 function App() {
   const [showModal, setShowModal] = useState(false);
   const [modalType, setModalType] = useState(''); 
-  const [menuOpen, setMenuOpen] = useState(false); // Track mobile menu state
+  // Track mobile menu state
+  const [menuOpen, setMenuOpen] = useState(false);
+  // Track scroll position
+  const [scrollPosition, setScrollPosition] = useState(0);
+  // Track the scaling of the green box
+  const [scale, setScale] = useState(1);
 
   const toggleModal = (type = '') => {
     setModalType(type);
     setShowModal(!showModal);
   };
 
+  // Update scroll position and scaling on window scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      setScrollPosition(scrollY);
+      
+      // Adjust the scale value based on scroll position
+      const newScale = Math.min(1 + scrollY / 500, 3); // Scale between 1 and 3 (3x zoom)
+      setScale(newScale);
+    };
 
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   return (
     <div className="App">
@@ -32,15 +53,14 @@ function App() {
             <div className="dropdown">
               <button className="dropbtn">Features</button>
               <div className="dropdown-content">
-                <a href="#">Feature 1</a>
-                <a href="#">Feature 2</a>
-                <a href="#">Feature 3</a>
+                <a href="#">Expense Capture</a>
+                <a href="#">Reporting and Analytics</a>
+                <a href="#">Role Based Access</a>
               </div>
             </div>
             <div className="dropdown">
               <button className="dropbtn">About</button>
               <div className="dropdown-content">
-                <a href="#">Our Story</a>
                 <a href="#">Mission</a>
                 <a href="#">Team</a>
               </div>
@@ -54,7 +74,7 @@ function App() {
             </div>
           </div>
 
-          {/* Buttons (Always Stay on the Right) */}
+          {/* Buttons */}
           <div className="buttons">
             <button className="btn create-account-btn" onClick={() => toggleModal('createAccount')}>
               Get Started
@@ -65,8 +85,20 @@ function App() {
           </div>
         </nav>
 
-        <h1>MoneyCat: Expenses Made Easy</h1>
-        <p className="subtitle">Simplify your financial life.</p>
+        <h1 className="headline">Expense Tracking Made Easy</h1>
+        
+        {/* Green box with zoom-in effect on scroll */}
+        <div
+          className="green-box"
+          style={{
+            transform: `scale(${scale})`, // Apply the zoom-in effect
+            transition: 'transform 0.2s ease-out' // Smooth zoom transition
+          }}
+        >
+          <img src={firstPic} alt="Green Box Image" class="green-box-img" />
+          <div id="square"></div>
+          <div id="stretcher"></div>
+        </div>
       </header>
 
       {showModal && (
@@ -98,6 +130,6 @@ function App() {
       )}
     </div>
   );
-}   
+}
 
 export default App;
