@@ -24,7 +24,7 @@ function App() {
       setScrollPosition(scrollY);
       
       // Adjust the scale value based on scroll position
-      const newScale = Math.min(1 + scrollY / 500, 3); // Scale between 1 and 3 (3x zoom)
+      const newScale = Math.min(1 + scrollY / 500, 3);
       setScale(newScale);
     };
 
