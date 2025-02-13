@@ -2,16 +2,20 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 import logo from '../../Components/Images/CashPilot.png';
 import firstPic from '../../Components/Images/test.jpg';
-function App() {
-   //need for mysql server
-   const [data, setData] = useState([])
-   useEffect(()=> {
-      fetch('http://localhost:5000/users')
-      .then(res => res.json())
-      .then(data => console.log(data))
-      .catch(err => console.log(err));
-   }, [])
 
+function App() {
+
+  // Fetch data from the backend endpoint
+  const [data, setData] = useState([])
+  useEffect(() => {
+    fetch('http://localhost:5000/user')
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+        setData(data);
+      })
+      .catch(err => console.log(err));
+  }, []);
 
   const [showModal, setShowModal] = useState(false);
   const [modalType, setModalType] = useState(''); 
@@ -39,34 +43,44 @@ function App() {
     };
 
     window.addEventListener('scroll', handleScroll);
-
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
   return (
-    //need this for mysql
-      <><div style={{ padding: "50px" }}>
+    <>
+    {/* Table to display database data */}
+    <div style={{ padding: '50px' }}>
       <table>
         <thead>
           <tr>
-            <th>USERID</th>
+            <th>UserID</th>
             <th>Username</th>
             <th>Password</th>
+            <th>Email</th>
           </tr>
         </thead>
         <tbody>
-          {data.map((d, i) => (
-            <tr key={i}>
-              <td>{d.userid}</td>
-              <td>{d.username}</td>
-              <td>{d.password}</td>
+          {data.length > 0 ? (
+            data.map((d, i) => (
+              <tr key={i}>
+                <td>{d.userid}</td>
+                <td>{d.username}</td>
+                <td>{d.password}</td>
+                <td>{d.email}</td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="4">No data available</td>
             </tr>
-          ))}
+          )}
         </tbody>
       </table>
     </div>
+
+
     
     <div className="App">
         <header className="App-header">
@@ -127,7 +141,7 @@ function App() {
               transition: 'transform 0.2s ease-out' // Smooth zoom transition
             }}
           >
-            <img src={firstPic} alt="Green Box Image" class="green-box-img" />
+            <img src={firstPic} alt="Green Box Image" className="green-box-img" />
             <div id="square"></div>
             <div id="stretcher"></div>
           </div>
