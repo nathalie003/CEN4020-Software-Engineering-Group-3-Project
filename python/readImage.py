@@ -30,9 +30,35 @@ text = pytesseract.image_to_string(img)
 # Displaying the extracted text 
 print(text[:-1])
 
-address_pattern = r"^\d{1,5}\s[A-Z\s]+(?:AVE|ST|BLVD|DR|RD)\n[A-Z\s]+,\s[A-Z]{2}\s\d{5}$"
+'''
+ You may save several receipts per photo/page as long as each receipt clearly shows its data of name,
+ phone, address, web site (if available) of store/shop/payee, date and time of the receipt, 
+ description of line items of purchase or service charged, total payment, and pay method.
+'''
+print("="*40)
+time_pattern = r"\d{1,2}:\d{2}(?:\s?[AP]M)?" 
+date_pattern = r"\d{1,2}(/|-)\d{1,2}(/|-)\d{2,4}"
+payment_pattern = r"CASH|CREDIT CARD|DEBIT CARD|CREDIT|DEBIT"
+total_pattern = r"(?:TOTAL|AMOUNT|GRAND TOTAL):?\s*\$?\s*(\d+(?:\.\d{2})?)"
+address_pattern = r"^\d{1,5}\s[A-Z\s]+(?:AVE|ST|BLVD|DR|RD)(?:\.)?\n[A-Z\s]+,\s[A-Z]{2}\s\d{5}$"
+phone_pattern = r"[:\t ]*\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}\b"
 
-match = re.search(address_pattern, text, re.IGNORECASE | re.MULTILINE)
+matchTime = re.search(time_pattern, text, re.IGNORECASE | re.MULTILINE)
+matchDate = re.search(date_pattern, text, re.IGNORECASE | re.MULTILINE)
+matchPay = re.search(payment_pattern, text, re.IGNORECASE | re.MULTILINE)
+matchTotal = re.search(total_pattern, text, re.IGNORECASE | re.MULTILINE)
+matchAdd = re.search(address_pattern, text, re.IGNORECASE | re.MULTILINE)
+matchPhn = re.search(phone_pattern, text)
 
-if match:
-    print("\nAddress:", match.group())
+if matchTotal:
+    print("\nTotal: $"+matchTotal.group(1))
+if matchTime:
+    print("\nTime:", matchTime.group())
+if matchDate:
+    print("\nDate:", matchDate.group())
+if matchPay:
+    print("\nPayment Method:", matchPay.group().title())
+if matchAdd:
+    print("\nAddress:", matchAdd.group())
+if matchPhn:
+    print("\nPhone:", matchPhn.group())
