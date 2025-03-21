@@ -4,7 +4,7 @@ from pdf2image import convert_from_path
 import os
 import re
 
-image_path = r"C:\SWE-Project\EERIS-3v2\CEN4020-Software-Engineering-Group-3-Project\python\Receipts\Pub2.pdf"
+image_path = r"C:\Users\happy\OneDrive - University of South Florida\Classes\Spring 25\CEN 4020\Project\CEN4020-Software-Engineering-Group-3-Project\python\Receipts\Pub2.pdf"
 if not os.path.exists(image_path):
     print("File not found:", image_path)
 else:

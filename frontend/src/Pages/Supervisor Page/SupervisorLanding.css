@@ -1,7 +1,7 @@
 @import url('../../App.css');
 
 /* Admin Landing Container */
-.AdminLanding {
+.SupervisorLanding {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -11,7 +11,7 @@
   }
   
   /* Header Styling */
-  .Admin-header {
+  .Supervisor-header {
     background-color: #FFA500;
     width: 100%;
     padding: 20px 0;
@@ -21,7 +21,7 @@
   }
   
   /* Headline Styling */
-  .admin-landing-container h1 {
+  .supervisor-landing-container h1 {
     font-size: 2.5rem;
     color: white; 
   }

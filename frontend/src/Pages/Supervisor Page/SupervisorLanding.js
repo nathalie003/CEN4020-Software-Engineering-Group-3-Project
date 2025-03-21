@@ -1,20 +1,16 @@
 import React, {useState} from 'react';
-import './AdminLanding.css';
+import './SupervisorLanding.css';
 import logo from '../../Components/Images/CashPilot.png';
 
 
 
 
-function AdminLanding() {
+function EmployeeLanding() {
     const [menuOpen, setMenuOpen] = useState(false);
 
-    const traveltoEmp = (e) => {
-        e.preventDefault();
-        window.location.href = '/employee-landing'; 
-      };
     return (
-        <div className="AdminLanding">
-            <header className="Admin-header">
+        <div className="SupervisorLanding">
+            <header className="Supervisor-header">
             <nav className="navbar">
                       <div className="navbar-logo-container">
                         <img src={logo} className="navbar-logo" alt="logo" />
@@ -24,18 +20,14 @@ function AdminLanding() {
                       </div>
                       <div className={`navbar-dropdowns ${menuOpen ? "show" : ""}`}>
                         <div className="menuDrop">
-                          <button className="Buttonoption">User Permissions</button>
-                        </div>
-                        <div className="menuDrop">
-                          <button className="Buttonoption">Settings</button>
-                          
-                        </div>
-                        <div className="menuDrop">
-                            <button className='Buttonoption' onClick={traveltoEmp}>Employee Page</button>
+                          <button className="Buttonoption">Pending Approvals</button>
                         </div>
                         <div className="menuDrop">
                           <button className="Buttonoption">TBA</button>
                           
+                        </div>
+                        <div className="menuDrop">
+                          <button className="Buttonoption">My Reports</button>                       
                       </div>
                       </div>
                       
@@ -46,4 +38,4 @@ function AdminLanding() {
  );
 }
 
-export default AdminLanding;
+export default EmployeeLanding;
