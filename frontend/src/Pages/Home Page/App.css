@@ -11,6 +11,7 @@
   --main-blue: #1E4C82;
   --hover-darkBlue: #215F9A;
   --hover-lightBlue: #98C1D9;
+  --mid-blue: #7db3e5 ;
 }
 
 html, body {
@@ -18,6 +19,14 @@ html, body {
   padding: 0;
   background-color: var(--ivory);
   height: 100%;
+}
+
+.error-message {
+  color: red;
+  border: 1px solid red;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 5px;
 }
 
 .App {
@@ -244,6 +253,7 @@ html, body {
     background-color: var(--ivory);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     display: none;
+    /*margin-right: 340px;*/
   }
   .navbar {
     justify-content: center;
@@ -326,4 +336,3 @@ html, body {
 #stretcher {
   height: 1000px;
 }
-

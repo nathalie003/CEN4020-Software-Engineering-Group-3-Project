@@ -1,0 +1,12 @@
+.admin-landing-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: var(--hover-lightBlue); /* Light blue background */
+  }
+  
+  .admin-landing-container h1 {
+    font-size: 2.5rem;
+    color: palevioletred;
+  }

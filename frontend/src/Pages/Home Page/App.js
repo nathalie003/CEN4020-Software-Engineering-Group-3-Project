@@ -2,55 +2,58 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 import logo from '../../Components/Images/CashPilot.png';
 import firstPic from '../../Components/Images/test.jpg';
+import Main from './main';
+//import { useNavigate } from 'react-router-dom';
 
 function App() {
-
-  // Fetch data from the backend endpoint
+  //const navigate = useNavigate()
   const [data, setData] = useState([])
-  useEffect(() => {
-    fetch('http://localhost:5000/user')
-      .then(res => res.json())
-      .then(data => {
-        console.log(data);
-        setData(data);
-      })
-      .catch(err => console.log(err));
-  }, []);
-
   const [showModal, setShowModal] = useState(false);
   const [modalType, setModalType] = useState(''); 
   // Track mobile menu state
   const [menuOpen, setMenuOpen] = useState(false);
-  // Track scroll position
-  const [scrollPosition, setScrollPosition] = useState(0);
   // Track the scaling of the green box
   const [scale, setScale] = useState(1);
+  const [email, setEmail] = useState(''); // State for email input
+  const [password, setPassword] = useState(''); // State for password input
+  const [loginError, setLoginError] = useState(false); // State for login error
+
+
+  // Fetch data from the backend endpoint
+  
+  // useEffect(() => {
+  //   fetch('http://localhost:3000/')
+  //     .then(res => res.json())
+  //     .then(data => {
+  //       console.log(data);
+  //       setData(data);
+  //     })
+  //     .catch(err => console.log(err));
+  // }, []);
 
   const toggleModal = (type = '') => {
     setModalType(type);
     setShowModal(!showModal);
   };
 
-  // Update scroll position and scaling on window scroll
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollY = window.scrollY;
-      setScrollPosition(scrollY);
-      
-      // Adjust the scale value based on scroll position
-      const newScale = Math.min(1 + scrollY / 500, 3);
-      setScale(newScale);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
+  const handleLogin = (e) => {
+    e.preventDefault();
+    window.location.href ='/admin-landing';
+    // // Validate email and password
+    // const user = data.find(
+    //   (user) => user.email === email && user.password === password
+    // );
+    // if (user) {
+    //   window.location.href = '/admin-landing'; // Redirect to landing page on successful login
+    // } else {
+    //   setLoginError(true); // Show error message on unsuccessful login
+    // }
+  };
 
   return (
     <>
-    {/* Table to display database data */}
+    <Main/> {/**Handling in main */}
+    {/* Table to display database data
     <div style={{ padding: '50px' }}>
       <table>
         <thead>
@@ -73,13 +76,12 @@ function App() {
             ))
           ) : (
             <tr>
-              <td colSpan="4">No data available</td>
+              
             </tr>
           )}
         </tbody>
       </table>
-    </div>
-
+    </div> */}
 
     
     <div className="App">
@@ -88,14 +90,11 @@ function App() {
             <div className="navbar-logo-container">
               <img src={logo} className="navbar-logo" alt="logo" />
             </div>
-
-            {/* Hamburger Menu for Mobile */}
             <div className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)}>
               ☰
             </div>
-
-            {/* Dropdowns - Show/Hide Based on Menu State */}
             <div className={`navbar-dropdowns ${menuOpen ? "show" : ""}`}>
+              {/* Dropdowns */}
               <div className="dropdown">
                 <button className="dropbtn">Features</button>
                 <div className="dropdown-content">
@@ -119,8 +118,6 @@ function App() {
                 </div>
               </div>
             </div>
-
-            {/* Buttons */}
             <div className="buttons">
               <button className="btn create-account-btn" onClick={() => toggleModal('createAccount')}>
                 Get Started
@@ -133,17 +130,8 @@ function App() {
 
           <h1 className="headline">Expense Tracking Made Easy</h1>
 
-          {/* Green box with zoom-in effect on scroll */}
-          <div
-            className="green-box"
-            style={{
-              transform: `scale(${scale})`, // Apply the zoom-in effect
-              transition: 'transform 0.2s ease-out' // Smooth zoom transition
-            }}
-          >
+          <div className="green-box">
             <img src={firstPic} alt="Green Box Image" className="green-box-img" />
-            <div id="square"></div>
-            <div id="stretcher"></div>
           </div>
         </header>
 
@@ -153,10 +141,27 @@ function App() {
               {modalType === 'logIn' ? (
                 <>
                   <h2>Welcome Back!</h2>
-                  <form className="login-form">
-                    <input type="email" placeholder="Email" required />
-                    <input type="password" placeholder="Password" required />
+                  <form className="login-form" onSubmit={handleLogin}>
+                    <input
+                      type="email"
+                      placeholder="Email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      required
+                    />
+                    <input
+                      type="password"
+                      placeholder="Password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      required
+                    />
                     <button type="submit" className="login-btn-submit">Sign In</button>
+                    {loginError && (
+                      <div className="error-message">
+                        Log in unsuccessful, please try again.
+                      </div>
+                    )}
                   </form>
                 </>
               ) : (
@@ -174,7 +179,8 @@ function App() {
             </div>
           </div>
         )}
-      </div></>
+      </div>
+    </>
   );
 }
 
