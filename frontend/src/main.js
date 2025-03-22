@@ -12,6 +12,7 @@ function Main() {
         <Router>
             <Routes>
                 <Route path="/home" element={<App />} />
+                <Route path="/" element={<App />} />
                 <Route path="/admin-landing" element={<AdminLanding />} />
                 <Route path="/employee-landing" element={<EmployeeLanding />} />     
                 <Route path="/autofilled-form" element={<AutoFilledForm />} /> {/* Autofilled form route */}
