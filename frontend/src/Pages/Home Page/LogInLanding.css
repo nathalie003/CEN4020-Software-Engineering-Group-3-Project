@@ -1,0 +1,175 @@
+.body{
+    background-color: #1D5E12;
+}
+
+.login-form-container {
+    font-family: 'Mukta', sans-serif;
+    padding: 0 20px 20px 0;
+    background-color: #1D5E12;
+}
+
+.login-form-container .login-form {
+    background: repeating-linear-gradient(45deg, #fff, #fff 10px, #f9f9f9 10px, #f9f9f9 20px);
+    padding: 70px 40px 40px;
+    border-radius: 0;
+    border: 2px solid #1D5E12;
+    box-shadow: 20px 20px 0 #1D5E12;
+    position: relative;
+}
+
+.login-form .login-title {
+    color: #000000;
+    font-size: 80px;
+    font-weight: 700;
+    margin: 0 0 8px 0;
+}
+
+.login-form .login-description {
+    color: #000000;
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 30px 0;
+    display: block;
+}
+
+.login-form .login-form-group {
+    margin: 0 0 30px;
+}
+
+.login-form .login-form-group:nth-child(3) {
+    margin-bottom: 20px;
+}
+
+.login-form .login-form-control {
+    color: #1D5E12;
+    font-size: 16px;
+    letter-spacing: 1px;
+    height: 40px;
+    padding: 2px 15px;
+    border: 1px solid #1D5E12;
+    border-top-width: 2px;
+    border-left-width: 2px;
+    box-shadow: none;
+    border-radius: 0;
+    transition: all 0.3s ease 0s;
+}
+
+.login-form .login-form-control:focus {
+    box-shadow: none;
+    border-color: #1D5E12;
+}
+
+.login-form .login-form-control::placeholder {
+    color: #000000;
+    font-size: 15px;
+}
+
+.login-form .login-btn {
+    color: #fff;
+    background-color: #1D5E12;
+    font-size: 18px;
+    font-weight: 600;
+    text-align: left;
+    width: 180px;
+    padding: 10px 30px;
+    margin: 0 25px 0 0;
+    border-radius: 30px;
+    border: none;
+    display: inline-block;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+    transition: all 0.3s ease 0s;
+}
+
+.login-form .login-btn:hover,
+.login-form .login-btn:focus {
+    color: #fff;
+    background-color: #59A42C;
+    box-shadow: 0 0 10px rgba(0,0,0,0);
+    outline: none;
+}
+
+.login-form .login-btn:after {
+    content: '';
+    height: 70%;
+    width: 110%;
+    border-top: 5px solid #fff;
+    border-bottom: 5px solid #fff;
+    transform: rotate(-50deg);
+    position: absolute;
+    right: -105px;
+    top: -65px;
+    transition: all 0.5s ease 0s;
+}
+
+.login-form .login-btn:hover:after {
+    right: -70px;
+    top: -30px;
+}
+
+.login-form .login-signup-link {
+    color: #000000;
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 35px 0;
+    vertical-align: text-top;
+    display: inline-block;
+}
+
+.login-form .login-signup-link a {
+    color: #1D5E12;
+    text-decoration: underline;
+    margin: 0 0 0 25px;
+}
+
+.login-form .login-signup-link a:hover {
+    color: #59A42C;
+    transition: all 0.3s ease 0s;
+}
+
+.login-form .login-forgot {
+    color: #1D5E12;
+    text-decoration: underline;
+    display: block;
+}
+
+.login-form .login-forgot a {
+    color: #1D5E12;
+    transition: all 0.3s ease 0s;
+}
+
+
+@media only screen and (max-width: 479px) {
+    .login-form-container .login-form {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .login-form .login-title {
+        font-size: 55px;
+    }
+
+    .login-form .login-description {
+        font-size: 16px;
+    }
+
+    .login-form .login-form-control::placeholder {
+        font-size: 14px;
+    }
+
+    .login-form .login-btn {
+        display: block;
+        margin: 0 auto 20px;
+    }
+
+    .login-form .login-signup-link {
+        text-align: center;
+        margin: 0 auto 20px;
+        display: block;
+    }
+
+    .login-form .login-forgot {
+        text-align: center;
+    }
+}

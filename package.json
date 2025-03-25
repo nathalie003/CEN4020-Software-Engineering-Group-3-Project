@@ -1,5 +1,9 @@
 {
   "dependencies": {
+    "bootstrap": "^5.3.3",
+    "isotope-layout": "^3.0.6",
+    "jquery": "^3.7.1",
+    "jquery-bridget": "^3.0.1",
     "node-poppler": "^7.2.4"
   }
 }

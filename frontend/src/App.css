@@ -14,12 +14,12 @@
   --mid-blue: #7db3e5 ;
 }
 
-html, body {
+/* html, body {
   margin: 0;
   padding: 0;
   background-color: var(--ivory);
   height: 100%;
-}
+} */
 
 .error-message {
   color: red;
@@ -29,7 +29,7 @@ html, body {
   border-radius: 5px;
 }
 
-.App {
+/* .App {
   text-align: center;
   background-color: var(--ivory);
   min-height: 100%;
@@ -38,23 +38,8 @@ html, body {
   align-items: center;
   flex-direction: column;
   font-family: 'Helvetica Neue', Arial, sans-serif;
-}
+} */
 
-/* Navigation bar */
-.navbar {
-  width: 100%;
-  height: 80px;
-  background-color: var(--ivory);
-  padding: 0 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: absolute;
-  top: 0;
-  left: 0;
-  box-sizing: border-box;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
 
 .navbar-logo-container {
   flex: 1;
@@ -67,7 +52,7 @@ html, body {
   margin-right: 20px;
 }
 
-* Nav Bar Dropdown menu styling */
+/* Nav Bar Dropdown menu styling */
 .navbar-dropdowns {
   display: flex;
   justify-content: flex-start;
@@ -82,7 +67,7 @@ html, body {
   margin-top: 15px;
 }
 
-.dropbtn {
+/* .dropbtn {
   background-color:var(--ivory);
   color: var(--main-blue);
   padding: 10px 16px;
@@ -90,20 +75,20 @@ html, body {
   border: none;
   cursor: pointer;
   font-weight: bold;
-}
+} */
 
 .dropbtn:hover {
   color: var(--hover-darkBlue);
 }
 
-.dropdown-content {
+/* .dropdown-content {
   display: none;
   position: absolute;
   background-color: var(--ivory);
   min-width: 160px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   z-index: 1;
-}
+} */
 
 .dropdown-content a {
   color: var(--main-blue);
