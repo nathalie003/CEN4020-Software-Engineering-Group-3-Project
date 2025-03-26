@@ -1,4 +1,4 @@
-// database.js file to manage mysql aws rds server
+// database.js file
 const mysql = require('mysql');
 
 const db = mysql.createConnection({
