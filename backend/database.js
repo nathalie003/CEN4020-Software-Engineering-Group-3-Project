@@ -6,7 +6,7 @@ const db = mysql.createConnection({
   port: '3306',
   user: 'cashpilotadmin',
   password: 'shZBhkTS4lGd',
-  database: 'cashpilot-db-1'
+  database: 'new_schema'
 });
 
 // Connect to the database
