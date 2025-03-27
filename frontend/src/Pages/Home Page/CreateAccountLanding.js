@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
-import './CreateAccountLanding.css'; // Import the necessary CSS file
+import './CreateAccountLanding.css';
 
 function CreateAccountLanding() {
 
@@ -26,7 +26,7 @@ function CreateAccountLanding() {
         } else {
             setErrors({ passwordMismatch: false });
         }
-    }, [formData.password, formData.confirmPassword]); // Trigger this effect when either password field changes
+    }, [formData.password, formData.confirmPassword]);
 
     const handleInputChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -36,20 +36,44 @@ function CreateAccountLanding() {
         });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-
-        // Final check before submitting (password mismatch validation)
+    
+        // Final check before submitting
         if (formData.password !== formData.confirmPassword) {
-            setErrors({ passwordMismatch: true });
-            return;
+          setErrors({ passwordMismatch: true });
+          return;
         }
-        
-        // Form is valid, submit data
-        console.log('Form data:', formData);
-
-        navigate("/logIn")
-    };
+    
+        // Prepare data to send (omit confirmPassword)
+        const { username, email, password, role } = formData;
+        const payload = { username, email, password, role };
+    
+        try {
+          const response = await fetch('http://localhost:5000/register', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+          });
+    
+          if (!response.ok) {
+            // Handle error responses
+            const errorData = await response.json();
+            console.error('Failed to create account:', errorData);
+            return;
+          }
+    
+          const data = await response.json();
+          console.log('Account created successfully:', data);
+    
+          // After a successful registration, navigate to the Sign In page
+          navigate("/logIn");
+        } catch (err) {
+          console.error("Error during registration:", err);
+        }
+      };
 
     return (
         <div className="form-bg">
@@ -127,9 +151,9 @@ function CreateAccountLanding() {
                                             required
                                             defaultValue="">
                                                 <option value="" disabled>Select Your Role</option>
-                                                <option value="employee">Employee</option>
-                                                <option value="supervisor">Supervisor</option>
-                                                <option value="system-administrator">System Administrator</option>
+                                                <option value="1">System Administrator</option>
+                                                <option value="2">Supervisor</option>
+                                                <option value="3">Employee</option>
                                         </select>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
                                             <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>

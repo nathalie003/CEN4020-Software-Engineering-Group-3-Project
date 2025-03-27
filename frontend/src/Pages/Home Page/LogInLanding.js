@@ -8,18 +8,46 @@ function LogInLanding() {
     const [formData, setFormData] = useState({
         username: '',
         password: '',
-        terms: false,
     });
 
-    const [errors, setErrors] = useState({
-        passwordMismatch: false,
-    });
+    const [errorMessage, setErrorMessage] = useState('');
 
-    const handleSubmit = (e) => {
+    const handleInputChange = (e) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value,
+        });
+    };
+    
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        console.log('Form data:', formData);
-        navigate("/employee-landing")
+        try {
+            const response = await fetch('http://localhost:5000/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                const role = result.role;
+                if (role === 1) {
+                    navigate("/admin-landing");
+                } else if (role === 2) {
+                    navigate("/supervisor-landing");
+                } else if (role === 3) {
+                    navigate("/employee-landing");
+                }
+            } else {
+                setErrorMessage(result.error || "Invalid login credentials");
+            }
+        } catch (error) {
+            setErrorMessage("An error occurred. Please try again.");
+        }
     };
 
     return (
@@ -33,14 +61,27 @@ function LogInLanding() {
                                 <span className="login-description">Log in below</span>
                                 
                                 <div className="login-form-group">
-                                    
-                                    <input class="form-control" type="email" placeholder="Enter your Email"></input>
+                                    <input
+                                        class="form-control" 
+                                        name="username"
+                                        type="username" 
+                                        placeholder="Enter your Username"
+                                        value={formData.username}
+                                        onChange={handleInputChange}>
+                                    </input>
                                 </div>
                                 <div className="login-form-group">
-                                
-                                <input class="form-control" type="password" placeholder="Enter your Password"/>
+                                <input
+                                    class="form-control"
+                                    name="password" 
+                                    type="password" 
+                                    placeholder="Enter your Password"
+                                    value={formData.password}
+                                    onChange={handleInputChange}    
+                                />
                                 </div>
                                 <button className="login-btn">Login</button>
+                                {errorMessage && <p className="error-message">{errorMessage}</p>}
                                 <span className="login-signup-link">
                                      Not a user? Create an account <a className= "route-to-signUp" href="/signUp"> here</a>
                                 </span>
