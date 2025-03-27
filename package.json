@@ -1,7 +1,16 @@
 {
   "dependencies": {
+<<<<<<< HEAD
     "isotope-layout": "^3.0.6",
     "jquery": "^3.7.1",
     "jquery-bridget": "^3.0.1"
+=======
+    "bcryptjs": "^3.0.2",
+    "bootstrap": "^5.3.3",
+    "isotope-layout": "^3.0.6",
+    "jquery": "^3.7.1",
+    "jquery-bridget": "^3.0.1",
+    "node-poppler": "^7.2.4"
+>>>>>>> 1b62c15d7c9c3c585d686a69d1d5391c6fc2b1cc
   }
 }

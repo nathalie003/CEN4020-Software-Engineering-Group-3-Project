@@ -1,5 +1,8 @@
+<<<<<<< HEAD
 /*isotope.pkgd.js FILE*/
 
+=======
+>>>>>>> 1b62c15d7c9c3c585d686a69d1d5391c6fc2b1cc
 /*!
  * Isotope PACKAGED v3.0.6
  *
