@@ -1,25 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {useState} from 'react';
+//import './App.css';
+import HomeLanding from './Pages/Home Page/HomeLanding';
+import logo from './Components/Images/CashPilot.png';
+
+
 
 function App() {
+  const [menuOpen, setMenuOpen] = useState(false);
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <nav className="navbar">         
+          <div className="navbar-logo-container">
+            <img src={logo} className="navbar-logo" alt="logo" />
+          </div>
+          <div className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)}>
+            ☰
+          </div>
+        </nav>
       </header>
+
+      <HomeLanding />
     </div>
   );
 }
 
 export default App;
+
+
