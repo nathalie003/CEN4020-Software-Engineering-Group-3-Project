@@ -68,7 +68,7 @@ function CreateAccountLanding() {
       console.log('User created successfully:', data);
 
       // After a successful registration, navigate to the Sign In page
-      navigate("/signIn");
+      navigate("/login");
     } catch (err) {
       console.error("Error during registration:", err);
     }
