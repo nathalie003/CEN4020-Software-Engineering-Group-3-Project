@@ -83,7 +83,7 @@ function LogInLanding() {
                                 <button className="login-btn">Login</button>
                                 {errorMessage && <p className="error-message">{errorMessage}</p>}
                                 <span className="login-signup-link">
-                                     Not a user? Create an account <a className= "route-to-signUp" href="/signUp"> here</a>
+                                     Not a user? Create an account <a className= "route-to-signUp" href="/register"> here</a>
                                 </span>
                             </form>
                         </div>

@@ -16,7 +16,7 @@ function Main() {
             <Routes>
                 <Route path="/home" element={<App />} />
                 <Route path="/" element={<App />} />
-                <Route path="/signUp" element = {<CreateAccountLanding />} />
+                <Route path="/register" element = {<CreateAccountLanding />} />
                 <Route path="/logIn" element = {<LogInLanding />} />
                 <Route path="/services" element={<ServicesLanding />} /> 
                 <Route path="/admin-landing" element={<AdminLanding />} />
