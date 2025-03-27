@@ -65,10 +65,10 @@ function HomeLanding() {
                                 <a class="nav-link btn-outline-primary rounded-pill px-3" href="/services">Services</a>
                             </li>
                             <li className="nav-item">
-                            <a class="nav-link btn-outline-primary rounded-pill px-3" id="signUp" href = "/signUp">Sign Up</a>
+                            <a class="nav-link btn-outline-primary rounded-pill px-3" id="register" href = "/register">Sign Up</a>
                             </li>
                             <li className="nav-item">
-                                <a class="nav-link btn-outline-primary rounded-pill px-3" id= "logIn" href = "/logIn">Sign In</a>
+                                <a class="nav-link btn-outline-primary rounded-pill px-3" id= "login" href = "/login">Sign In</a>
                             </li>
                         </ul>
                     </div>
@@ -310,7 +310,7 @@ function HomeLanding() {
                             </li>
                             <li class="pb-2">
                                 <i class='bx-fw bx bxs-chevron-right bx-xs'></i>
-                                <a class="text-decoration-none text-light py-1" href="/signUp">Create an Account</a>
+                                <a class="text-decoration-none text-light py-1" href="/register">Register</a>
                             </li>
                         </ul>
                     </div>

@@ -2,7 +2,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import App from './App';
-import CreateAccountLanding from './Pages/HomePage/CreateAccountLanding.js';
+import registerLanding from './Pages/HomePage/registerLanding.js';
 import LogInLanding from './Pages/HomePage/LogInLanding.js';
 import AdminLanding from './Pages/AdminPage/AdminLanding';
 import EmployeeLanding from './Pages/EmployeePage/EmployeeLanding';
@@ -16,7 +16,7 @@ function Main() {
             <Routes>
                 <Route path="/home" element={<App />} />
                 <Route path="/" element={<App />} />
-                <Route path = "/register" element = {<CreateAccountLanding />} />
+                <Route path = "/register" element = {<registerLanding />} />
                 <Route path = "/login" element = {<LogInLanding />} />
                 {/* <Route path="/services" element={<OurServices />} /> */}
                 <Route path="/admin-landing" element={<AdminLanding />} />

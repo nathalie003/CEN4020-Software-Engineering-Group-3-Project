@@ -1,9 +1,9 @@
-// CreateAccountLanding.js file
+// registerLanding.js file
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './CreateAccountLanding.css';
+import './registerLanding.css';
 
-function CreateAccountLanding() {
+function registerLanding() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: '',
@@ -168,7 +168,7 @@ function CreateAccountLanding() {
                 <span className="signin-link">
                   Already have an account? Click here to <a href="/LogIn">Log In</a>
                 </span>
-                <button type="submit" className="btn signup">Create Account</button>
+                <button type="submit" className="btn signup">Register</button>
               </form>
             </div>
           </div>
@@ -178,4 +178,4 @@ function CreateAccountLanding() {
   );
 }
 
-export default CreateAccountLanding;
+export default registerLanding;

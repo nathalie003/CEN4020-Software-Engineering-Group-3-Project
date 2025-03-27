@@ -5149,18 +5149,18 @@
     list-style: none;
   }
   /*HOME PAGE NAV BAR CREATE ACCOUNT*/
-  #signUp{
+  #register{
     position: relative;
     left: 200px;
     border: 2px solid #FFFFFF;
     color: #000000;
     background-color: #ffffff;
   }
-  #signUp:hover{
+  #register:hover{
     color: #ffffff;
     background-color: #59A42C;
   }
-  #logIn{
+  #login{
     position: relative;
     left: 200px;
     border: 2px solid #FFFFFF;
