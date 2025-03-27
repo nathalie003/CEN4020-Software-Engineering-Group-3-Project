@@ -65,7 +65,7 @@ function HomeLanding() {
                                 <a class="nav-link btn-outline-primary rounded-pill px-3" href="/services">Services</a>
                             </li>
                             <li className="nav-item">
-                            <a class="nav-link btn-outline-primary rounded-pill px-3" id="register" href = "/register">Sign Up</a>
+                            <a class="nav-link btn-outline-primary rounded-pill px-3" id="register" href = "/register">Register</a>
                             </li>
                             <li className="nav-item">
                                 <a class="nav-link btn-outline-primary rounded-pill px-3" id= "login" href = "/login">Sign In</a>

@@ -56,7 +56,7 @@ function LogInLanding() {
                                 </div>
                                 <button className="login-btn">Login</button>
                                 <span className="login-signup-link">
-                                    <strong>Or click here to </strong> <a href="/register">Sign Up</a>
+                                    <strong>Or click here to </strong> <a href="/register">Register</a>
                                 </span>
                             </form>
                         </div>
