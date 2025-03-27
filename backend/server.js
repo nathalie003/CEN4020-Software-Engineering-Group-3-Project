@@ -21,3 +21,28 @@ app.get('/user', (req, res) => {
 });
 
 app.listen(5000, () => console.log("Server running on port 5000"));
+
+// POST endpoint to create new account (register)
+
+app.post('/register', (req, res) => {
+  // Extract the user details from the request body
+  const { username, password, email } = req.body;
+  
+  // You might want to perform validation and password hashing here
+
+  // SQL query using parameterized values to avoid SQL injection
+  const sql = "INSERT INTO user (username, password, email) VALUES (?, ?, ?)";
+  
+  db.query(sql, [username, password, email], (err, result) => {
+    if (err) {
+      console.error('Error inserting new user:', err);
+      return res.status(500).json({ error: "Failed to create user" });
+    }
+    
+    // Send a success response, possibly including the new user's id
+    res.status(201).json({ 
+      message: "User created successfully", 
+      userId: result.insertId 
+    });
+  });
+});
