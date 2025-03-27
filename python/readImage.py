@@ -4,11 +4,7 @@ from pdf2image import convert_from_path
 import os
 import re
 
-<<<<<<< HEAD
-image_path = r"C:\SWE-Project\EERIS-3v2\CEN4020-Software-Engineering-Group-3-Project\python\Receipts\Pub2.pdf"
-=======
 image_path = r"C:\Users\happy\OneDrive - University of South Florida\Classes\Spring 25\CEN 4020\Project\CEN4020-Software-Engineering-Group-3-Project\python\Receipts\Pub2.pdf"
->>>>>>> 1b62c15d7c9c3c585d686a69d1d5391c6fc2b1cc
 if not os.path.exists(image_path):
     print("File not found:", image_path)
 else:
@@ -34,14 +30,6 @@ text = pytesseract.image_to_string(img)
 # Displaying the extracted text 
 print(text[:-1])
 
-<<<<<<< HEAD
-address_pattern = r"^\d{1,5}\s[A-Z\s]+(?:AVE|ST|BLVD|DR|RD)\n[A-Z\s]+,\s[A-Z]{2}\s\d{5}$"
-
-match = re.search(address_pattern, text, re.IGNORECASE | re.MULTILINE)
-
-if match:
-    print("\nAddress:", match.group())
-=======
 '''
  You may save several receipts per photo/page as long as each receipt clearly shows its data of name,
  phone, address, web site (if available) of store/shop/payee, date and time of the receipt, 
@@ -74,4 +62,3 @@ if matchAdd:
     print("\nAddress:", matchAdd.group())
 if matchPhn:
     print("\nPhone:", matchPhn.group())
->>>>>>> 1b62c15d7c9c3c585d686a69d1d5391c6fc2b1cc
