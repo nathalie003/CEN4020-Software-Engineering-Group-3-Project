@@ -1,3 +1,5 @@
+/*isotope.pkgd.js FILE*/
+
 /*!
  * Isotope PACKAGED v3.0.6
  *

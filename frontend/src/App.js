@@ -1,3 +1,4 @@
+/*App.js FILE*/
 import React, {useState} from 'react';
 //import './App.css';
 import HomeLanding from './Pages/HomePage/HomeLanding';
