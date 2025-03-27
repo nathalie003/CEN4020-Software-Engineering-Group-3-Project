@@ -93,7 +93,7 @@ function HomeLanding() {
                                     Expense Reporting, <strong>Simplified</strong> Your One-Stop Solution for Efficient Expense Management
                                     </h1>
                                     <p class="banner-body text-muted py-3 mx-0 px-0">
-                                    Welcome to EERIS, the Employee Expense Reporting Information System crafted to make managing business-related expenses seamless. With advanced features like automated receipt scanning, real-time expense tracking, and customizable categories, EERIS ensures that every step — from submission to approval — is efficient and accurate. Upload receipts, manage expenses, and generate insightful financial reports, all in one place. EERIS takes the hassle out of expense reporting, empowering both employees and supervisors for smoother workflows. 
+                                    test:3-27-25-4:57pm Welcome to EERIS, the Employee Expense Reporting Information System crafted to make managing business-related expenses seamless. With advanced features like automated receipt scanning, real-time expense tracking, and customizable categories, EERIS ensures that every step — from submission to approval — is efficient and accurate. Upload receipts, manage expenses, and generate insightful financial reports, all in one place. EERIS takes the hassle out of expense reporting, empowering both employees and supervisors for smoother workflows. 
                                     </p>
                                     
                                     <a class="banner-button btn rounded-pill btn-outline-primary btn-lg px-4" href="/services" role="button">Click here to learn more</a>
