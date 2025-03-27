@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+/*bootstrap.css FILE*/
+
+=======
+>>>>>>> 1b62c15d7c9c3c585d686a69d1d5391c6fc2b1cc
 /*!
  * Bootstrap v5.0.0-beta1 (https://getbootstrap.com/)
  * Copyright 2011-2020 The Bootstrap Authors
@@ -2988,8 +2993,13 @@
     -webkit-appearance: none;
        -moz-appearance: none;
             appearance: none;
+<<<<<<< HEAD
+    -webkit-print-print-color-adjust: exact;
+            print-color-adjust: exact;
+=======
     -webkit-print-color-adjust: exact;
             color-adjust: exact;
+>>>>>>> 1b62c15d7c9c3c585d686a69d1d5391c6fc2b1cc
     -webkit-transition: background-color 0.15s ease-in-out, background-position 0.15s ease-in-out, border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
     transition: background-color 0.15s ease-in-out, background-position 0.15s ease-in-out, border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
     transition: background-color 0.15s ease-in-out, background-position 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;

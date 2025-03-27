@@ -1,0 +1,85 @@
+@import url('../../App.css');
+
+/* Admin Landing Container */
+.AdminLanding {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #1E4C82; /* Blue background */
+    color: white; /* Set text color to white for contrast */
+  }
+  
+  /* Header Styling */
+  .Admin-header {
+    background-color: #FFA500;
+    width: 100%;
+    padding: 20px 0;
+    box-sizing: border-box;
+    color: white; 
+    text-align:center;
+  }
+  
+  /* Headline Styling */
+  .admin-landing-container h1 {
+    font-size: 2.5rem;
+    color: white; 
+  }
+
+  .menu-toggle {
+    font-size: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--main-blue);;
+    display: none;
+  }
+
+  .menuDrop {
+    position: relative;
+    text-align: center;
+
+  }
+
+  .navbar-dropdowns {
+    display: flex;
+    justify-content: flex-start;
+    flex-grow: 10;
+    margin-right:550px;
+  }
+  
+  .Buttonoption {
+    background-color:var(--ivory);
+    color: var(--main-blue);
+    padding: 10px 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  /* Sign Out Button */
+  .sign-out-btn {
+    background-color: var(--light-green);
+    color: var(--black);
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+  
+  /* Media query for mobile view */
+  @media (max-width: 768px) {
+
+    .buttons {
+      display: none; /* Hide the buttons on mobile when the menu is open */
+    }
+
+    .menu-toggle {
+        display: block;
+        cursor: pointer;
+        font-size: 24px;
+        position: absolute;
+        left: 20px;
+  }
+}

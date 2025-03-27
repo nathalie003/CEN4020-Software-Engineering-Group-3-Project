@@ -18,7 +18,6 @@ function CreateAccountLanding() {
         passwordMismatch: false,
     });
     
-
     useEffect(() => {
         // Check if the password and confirmPassword match
         if (formData.password !== formData.confirmPassword) {
