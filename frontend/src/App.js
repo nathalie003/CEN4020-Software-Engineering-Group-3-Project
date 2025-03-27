@@ -3,7 +3,6 @@ import React, {useState} from 'react';
 //import './App.css';
 import HomeLanding from './Pages/HomePage/HomeLanding';
 import logo from './Components/Images/CashPilot.png';
-const port = process.env.PORT || 4000;
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
