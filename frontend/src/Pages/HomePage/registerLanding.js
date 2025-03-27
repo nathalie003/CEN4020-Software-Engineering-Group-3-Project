@@ -178,4 +178,4 @@ function RegisterLanding() {
   );
 }
 
-export default registerLanding;
+export default RegisterLanding;
