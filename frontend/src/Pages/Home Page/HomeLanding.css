@@ -89,7 +89,7 @@ color: #ffffff !important;
 /*BANNER CAROUSEL SCROLL FEATURE*/
 .banner-content.col-lg-8.col-8.offset-2.m-lg-auto.text-left.py-5.pb-5{
   overflow-y: auto;
-  max-height: 700px;
+  max-height: 650px;
 }
 
 /*HOME PAGE BANNER HEADING TEXT*/
@@ -127,20 +127,13 @@ color: #FFFFFF;
   font-size: 5rem;
 }
 
-/*SERVICES SECTION LAPTOP ICON*/
-.bi.bi-laptop{
-  position: relative;
-  padding-left: 20px;
-  margin-left: 50px;
-}
-
 /*HOME PAGE SERVICES SECTION Subheading*/
 .h3.pb-3.col-lg-9{
   color: var(--black) !important;
   font-size: 3rem; 
   width: 100%;
   max-width:max-content;
-  margin-left: 130px !important;
+  margin-left: 50px !important;
   position: relative;
   font-weight:900;
 }
