@@ -69,38 +69,26 @@
     background-color: #1D5E12;
     font-size: 18px;
     font-weight: 600;
-    text-align: left;
+    text-align: center;
     width: 180px;
     padding: 10px 30px;
     margin: 0 25px 0 0;
     border-radius: 30px;
     border: none;
     display: inline-block;
-    overflow: hidden;
     position: relative;
-    z-index: 1;
-    transition: all 0.3s ease 0s;
+    
 }
 
 .login-form .login-btn:hover,
 .login-form .login-btn:focus {
     color: #fff;
     background-color: #59A42C;
-    box-shadow: 0 0 10px rgba(0,0,0,0);
-    outline: none;
+    box-shadow: 0 0 0 0.25rem #59A42C;
 }
 
 .login-form .login-btn:after {
-    content: '';
-    height: 70%;
-    width: 110%;
-    border-top: 5px solid #fff;
-    border-bottom: 5px solid #fff;
-    transform: rotate(-50deg);
-    position: absolute;
-    right: -105px;
-    top: -65px;
-    transition: all 0.5s ease 0s;
+    content: none;
 }
 
 .login-form .login-btn:hover:after {
@@ -119,8 +107,7 @@
 
 .login-form .login-signup-link a {
     color: #1D5E12;
-    text-decoration: underline;
-    margin: 0 0 0 25px;
+    
 }
 
 .login-form .login-signup-link a:hover {
@@ -128,13 +115,16 @@
     transition: all 0.3s ease 0s;
 }
 
-.login-form .login-forgot {
+.route-to-signUp:active{
+    
+    color: #007bff !important;
+}
+.login-form {
     color: #1D5E12;
-    text-decoration: underline;
     display: block;
 }
 
-.login-form .login-forgot a {
+.login-form a {
     color: #1D5E12;
     transition: all 0.3s ease 0s;
 }
@@ -165,11 +155,10 @@
 
     .login-form .login-signup-link {
         text-align: center;
-        margin: 0 auto 20px;
         display: block;
     }
 
-    .login-form .login-forgot {
+    .login-form {
         text-align: center;
     }
 }

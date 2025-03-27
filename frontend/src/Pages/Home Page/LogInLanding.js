@@ -29,34 +29,20 @@ function LogInLanding() {
                     <div className="login-col">
                         <div className="login-form-container">
                             <form className="login-form" onSubmit={handleSubmit}>
-                                <h3 className="login-title">Welcome Back!</h3>
-                                <span className="login-description">Log in Below</span>
+                                <h3 className="login-title">Welcome Back</h3>
+                                <span className="login-description">Log in below</span>
                                 
                                 <div className="login-form-group">
                                     
-                                    <input 
-                                        type="text"
-                                        name="username" 
-                                        className="login-form-control" 
-                                        placeholder="User Name" 
-                                        value={formData.username}
-                                        required
-                                    />
+                                    <input class="form-control" type="email" placeholder="Enter your Email"></input>
                                 </div>
                                 <div className="login-form-group">
                                 
-                                    <input 
-                                        type="password"
-                                        name="password"
-                                        className="login-form-control"
-                                        placeholder="Password"
-                                        value={formData.password}
-                                        required
-                                    />
+                                <input class="form-control" type="password" placeholder="Enter your Password"/>
                                 </div>
                                 <button className="login-btn">Login</button>
                                 <span className="login-signup-link">
-                                    <strong>Or click here to </strong> <a href="/signUp">Sign Up</a>
+                                     Not a user? Create an account <a className= "route-to-signUp" href="/signUp"> here</a>
                                 </span>
                             </form>
                         </div>

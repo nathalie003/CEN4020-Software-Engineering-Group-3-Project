@@ -1,11 +1,12 @@
+// database.js file
 const mysql = require('mysql');
 
 const db = mysql.createConnection({
-  host: "mysql-database-1-cashpilotproject.crua2cacctz3.us-east-1.rds.amazonaws.com",
-  port: "3306",
-  user: "cashpilotadmin",
-  password: "shZBhkTS4lGd",
-  database: "cashpilot_schema"
+  host: 'cashpilot-db-1.c43w8q0oa2ju.us-east-1.rds.amazonaws.com',
+  port: '3306',
+  user: 'cashpilotadmin',
+  password: 'shZBhkTS4lGd',
+  database: 'new_schema'
 });
 
 // Connect to the database
