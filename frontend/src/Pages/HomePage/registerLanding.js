@@ -1,9 +1,9 @@
-// registerLanding.js file
+// RegisterLanding.js file
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './registerLanding.css';
+import './RegisterLanding.css';
 
-function registerLanding() {
+function RegisterLanding() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: '',

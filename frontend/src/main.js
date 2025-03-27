@@ -2,7 +2,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import App from './App';
-import registerLanding from './Pages/HomePage/registerLanding.js';
+import registerLanding from './Pages/HomePage/RegisterLanding.js';
 import LogInLanding from './Pages/HomePage/LogInLanding.js';
 import AdminLanding from './Pages/AdminPage/AdminLanding';
 import EmployeeLanding from './Pages/EmployeePage/EmployeeLanding';
