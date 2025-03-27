@@ -17,7 +17,7 @@ function AdminLanding() {
             <header className="Admin-header">
             <nav className="navbar">
                       <div className="navbar-logo-container">
-                        <img src={logo} className="navbar-logo" alt="logo" />
+                        <img src={logo} className="navbar-logo" alt="navbar logo" />
                       </div>
                       <div className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)}>
                         ☰

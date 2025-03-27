@@ -13,7 +13,7 @@ function EmployeeLanding() {
             <header className="Supervisor-header">
             <nav className="navbar">
                       <div className="navbar-logo-container">
-                        <img src={logo} className="navbar-logo" alt="logo" />
+                        <img src={logo} className="navbar-logo" alt="navbar logo" />
                       </div>
                       <div className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)}>
                         ☰
