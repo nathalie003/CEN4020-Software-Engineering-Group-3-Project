@@ -37,11 +37,15 @@ function CreateAccountLanding() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Final check before submitting (password mismatch validation)
+    // Final check before submitting
     if (formData.password !== formData.confirmPassword) {
       setErrors({ passwordMismatch: true });
       return;
     }
+
+    // Prepare data to send (omit confirmPassword)
+    const { username, email, password, role } = formData;
+    const payload = { username, email, password, role };
 
     try {
       const response = await fetch("http://localhost:5000/register", {
@@ -49,24 +53,23 @@ function CreateAccountLanding() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          username: formData.username,
-          email: formData.email,
-          password: formData.password,
-          role: formData.role,
-        }),
+        body: JSON.stringify(payload),
       });
 
       if (!response.ok) {
-        throw new Error("Failed to create account");
+        // Handle error responses
+        const errorData = await response.json();
+        console.error("Failed to create account:", errorData);
+        return;
       }
 
       const data = await response.json();
-      console.log("Account created:", data);
+      console.log("Account created successfully:", data);
 
+      // navigate to the Sign In page
       navigate("/logIn");
-    } catch (error) {
-      console.error("Error:", error);
+    } catch (err) {
+      console.error("Error during registration:", err);
     }
   };
 
