@@ -89,7 +89,7 @@ color: #ffffff !important;
 /*BANNER CAROUSEL SCROLL FEATURE*/
 .banner-content.col-lg-8.col-8.offset-2.m-lg-auto.text-left.py-5.pb-5{
   overflow-y: auto;
-  max-height: 650px;
+  max-height: 700px;
 }
 
 /*HOME PAGE BANNER HEADING TEXT*/
@@ -216,4 +216,4 @@ color: #FFFFFF;
 .text-lg-end.text-center.text-light.light-300{
   font-size: 1.5rem;
   margin-right: -100px !important;
-} 
+}

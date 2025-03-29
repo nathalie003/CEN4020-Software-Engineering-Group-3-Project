@@ -242,23 +242,31 @@ function HomeLanding() {
             </a>
           </div>
         </div>
+      </div>
 
-    
-        <section className="service-wrapper py-3">
-            <div className="container-fluid pb-3">
-                <div className="row">
-                    <h2 className="h2 text-center col-12 py-5 semi-bold-600">Services</h2>
-                    <div className="service-header text-end light-300">
-                        <div className="text-start pb-3">
-                            <h2 className="h3 pb-3 col-lg-9">Explore Our Comprehensive Services</h2>
-                        </div>
-
-                    </div>
-                </div>
-                <p className="service-footer col-10 offset-2 col-lg-9 offset-lg-3 text-start pb-3 text-muted px-2">
-                At EERIS, we offer a suite of services designed to streamline your expense management process. From automated receipt scanning to real-time tracking and flexible entry methods, our system empowers employees and supervisors to manage expenses with ease. Dive deeper into our offerings below to discover how EERIS can transform the way your organization handles business-related expenses.
-                </p>
+      <section className="service-wrapper py-3">
+        <div className="container-fluid pb-3">
+          <div className="row">
+            <h2 className="h2 text-center col-12 py-5 semi-bold-600">
+              Services
+            </h2>
+            <div className="service-header text-end light-300">
+              <div className="text-start pb-3">
+                <h2 className="h3 pb-3 col-lg-9">
+                  Explore Our Comprehensive Services
+                </h2>
+              </div>
             </div>
+          </div>
+          <p className="service-footer col-10 offset-2 col-lg-9 offset-lg-3 text-start pb-3 text-muted px-2">
+            At EERIS, we offer a suite of services designed to streamline your
+            expense management process. From automated receipt scanning to
+            real-time tracking and flexible entry methods, our system empowers
+            employees and supervisors to manage expenses with ease. Dive deeper
+            into our offerings below to discover how EERIS can transform the way
+            your organization handles business-related expenses.
+          </p>
+        </div>
 
         <div className="service-tag py-5 bg-secondary">
           <div className="col-md-12">
