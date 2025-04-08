@@ -11,7 +11,7 @@ app.use(cors());
 app.use(express.json());
 
 app.get('/', (req, res) => {
-  res.json("From Backend Side 3-26-25 11:37PM");
+  res.json("From Backend Side 4-8-25 1:11PM");
 });
 
 app.get('/user', (req, res) => {
