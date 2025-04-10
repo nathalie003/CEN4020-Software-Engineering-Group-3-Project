@@ -11,7 +11,6 @@ function EmployeeLanding() {
 
     useEffect(() => {
         const username = sessionStorage.getItem("username");
-        console.log("Username from sessionStorage:", username); // Debugging line
       
         if (username) {
             fetch(`http://localhost:5000/api/user/${username}`)

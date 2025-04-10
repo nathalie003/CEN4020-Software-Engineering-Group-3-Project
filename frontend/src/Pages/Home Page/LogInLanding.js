@@ -31,13 +31,11 @@ function LogInLanding() {
       });
 
       const result = await response.json();
-      console.log("username", result.username); // Debugging line
+
       if (response.ok) {
         const role = result.role;
         sessionStorage.setItem("username", result.username);
-        console.log("username", result.username); // Debugging line
-        console.log("role", role); // Debugging line
-
+      
         if (role === 1) {
           navigate("/admin-landing");
         } else if (role === 2) {
