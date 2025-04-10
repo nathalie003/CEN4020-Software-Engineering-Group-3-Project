@@ -41,7 +41,7 @@ function HomeLanding() {
   }, []);
 
   return (
-    <body>
+    <div>
       <nav
         id="main_nav"
         className="navbar navbar-expand-lg navbar-dark bg-white"
@@ -640,7 +640,7 @@ function HomeLanding() {
       <script src="assets/js/templatemo.js"></script>
       {/* <!-- Custom --> */}
       <script src="assets/js/custom.js"></script>
-    </body>
+    </div>
   );
 }
 
