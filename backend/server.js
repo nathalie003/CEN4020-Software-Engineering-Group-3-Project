@@ -6,6 +6,8 @@ const db = require("./database");
 // Password hashing library
 const bcrypt = require('bcryptjs');
 
+const User = require('./userClass');
+
 const port = process.env.PORT || 5000;
 
 app.use(cors());
@@ -29,6 +31,7 @@ app.post('/register', async (req, res) => {
   try {
     // Hash the password before storing it
     const hashedPassword = await bcrypt.hash(password, 10);
+    console.log("Registering user:", username, password, hashedPassword);
 
     const sql = "INSERT INTO user (username, password, email, role) VALUES (?, ?, ?, ?)";
     db.query(sql, [username, hashedPassword, email, role], (err, result) => {
@@ -46,15 +49,18 @@ app.post('/register', async (req, res) => {
 
 app.post('/login', async (req, res) => {
   const { username, password } = req.body;
+  console.log("Login attempt:", username, password);
 
   const sql = "SELECT * FROM user WHERE username = ?";
   db.query(sql, [username], async (err, data) => {
+    console.log("Login attempt:", username, password);
       if (err) {
           console.error('Error during login query:', err);
           return res.status(500).json({ error: "Failed to log in" });
       }
 
       if (data.length === 0) {
+
           return res.status(401).json({ error: "Invalid username or password. Please try again" });
       }
 
@@ -62,8 +68,12 @@ app.post('/login', async (req, res) => {
 
       // Compare password with the hashed password
       const isMatch = await bcrypt.compare(password, user.password);
+      const hashedPassword = await bcrypt.hash(password, 10);
 
       if (!isMatch) {
+          console.error('Invalid password attempt:', username, password);
+          console.error(hashedPassword);
+          console.error(user.password);
           return res.status(401).json({ error: "Invalid username or password. Please try again" });
       }
 
@@ -71,5 +81,16 @@ app.post('/login', async (req, res) => {
       res.json({ role: user.role });
   });
 });
+
+app.get('/api/user/:username', (req, res) => {
+  const { username } = req.params;
+  console.log("Fetching user by username:", username);
+  User.findByUsername(db, username, (err, user) => {
+    if (err) return res.status(500).json({ error: 'DB error' });
+    if (!user) return res.status(404).json({ error: 'User not found' });
+    res.json(user);
+  });
+});
+
 
 app.listen(5000, () => console.log("Server running on port 5000"));

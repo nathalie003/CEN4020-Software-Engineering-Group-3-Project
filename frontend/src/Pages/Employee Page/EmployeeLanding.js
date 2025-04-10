@@ -1,11 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './EmployeeLanding.css';
 import logo from '../../Components/Images/CashPilot.png';
+
 
 function EmployeeLanding() {
     const [menuOpen, setMenuOpen] = useState(false);
     const [selectedFile, setSelectedFile] = useState(null);
     const [manualEntry, setManualEntry] = useState('');
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        const username = sessionStorage.getItem("username");
+        console.log("Username from sessionStorage:", username); // Debugging line
+      
+        if (username) {
+          fetch(`http://localhost:5000/api/user/${username}`)
+            .then((res) => res.json())
+            .then((data) => setUser(data))
+            .catch((err) => console.error("Error fetching user:", err));
+        }
+      }, []);
 
     const handleFileChange = (e) => {
         setSelectedFile(e.target.files[0]);
@@ -97,6 +111,11 @@ function EmployeeLanding() {
                 </nav>
             </header>
             <h1 className="headline">Welcome to the Employee Landing Page</h1>
+            {user ? (
+                <h2>Welcome, {user.username}!</h2>
+                ) : (
+                <h1>Loading user info...</h1>
+                )}
         </div>
     );
 }

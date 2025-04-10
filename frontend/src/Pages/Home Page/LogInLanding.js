@@ -34,6 +34,8 @@ function LogInLanding() {
 
       if (response.ok) {
         const role = result.role;
+        sessionStorage.setItem("username", result.username);
+
         if (role === 1) {
           navigate("/admin-landing");
         } else if (role === 2) {
