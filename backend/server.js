@@ -78,7 +78,7 @@ app.post('/login', async (req, res) => {
       }
 
       // If login is successful, return the user's role
-      res.json({ role: user.role });
+      res.json({ role: user.role, username: user.username });
   });
 });
 

@@ -14,7 +14,7 @@ function EmployeeLanding() {
         console.log("Username from sessionStorage:", username); // Debugging line
       
         if (username) {
-          fetch(`http://localhost:5000/api/user/${username}`)
+            fetch(`http://localhost:5000/api/user/${username}`)
             .then((res) => res.json())
             .then((data) => setUser(data))
             .catch((err) => console.error("Error fetching user:", err));
