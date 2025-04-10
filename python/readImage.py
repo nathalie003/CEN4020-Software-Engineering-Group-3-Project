@@ -132,7 +132,7 @@ if matchPhn:
 else:
     phone = None
 
-print("="*40)
+# print("="*40)
 
 # Convert items_found (list of tuples) into an array of item objects
 let_items = [{"description": desc, "price": price} for (desc, price) in items_found]

@@ -73,8 +73,6 @@ app.post("/login", async (req, res) => {
 
 //------------ RECEIPT PROCESSING SECTION ------------
 
-//------------ RECEIPT PROCESSING SECTION ------------
-
 // Configure multer for file uploads (saves files to the "uploads" directory)
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
