@@ -61,7 +61,7 @@ function LogInLanding() {
 
                 <div className="login-form-group">
                   <input
-                    class="form-control"
+                    className="form-control"
                     name="username"
                     type="username"
                     placeholder="Enter your Username"
@@ -71,7 +71,7 @@ function LogInLanding() {
                 </div>
                 <div className="login-form-group">
                   <input
-                    class="form-control"
+                    className="form-control"
                     name="password"
                     type="password"
                     placeholder="Enter your Password"

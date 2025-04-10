@@ -1,3 +1,4 @@
+//EmployeeLanding.js file
 import React, { useState } from 'react';
 import './EmployeeLanding.css';
 import logo from '../../Components/Images/CashPilot.png';
@@ -19,7 +20,7 @@ function EmployeeLanding() {
         }
 
         const formData = new FormData();
-        formData.append('receiptImage', selectedFile);
+        formData.append('receiptPDF', selectedFile);
 
         try {
             const response = await fetch('/api/upload-receipt', {
@@ -79,8 +80,18 @@ function EmployeeLanding() {
                     </div>
                     <div className={`navbar-dropdowns ${menuOpen ? "show" : ""}`}>
                         <div className="menuDrop">
-                            <button className="Buttonoption" onClick={() => document.getElementById('fileInput').click()}>Camera Capture</button>
-                            <input id="fileInput" type="file" accept="image/*" style={{ display: 'none' }} onChange={handleFileChange} />
+                            <button 
+                            className="Buttonoption" 
+                            onClick={() => document.getElementById('fileInput').click()}>
+                            Camera Capture
+                            </button>
+                            <input 
+                            id="fileInput" 
+                            type="file" 
+                            accept="application/pdf" 
+                            style={{ display: 'none' }} 
+                            onChange={handleFileChange} />
+
                             <button className="Buttonoption" onClick={handleFileSubmit}>TBA</button>
                         </div>
                         <div className="menuDrop">
