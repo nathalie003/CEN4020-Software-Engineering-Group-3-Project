@@ -1,104 +1,124 @@
-import React, { useState } from 'react';
-import './EmployeeLanding.css';
-import logo from '../../Components/Images/CashPilot.png';
+import React, { useState } from "react";
+import "./EmployeeLanding.css";
+import logo from "../../Components/Images/CashPilot.png";
 
 function EmployeeLanding() {
-    const [menuOpen, setMenuOpen] = useState(false);
-    const [selectedFile, setSelectedFile] = useState(null);
-    const [manualEntry, setManualEntry] = useState('');
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [manualEntry, setManualEntry] = useState("");
 
-    const handleFileChange = (e) => {
-        setSelectedFile(e.target.files[0]);
-    };
+  const handleFileChange = (e) => {
+    setSelectedFile(e.target.files[0]);
+  };
 
-    const handleFileSubmit = async (e) => {
-        e.preventDefault();
-        if (!selectedFile) {
-            alert('Please upload a receipt image.');
-            return;
-        }
+  const handleFileSubmit = async (e) => {
+    e.preventDefault();
+    if (!selectedFile) {
+      alert("Please upload a receipt image.");
+      return;
+    }
 
-        const formData = new FormData();
-        formData.append('receiptImage', selectedFile);
+    const formData = new FormData();
+    formData.append("receiptImage", selectedFile);
 
-        try {
-            const response = await fetch('/api/upload-receipt', {
-                method: 'POST',
-                body: formData,
-            });
+    try {
+      const response = await fetch("/api/upload-receipt", {
+        method: "POST",
+        body: formData,
+      });
 
-            if (response.ok) {
-                window.location.href ='/autofilled-form'; // Redirect to autofilled form
-            } else {
-                alert('Failed to upload receipt.');
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            alert('An error occurred while uploading the receipt.');
-        }
-    };
+      if (response.ok) {
+        window.location.href = "/autofilled-form"; // Redirect to autofilled form
+      } else {
+        alert("Failed to upload receipt.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("An error occurred while uploading the receipt.");
+    }
+  };
 
-    const handleManualSubmit = async (e) => {
-        e.preventDefault();
-        window.location.href ='/manual-entry-form';
-      
-        // try {
-        //     const response = await fetch('/api/upload-manual', {
-        //         method: 'POST',
-        //         headers: {
-        //             'Content-Type': 'application/json',
-        //         },
-        //         body: JSON.stringify({ receiptData: manualEntry }),
-        //     });
+  const handleManualSubmit = async (e) => {
+    e.preventDefault();
+    window.location.href = "/manual-entry-form";
 
-        //     if (response.ok) {
-        //         window.location.href ='/manual-entry-form'; // Redirect to manual entry form
-        //     } else {
-        //         alert('Failed to submit manual entry.');
-        //     }
-        // } catch (error) {
-        //     console.error('Error:', error);
-        //     alert('An error occurred while submitting the manual entry.');
-        // }
-    };
+    // try {
+    //     const response = await fetch('/api/upload-manual', {
+    //         method: 'POST',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //         },
+    //         body: JSON.stringify({ receiptData: manualEntry }),
+    //     });
 
-    const traveltoSup = async (e) => {
-      e.preventDefault();
-      window.location.href ='/supervisor-landing';
-    };
+    //     if (response.ok) {
+    //         window.location.href ='/manual-entry-form'; // Redirect to manual entry form
+    //     } else {
+    //         alert('Failed to submit manual entry.');
+    //     }
+    // } catch (error) {
+    //     console.error('Error:', error);
+    //     alert('An error occurred while submitting the manual entry.');
+    // }
+  };
 
-    return (
-        <div className="EmployeeLanding">
-            <header className="Employee-header">
-                <nav className="navbar">
-                    <div className="navbar-logo-container">
-                        <img src={logo} className="navbar-logo" alt="logo" />
-                    </div>
-                    <div className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)}>
-                        ☰
-                    </div>
-                    <div className={`navbar-dropdowns ${menuOpen ? "show" : ""}`}>
-                        <div className="menuDrop">
-                            <button className="Buttonoption" onClick={() => document.getElementById('fileInput').click()}>Camera Capture</button>
-                            <input id="fileInput" type="file" accept="image/*" style={{ display: 'none' }} onChange={handleFileChange} />
-                            <button className="Buttonoption" onClick={handleFileSubmit}>TBA</button>
-                        </div>
-                        <div className="menuDrop">
-                            <form onSubmit={handleManualSubmit}>
-                                
-                                <button className="Buttonoption" type="submit">Submit Manual Entry</button>
-                            </form>
-                        </div>
+  const traveltoSup = async (e) => {
+    e.preventDefault();
+    window.location.href = "/supervisor-landing";
+  };
 
-                        <div className="menuDrop">
-                            <button className='Buttonoption' onClick={traveltoSup}>Supervisor Page</button>
-                        </div>
-                    </div>
-                </nav>
-            </header>
-            <h1 className="headline">Welcome to the Employee Landing Page</h1>
+  return (
+    <body>
+      <nav
+        id="main_nav"
+        className="navbar navbar-expand-lg navbar-dark bg-white"
+      >
+        <div className="container d-flex justify-content-between align-items-center">
+          <button
+            className="navbar-toggler ml-auto custom-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#collapsingNavbar"
+          >
+            <span className="navbar-toggler-icon"></span>
+          </button>
+          <div
+            className="align-self-center navbar-collapse collapse flex-fill d-lg-flex justify-content-lg-between"
+            id="collapsingNavbar"
+          >
+            <div className="flex-fill mx-xl-5 mb-2">
+              <ul className="navbar-nav d-flex justify-content-between mx-xl-5 text-center text-dark">
+                <li className="nav-item active">
+                  <a
+                    className="nav-link btn-outline-primary rounded-pill px-3"
+                    href="/employee-landing"
+                  >
+                    Home
+                  </a>
+                </li>
+                <li className="nav-item">
+                  <a
+                    className="nav-link btn-outline-primary rounded-pill px-3"
+                    href="/employee-landing/expenses"
+                  >
+                    Expense History
+                  </a>
+                </li>
+                <li className="nav-item">
+                  <a
+                    className="nav-link btn-outline-primary rounded-pill px-3"
+                    href="/employee-landing/settings"
+                  >
+                    Settings
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
-    );
+      </nav>
+    </body>
+  );
 }
 
 export default EmployeeLanding;

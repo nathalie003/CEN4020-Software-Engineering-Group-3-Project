@@ -69,14 +69,8 @@ function ServicesLanding() {
               <h4 class="title mb-4">Our Features</h4>
               <p class="text-muted para-desc mx-auto mb-0">
                 Explore our robust set of features designed to streamline your
-                expense management workflow.
-              </p>
-              <p class="text-muted para-desc mx-auto mb-0">
-                From real-time tracking to comprehensive reporting, we provide
-                the tools you need to take control of your finances.
-              </p>
-              <p class="text-muted para-desc mx-auto mb-0">
-                Create an account to get started and unlock the full potential
+                expense management workflow.From real-time tracking to comprehensive reporting, we provide
+                the tools you need to take control of your finances. Create an account to get started and unlock the full potential
                 of seamless expense management today!
               </p>
             </div>
