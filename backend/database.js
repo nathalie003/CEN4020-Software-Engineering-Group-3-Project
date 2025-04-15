@@ -13,8 +13,8 @@ function createConnection(config) {
 
 const localConfig = {
   host: '127.0.0.1',
-  user: 'root',
-  password: '', // or your local password
+  user: 'cashpilotadmin',
+  password: 'T!5GCAJf',
   database: 'new_schema',
   port: 3306
 };
@@ -29,6 +29,7 @@ const externalConfig = {
 
 let db;
 
+// Immediately try to create a connection (local first, then external)
 (async () => {
   try {
     db = await createConnection(localConfig);
@@ -45,4 +46,5 @@ let db;
   }
 })();
 
+// Export a function that returns the connection when needed
 module.exports = () => db;
