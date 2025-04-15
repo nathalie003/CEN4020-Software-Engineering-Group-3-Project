@@ -10,10 +10,14 @@ const path = require("path");      // For constructing file paths
 const pythonExecutable = path.join(__dirname, "../venv/Scripts/python.exe");
 
 const port = process.env.PORT || 5000;
-
 app.use(cors());
 app.use(express.json());
+app.use(express.static(path.join(__dirname, '../frontend/build')));
 
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/build', 'index.html'));
+});
 // Root endpoint
 app.get("/", (req, res) => {
   res.json("Backend Running Perfectly 4-9-25 10:23PM");
@@ -209,4 +213,4 @@ app.post("/api/confirm-receipt", (req, res) => {
 
 
 // Start the server only once
-app.listen(port, () => console.log("Server running on port " + port));
+app.listen(port, '0.0.0.0', () => console.log("Server running on port " + port));

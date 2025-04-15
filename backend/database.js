@@ -1,11 +1,18 @@
 // database.js file
 const mysql = require('mysql');
 
+// const db = mysql.createConnection({
+//   host: 'cashpilot-db-1.c43w8q0oa2ju.us-east-1.rds.amazonaws.com',
+//   port: '3306',
+//   user: 'cashpilotadmin',
+//   password: 'shZBhkTS4lGd',
+//   database: 'new_schema'
+// });
+// SQL connection with external IP from Google VM
 const db = mysql.createConnection({
-  host: 'cashpilot-db-1.c43w8q0oa2ju.us-east-1.rds.amazonaws.com',
-  port: '3306',
-  user: 'cashpilotadmin',
-  password: 'shZBhkTS4lGd',
+  host: '34.170.194.60', // external IP from Google VM
+  user: 'root',
+  password: '', //set in mariadb $hLP6n%b
   database: 'new_schema'
 });
 
