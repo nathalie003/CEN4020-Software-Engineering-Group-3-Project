@@ -2,7 +2,8 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const db = require("./database");
+const getDb = require('./database');
+const db = getDb();
 const bcrypt = require("bcryptjs");
 const { spawn } = require("child_process");
 const multer = require("multer"); // For receipt uploading/storing
