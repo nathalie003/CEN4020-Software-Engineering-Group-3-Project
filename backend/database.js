@@ -10,12 +10,11 @@ const mysql = require('mysql');
 // });
 // SQL connection with external IP from Google VM
 const db = mysql.createConnection({
-  host: '34.170.194.60', // external IP from Google VM
+  host: 'localhost', // or '127.0.0.1'
   user: 'root',
-  password: '', //set in mariadb $hLP6n%b
+  password: '', // only if you've removed the root password
   database: 'new_schema'
 });
-
 // Connect to the database
 db.connect(err => {
   if (err) {
