@@ -4,11 +4,11 @@ import App from './App';
 import CreateAccountLanding from './Pages/Home Page/CreateAccountLanding.js';
 import LogInLanding from './Pages/Home Page/LogInLanding.js';
 import ServicesLanding from './Pages/Home Page/ServicesLanding.js';
-import AdminLanding from './Pages/Admin Page/AdminLanding';
-import EmployeeLanding from './Pages/Employee Page/EmployeeLanding';
-import SupervisorLanding from './Pages/Supervisor Page/SupervisorLanding';
-import AutoFilledForm from './Pages/Employee Page/AutoFilledForm';
-import ManualEntryForm from './Pages/Employee Page/ManualEntryForm';
+import AdminLanding from './Pages/Admin Page/AdminLanding.js';
+import EmployeeLanding from './Pages/Employee Page/EmployeeLanding.js';
+import SupervisorLanding from './Pages/Supervisor Page/SupervisorLanding.js';
+import AutoFilledForm from './Pages/Employee Page/AutoFilledForm.js';
+import ManualEntryForm from './Pages/Employee Page/ManualEntryForm.js';
 
 function Main() {
     return (

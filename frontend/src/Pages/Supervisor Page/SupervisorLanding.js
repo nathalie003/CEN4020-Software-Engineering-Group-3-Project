@@ -2,9 +2,6 @@ import React, {useState} from 'react';
 import './SupervisorLanding.css';
 import logo from '../../Components/Images/CashPilot.png';
 
-
-
-
 function EmployeeLanding() {
     const [menuOpen, setMenuOpen] = useState(false);
 
