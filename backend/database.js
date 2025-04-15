@@ -3,9 +3,10 @@ const mysql = require('mysql');
 
 // SQL connection with external IP from Google VM
 const db = mysql.createConnection({
-  host: '127.0.0.1',
+  host: '35.225.79.158',
   user: 'root',
-  password: '', // only if you've removed the root password
+  port: '3306',
+  password: 'T!5GCAJf', // only if you've removed the root password
   database: 'new_schema'
 });
 // Connect to the database
