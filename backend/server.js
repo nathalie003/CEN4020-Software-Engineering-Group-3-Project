@@ -16,9 +16,9 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, '../frontend/build')));
 
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../frontend/build', 'index.html'));
-});
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname, '../frontend/build', 'index.html'));
+// });
 // Root endpoint
 app.get("/", (req, res) => {
   res.json("Backend Running Perfectly 4-9-25 10:23PM");
