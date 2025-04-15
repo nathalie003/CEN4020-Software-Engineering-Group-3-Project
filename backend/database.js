@@ -1,21 +1,48 @@
 // database.js file
 const mysql = require('mysql');
 
-// SQL connection with external IP from Google VM
-const db = mysql.createConnection({
-  host: '35.225.79.158',
-  user: 'root',
-  port: '3306',
-  password: 'T!5GCAJf', // only if you've removed the root password
-  database: 'new_schema'
-});
-// Connect to the database
-db.connect(err => {
-  if (err) {
-    console.error('Database connection error:', err);
-    process.exit(1);
-  }
-  console.log('Connected to MySQL database.');
-});
+function createConnection(config) {
+  return new Promise((resolve, reject) => {
+    const connection = mysql.createConnection(config);
+    connection.connect(err => {
+      if (err) return reject(err);
+      resolve(connection);
+    });
+  });
+}
 
-module.exports = db;
+const localConfig = {
+  host: '127.0.0.1',
+  user: 'root',
+  password: '', // or your local password
+  database: 'new_schema',
+  port: 3306
+};
+
+const externalConfig = {
+  host: '35.225.79.158',
+  user: 'cashpilotadmin',
+  password: 'T!5GCAJf',
+  database: 'new_schema',
+  port: 3306
+};
+
+let db;
+
+(async () => {
+  try {
+    db = await createConnection(localConfig);
+    console.log('Connected to **local** MySQL database.');
+  } catch (localErr) {
+    console.warn('Local DB unavailable. Trying external connection...');
+    try {
+      db = await createConnection(externalConfig);
+      console.log('Connected to **external** MySQL database.');
+    } catch (externalErr) {
+      console.error('Failed to connect to any database:', externalErr);
+      process.exit(1);
+    }
+  }
+})();
+
+module.exports = () => db;
