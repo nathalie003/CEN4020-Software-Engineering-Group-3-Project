@@ -15,6 +15,12 @@ const port = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
+app.use(express.static(path.join(__dirname, '../frontend/build')));
+
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/build', 'index.html'));
+});
 
 // Root endpoint
 app.get("/", (req, res) => {
@@ -38,11 +44,8 @@ app.post("/register", async (req, res) => {
 
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
-<<<<<<< HEAD
     console.log("Registering user:", username, password, hashedPassword);
 
-=======
->>>>>>> a61067126a1b4a4e49cc10442589c0b9028c40cf
     const sql = "INSERT INTO user (username, password, email, role) VALUES (?, ?, ?, ?)";
     db.query(sql, [username, hashedPassword, email, role], (err, result) => {
       if (err) {
@@ -60,7 +63,6 @@ app.post("/register", async (req, res) => {
 // Login endpoint
 app.post("/login", async (req, res) => {
   const { username, password } = req.body;
-<<<<<<< HEAD
   console.log("Login attempt:", username, password);
 
   const sql = "SELECT * FROM user WHERE username = ?";
@@ -80,12 +82,8 @@ app.post("/login", async (req, res) => {
 
       // Compare password with the hashed password
       const isMatch = await bcrypt.compare(password, user.password);
-      const hashedPassword = await bcrypt.hash(password, 10);
 
       if (!isMatch) {
-          console.error('Invalid password attempt:', username, password);
-          console.error(hashedPassword);
-          console.error(user.password);
           return res.status(401).json({ error: "Invalid username or password. Please try again" });
       }
 
@@ -101,7 +99,7 @@ app.get('/api/user/:username', (req, res) => {
     if (err) return res.status(500).json({ error: 'DB error' });
     if (!user) return res.status(404).json({ error: 'User not found' });
     res.json(user);
-=======
+  });
   const sql = "SELECT * FROM user WHERE username = ?";
   db.query(sql, [username], async (err, data) => {
     if (err) {
@@ -252,15 +250,10 @@ app.post("/api/confirm-receipt", (req, res) => {
         });
       }
     }
->>>>>>> a61067126a1b4a4e49cc10442589c0b9028c40cf
   });
 });
 
 
-<<<<<<< HEAD
-app.listen(5000, () => console.log("Server running on port 5000"));
-=======
 
 // Start the server only once
 app.listen(port, () => console.log("Server running on port " + port));
->>>>>>> a61067126a1b4a4e49cc10442589c0b9028c40cf
