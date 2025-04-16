@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "./LogInLanding.css"; // Import the necessary CSS file
+import "./loginLanding.css"; // Import the necessary CSS file
 
-function LogInLanding() {
+function loginLanding() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
@@ -85,7 +85,7 @@ function LogInLanding() {
                 {errorMessage && (
                   <p className="error-message">{errorMessage}</p>
                 )}
-                <span className="login-signup-link">
+                <span className="login-register-link">
                   Not a user? Create an account{" "}
                   <a className="route-to-signUp" href="/register">
                     {" "}
@@ -101,4 +101,4 @@ function LogInLanding() {
   );
 }
 
-export default LogInLanding;
+export default loginLanding;
