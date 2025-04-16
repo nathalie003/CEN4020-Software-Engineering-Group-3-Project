@@ -67,7 +67,7 @@ function CreateAccountLanding() {
       console.log("Account created successfully:", data);
 
       // navigate to the Sign In page
-      navigate("/logIn");
+      navigate("/login");
     } catch (err) {
       console.error("Error during registration:", err);
     }
@@ -170,7 +170,7 @@ function CreateAccountLanding() {
                 <button className="signup-btn">Create Account</button>
                 <span className="signin-link">
                   Already have an account? Click{" "}
-                  <a className="route-to-logIn" href="/LogIn">
+                  <a className="route-to-login" href="/LogIn">
                     here
                   </a>
                 </span>

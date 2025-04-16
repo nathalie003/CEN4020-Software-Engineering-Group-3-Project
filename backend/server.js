@@ -2,8 +2,7 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const getDb = require('./database');
-const db = getDb();
+
 const bcrypt = require("bcryptjs");
 const { spawn } = require("child_process");
 const multer = require("multer"); // For receipt uploading/storing
@@ -24,15 +23,20 @@ app.get("/", (req, res) => {
   res.json("Backend Running Perfectly 4-15-25 8:18PM");
 });
 
-//test-db endpoint
-app.get("/test-db", (req, res) => {
-  db.query("SELECT 1 AS test", (err, results) => {
-    if (err) {
-      console.error("Test query error:", err);
-      return res.status(500).json({ error: err.message });
-    }
-    res.json({ message: "Database query succeeded", results });
-  });
+// For example, for a test route:
+app.get("/test-db", async (req, res) => {
+  try {
+    const db = await require('./database');
+    db.query("SELECT 1 AS test", (err, results) => {
+      if (err) {
+        console.error("Test query error:", err);
+        return res.status(500).json({ error: err.message });
+      }
+      res.json({ message: "Database query succeeded", results });
+    });
+  } catch (err) {
+    res.status(500).json({ error: "Database connection is not available: " + err.message });
+  }
 });
 
 // Register endpoint
@@ -211,7 +215,13 @@ app.post("/api/confirm-receipt", (req, res) => {
   });
 });
 
+const dbPromise = require('./database');
+dbPromise.then(db => {
+  app.listen(port, '0.0.0.0', () => {
+    console.log("Server running on port " + port);
+  });
+}).catch(err => {
+  console.error("Failed to connect to database. Server not started.", err);
+  process.exit(1);
+});
 
-
-// Start the server only once
-app.listen(port, '0.0.0.0', () => console.log("Server running on port " + port));

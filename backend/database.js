@@ -27,24 +27,24 @@ const externalConfig = {
   port: 3306
 };
 
-let db;
-
-// Immediately try to create a connection (local first, then external)
-(async () => {
+// Create a promise that resolves to a DB connection
+const dbPromise = (async () => {
   try {
-    db = await createConnection(localConfig);
+    const connection = await createConnection(localConfig);
     console.log('Connected to **local** MySQL database.');
+    return connection;
   } catch (localErr) {
     console.warn('Local DB unavailable. Trying external connection...');
     try {
-      db = await createConnection(externalConfig);
+      const connection = await createConnection(externalConfig);
       console.log('Connected to **external** MySQL database.');
+      return connection;
     } catch (externalErr) {
-      console.error('Failed to connect to any database:', externalErr);
-      process.exit(1);
+      throw externalErr;
     }
   }
 })();
 
 // Export a function that returns the connection when needed
-module.exports = () => db;
+module.exports = dbPromise;
+
