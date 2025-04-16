@@ -3,7 +3,7 @@ import ReceiptConfirmation from './ReceiptConfirmation.js';
 import './EmployeeLanding.css';
 import logo from '../../Components/Images/CashPilot.png';
 import ManualEntryForm from './ManualEntryForm.js';
-import ReceiptUploadForm from './receiptUploadForm.js';
+import ReceiptUploadForm from './ReceiptUploadForm.js';
 
 
 function EmployeeLanding() {
