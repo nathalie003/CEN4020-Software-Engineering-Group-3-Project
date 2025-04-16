@@ -7,9 +7,6 @@ import json
 import re
 import sys
 
-<<<<<<< HEAD
-image_path = r"C:\Users\happy\OneDrive - University of South Florida\Classes\Spring 25\CEN 4020\Project\CEN4020-Software-Engineering-Group-3-Project\python\Receipts\Pub2.pdf"
-=======
 # -------------------------------------------
 # YOUR RECEIPT PARSING CODE STARTS HERE
 # -------------------------------------------
@@ -19,7 +16,6 @@ if len(sys.argv) < 2:
     exit(1)
 
 image_path = sys.argv[1]
->>>>>>> a61067126a1b4a4e49cc10442589c0b9028c40cf
 if not os.path.exists(image_path):
     print("File not found:", image_path)
     exit(1)
@@ -39,15 +35,6 @@ pytesseract.tesseract_cmd = path_to_tesseract
 # Use the first image (or adjust if the PDF contains multiple pages)
 img = images[0]
 
-<<<<<<< HEAD
-'''
- You may save several receipts per photo/page as long as each receipt clearly shows its data of name,
- phone, address, web site (if available) of store/shop/payee, date and time of the receipt, 
- description of line items of purchase or service charged, total payment, and pay method.
-'''
-print("="*40)
-time_pattern = r"\d{1,2}:\d{2}(?:\s?[AP]M)?" 
-=======
 # Extract text from the image
 text = pytesseract.image_to_string(img)
 # print("Extracted text:")
@@ -55,7 +42,6 @@ text = pytesseract.image_to_string(img)
 
 # Regex patterns for receipt data
 time_pattern = r"\d{1,2}:\d{2}(?:\s?[AP]M)?"
->>>>>>> a61067126a1b4a4e49cc10442589c0b9028c40cf
 date_pattern = r"\d{1,2}(/|-)\d{1,2}(/|-)\d{2,4}"
 payment_pattern = r"CASH|CREDIT CARD|DEBIT CARD|CREDIT|DEBIT"
 total_pattern = r"(?:TOTAL|AMOUNT|GRAND TOTAL):?\s*\$?\s*(\d+(?:\.\d{2})?)"
@@ -142,9 +128,6 @@ else:
     address = None
 
 if matchPhn:
-<<<<<<< HEAD
-    print("\nPhone:", matchPhn.group())
-=======
     phone = matchPhn.group()
 else:
     phone = None
@@ -169,4 +152,3 @@ receipt_data = {
 
 # Print the dictionary as JSON
 print(json.dumps(receipt_data))
->>>>>>> a61067126a1b4a4e49cc10442589c0b9028c40cf
