@@ -1,0 +1,39 @@
+.ReceiptUploadForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pdfContainer {
+  width: 300px;    /* adjust as needed */
+  height: 400px;   /* adjust as needed */
+  border: 2px dashed #ccc;
+  margin-bottom: 1rem;
+  overflow: hidden;
+}
+
+.pdfContainer embed {
+  display: block;
+}
+
+.pdfContainer .placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+  font-size: 1rem;
+}
+
+.buttonRow {
+  display: flex;
+  gap: 1rem;
+}
+
+.selectBtn,
+.uploadBtn {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+}
