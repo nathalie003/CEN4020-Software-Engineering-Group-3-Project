@@ -113,6 +113,8 @@
   color: var(--main-blue);;
   display: none;
 }
+/* 
+We should probably set custom behavior per file
 
 @media (max-width: 768px) {
 
@@ -134,4 +136,4 @@
     display: none;
   }
 
-}
+} */

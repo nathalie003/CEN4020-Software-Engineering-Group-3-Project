@@ -48,7 +48,7 @@ function CreateAccountLanding() {
     const payload = { username, email, password, role };
 
     try {
-      const response = await fetch("http://127.0.0.1:5000/register", {
+      const response = await fetch("http://localhost:5000/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -67,7 +67,7 @@ function CreateAccountLanding() {
       console.log("Account created successfully:", data);
 
       // navigate to the Sign In page
-      navigate("/login");
+      navigate("/logIn");
     } catch (err) {
       console.error("Error during registration:", err);
     }
@@ -170,7 +170,7 @@ function CreateAccountLanding() {
                 <button className="signup-btn">Create Account</button>
                 <span className="signin-link">
                   Already have an account? Click{" "}
-                  <a className="route-to-login" href="/LogIn">
+                  <a className="route-to-logIn" href="/LogIn">
                     here
                   </a>
                 </span>

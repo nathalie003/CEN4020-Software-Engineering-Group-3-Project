@@ -124,11 +124,11 @@
     transition: all 0.3s ease 0s;
 }
 
-.route-to-login{
+.route-to-logIn{
     color: #1D5E12 !important;
 }
 
-.route-to-login :active{
+.route-to-logIn :active{
     color: #007bff !important;
 }
 .signup-form{

@@ -1,12 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReceiptConfirmation from './ReceiptConfirmation.js';
 import './EmployeeLanding.css';
 import logo from '../../Components/Images/CashPilot.png';
+import ManualEntryForm from './ManualEntryForm.js';
+import ReceiptUploadForm from './receiptUploadForm.js';
+
 
 function EmployeeLanding() {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [receiptSummary, setReceiptSummary] = useState(null);
+    const [menuOpen, setMenuOpen] = useState(false);
+    const [selectedFile, setSelectedFile] = useState(null);
+    const [manualEntry, setManualEntry] = useState('');
+    const [receiptSummary, setReceiptSummary] = useState(null);
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        const username = sessionStorage.getItem("username");
+      
+        if (username) {
+            fetch(`http://localhost:5000/api/user/${username}`)
+            .then((res) => res.json())
+            .then((data) => setUser(data))
+            .catch((err) => console.error("Error fetching user:", err));
+        }
+      }, []);
 
   const handleFileChange = (e) => {
     setSelectedFile(e.target.files[0]);
@@ -23,7 +39,7 @@ function EmployeeLanding() {
     formData.append('receiptPDF', selectedFile);
 
     try {
-      const response = await fetch('http://127.0.0.1:5000/api/upload-receipt', {
+      const response = await fetch('http://localhost:5000/api/upload-receipt', {
         method: 'POST',
         body: formData,
       });
@@ -42,7 +58,7 @@ function EmployeeLanding() {
 
   const handleConfirm = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:5000/api/confirm-receipt', {
+      const response = await fetch('http://localhost:5000/api/confirm-receipt', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ receiptData: receiptSummary }),
@@ -64,43 +80,47 @@ function EmployeeLanding() {
   const traveltoSup = async (e) => {
     e.preventDefault();
     window.location.href = '/supervisor-landing';
+
   };
+
+  const [view, setView] = useState("expenseReportList"); // default view
 
   return (
     <div className="EmployeeLanding">
-      <header className="Employee-header">
-        <nav className="navbar">
+      <div className="Employee-sidebar">
+        <div className="contentHolder">
           <div className="navbar-logo-container">
             <img src={logo} className="navbar-logo" alt="logo" />
           </div>
-          <div className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)}>
-            ☰
+          <nav className="navbar">
+            <button className="Buttonoption" onClick={() => setView("uploadReceipt")}>Upload Receipt</button>
+            <button className="Buttonoption" onClick={() => setView("expenseReportList")}>View Reports</button>
+          </nav>
+        </div>
+      </div>
+      <div className="Employee-main">
+        {view === "expenseReportList" && (
+          <div className="expenseReportList">
+            <h2>Expense Report List</h2>
+            {/* Placeholder for the expense report list */}
+            <p>Here you can view your expense reports.</p>
           </div>
-          <div className={`navbar-dropdowns ${menuOpen ? "show" : ""}`}>
-            <div className="menuDrop">
-              <button className="Buttonoption" onClick={() => document.getElementById('fileInput').click()}>
-                Upload Receipt PDF
-              </button>
-              <input
-                id="fileInput"
-                type="file"
-                accept="application/pdf"
-                style={{ display: 'none' }}
-                onChange={handleFileChange}
-              />
-              <button className="Buttonoption" onClick={handleFileSubmit}>Submit file</button>
+        )}
+        {view === "uploadReceipt" && (
+          <div className="uploadReceipt">
+            <div className="uploadReceiptHeader">
+              <h2>Upload Receipt</h2>
             </div>
-            <div className="menuDrop">
-              <button className='Buttonoption' onClick={traveltoSup}>Supervisor Page</button>
+            <div className="uploadReceiptContent">
+                <ReceiptUploadForm onFileChange={handleFileChange} onFileSubmit={handleFileSubmit} />
+                <ManualEntryForm/>
             </div>
           </div>
-        </nav>
-      </header>
-      <h1 className="headline">Welcome to the Employee Landing Page</h1>
-      {/* Display confirmation if receipt summary exists */}
-      {receiptSummary && (
-        <ReceiptConfirmation receiptData={receiptSummary} onConfirm={handleConfirm} />
-      )}
+        )}
+        {receiptSummary && (
+          <ReceiptConfirmation receiptData={receiptSummary} onConfirm={handleConfirm} />
+        )}
+      </div>
     </div>
   );
 }

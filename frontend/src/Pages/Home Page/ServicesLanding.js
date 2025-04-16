@@ -51,8 +51,8 @@ function ServicesLanding() {
                 <li className="nav-item">
                   <a
                     className="nav-link btn-outline-primary rounded-pill px-3"
-                    id="login"
-                    href="/login"
+                    id="logIn"
+                    href="/logIn"
                   >
                     Log In
                   </a>

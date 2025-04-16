@@ -22,7 +22,7 @@ function LogInLanding() {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://127.0.0.1:5000/api/login", {
+      const response = await fetch("http://localhost:5000/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -34,6 +34,8 @@ function LogInLanding() {
 
       if (response.ok) {
         const role = result.role;
+        sessionStorage.setItem("username", result.username);
+      
         if (role === 1) {
           navigate("/admin-landing");
         } else if (role === 2) {
