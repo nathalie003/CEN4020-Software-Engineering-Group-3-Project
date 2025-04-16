@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "./loginLanding.css"; // Import the necessary CSS file
+import "./LoginLanding.css"; // Import the necessary CSS file
 
-function loginLanding() {
+function LoginLanding() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
@@ -101,4 +101,4 @@ function loginLanding() {
   );
 }
 
-export default loginLanding;
+export default LoginLanding;

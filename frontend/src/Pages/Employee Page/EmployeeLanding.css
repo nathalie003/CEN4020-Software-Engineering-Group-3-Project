@@ -59,7 +59,7 @@
     justify-content: center;
     width: 100%;
   }
-  .receiptUploadForm {
+  .ReceiptUploadForm {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -326,7 +326,7 @@
     justify-content: center;
     width: 100%;
   }
-  .receiptUploadForm {
+  .ReceiptUploadForm {
     width: 100%;
   }
   button.uploadReceiptButton {

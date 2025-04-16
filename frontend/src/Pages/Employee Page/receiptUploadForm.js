@@ -16,7 +16,7 @@ function ReceiptUploadForm () {
     };
 
     return (
-        <div className="receiptUploadForm">
+        <div className="ReceiptUploadForm">
             <button className="uploadReceiptButton" onClick={() => document.getElementById('fileInput').click()}>
                 Click to upload
             </button>

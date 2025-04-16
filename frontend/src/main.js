@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import App from './App';
-import registerLanding from './Pages/Home Page/registerLanding.js';
-import loginLanding from './Pages/Home Page/loginLanding.js';
+import RegisterLanding from './Pages/Home Page/RegisterLanding.js';
+import LoginLanding from './Pages/Home Page/LoginLanding.js';
 import ServicesLanding from './Pages/Home Page/ServicesLanding.js';
 import AdminLanding from './Pages/Admin Page/AdminLanding.js';
 import EmployeeLanding from './Pages/Employee Page/EmployeeLanding.js';
@@ -16,8 +16,8 @@ function Main() {
             <Routes>
                 <Route path="/home" element={<App />} />
                 <Route path="/" element={<App />} />
-                <Route path="/register" element = {<registerLanding />} />
-                <Route path="/login" element = {<loginLanding />} />
+                <Route path="/register" element = {<RegisterLanding />} />
+                <Route path="/login" element = {<LoginLanding />} />
                 <Route path="/services" element={<ServicesLanding />} /> 
                 <Route path="/admin-landing" element={<AdminLanding />} />
                 <Route path="/employee-landing" element={<EmployeeLanding />} />     
