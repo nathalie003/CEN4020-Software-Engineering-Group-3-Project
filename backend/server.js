@@ -2,7 +2,6 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-
 const bcrypt = require("bcryptjs");
 const { spawn } = require("child_process");
 const multer = require("multer"); // For receipt uploading/storing
@@ -15,28 +14,9 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, '../frontend/build')));
 
 
-// app.get('*', (req, res) => {
-//   res.sendFile(path.join(__dirname, '../frontend/build', 'index.html'));
-// });
 // Root endpoint
 app.get("/", (req, res) => {
   res.json("Backend Running Perfectly 4-15-25 8:18PM");
-});
-
-// For example, for a test route:
-app.get("/test-db", async (req, res) => {
-  try {
-    const db = await require('./database');
-    db.query("SELECT 1 AS test", (err, results) => {
-      if (err) {
-        console.error("Test query error:", err);
-        return res.status(500).json({ error: err.message });
-      }
-      res.json({ message: "Database query succeeded", results });
-    });
-  } catch (err) {
-    res.status(500).json({ error: "Database connection is not available: " + err.message });
-  }
 });
 
 // Register endpoint
