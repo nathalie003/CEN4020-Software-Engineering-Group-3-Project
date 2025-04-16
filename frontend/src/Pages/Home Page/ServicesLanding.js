@@ -45,7 +45,7 @@ function ServicesLanding() {
                     id="signUp"
                     href="/register"
                   >
-                    Sign Up
+                    Register
                   </a>
                 </li>
                 <li className="nav-item">
