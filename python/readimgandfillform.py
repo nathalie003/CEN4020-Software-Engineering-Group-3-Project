@@ -19,8 +19,9 @@ def main(pdf_path):
     img = images[0]
 
     # 2) OCR
-
-    pytesseract.tesseract_cmd = '/usr/bin/tesseract'
+    path_to_tesseract = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+    pytesseract.tesseract_cmd = path_to_tesseract
+    # for VM: pytesseract.tesseract_cmd = '/usr/bin/tesseract'
     text = pytesseract.image_to_string(img)
     lines = [l.strip() for l in text.splitlines() if l.strip()]
 
