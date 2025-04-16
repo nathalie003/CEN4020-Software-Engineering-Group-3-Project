@@ -5138,7 +5138,7 @@
     margin-bottom: 0;
     list-style: none;
   }
-  /*HOME PAGE NAV BAR CREATE ACCOUNT*/
+  /*HOME PAGE NAV BAR Register*/
   #signUp{
     position: relative;
     left: 200px;
@@ -5150,7 +5150,7 @@
     color: #ffffff;
     background-color: #59A42C;
   }
-  #logIn{
+  #login{
     position: relative;
     left: 200px;
     border: 2px solid #FFFFFF;

@@ -23,11 +23,11 @@ if not os.path.exists(image_path):
     # print("File exists!")
 
 # Convert PDF to a list of images, specifying poppler_path
-poppler_path = r"C:\Users\terry\Downloads\Release-24.08.0-0\poppler-24.08.0\Library\bin"  # Replace with your actual poppler bin path
-images = convert_from_path(image_path, poppler_path=poppler_path)
+# poppler_path = r"C:\Users\terry\Downloads\Release-24.08.0-0\poppler-24.08.0\Library\bin"  # Replace with your actual poppler bin path
+images = convert_from_path(image_path, poppler_path='/usr/bin')
 
 # Path to Tesseract executable 
-path_to_tesseract = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+path_to_tesseract = '/usr/bin/tesseract'
 
 # Set the Tesseract executable location for pytesseract
 pytesseract.tesseract_cmd = path_to_tesseract

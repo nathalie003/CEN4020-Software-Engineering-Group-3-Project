@@ -1,14 +1,23 @@
+
+.form-bg {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Full viewport height */
+    background-color: #c2ddae;
+}
+
 .body{
     background-color: #1D5E12;
 }
 
-.login-form-container {
+.register-form-container {
     font-family: 'Mukta', sans-serif;
     padding: 0 20px 20px 0;
     background-color: #1D5E12;
 }
 
-.login-form-container .login-form {
+.register-form-container .register-form {
     background: repeating-linear-gradient(45deg, #fff, #fff 10px, #f9f9f9 10px, #f9f9f9 20px);
     padding: 70px 40px 40px;
     border-radius: 0;
@@ -17,30 +26,30 @@
     position: relative;
 }
 
-.login-form .login-title {
+.register-form .register-title {
     color: #000000;
     font-size: 80px;
     font-weight: 700;
     margin: 0 0 8px 0;
 }
 
-.login-form .login-description {
-    color: #000000;
+.register-form {
+    color: #000000 !important;
     font-size: 18px;
     font-weight: 600;
     margin: 0 0 30px 0;
     display: block;
 }
 
-.login-form .login-form-group {
+.register-form .register-form-group {
     margin: 0 0 30px;
 }
 
-.login-form .login-form-group:nth-child(3) {
+.register-form .register-form-group:nth-child(3) {
     margin-bottom: 20px;
 }
 
-.login-form .login-form-control {
+.register-form .register-form-control {
     color: #1D5E12;
     font-size: 16px;
     letter-spacing: 1px;
@@ -54,49 +63,49 @@
     transition: all 0.3s ease 0s;
 }
 
-.login-form .login-form-control:focus {
+.register-form .register-form-control:focus {
     box-shadow: none;
     border-color: #1D5E12;
 }
 
-.login-form .login-form-control::placeholder {
+.register-form .register-form-control::placeholder {
     color: #000000;
     font-size: 15px;
+    text-decoration: none;
 }
 
-.login-form .login-btn {
+.register-form .register-btn {
     color: #fff;
     background-color: #1D5E12;
     font-size: 18px;
     font-weight: 600;
     text-align: center;
-    width: 180px;
+    width: 200px;
     padding: 10px 30px;
     margin: 0 25px 0 0;
     border-radius: 30px;
     border: none;
     display: inline-block;
     position: relative;
-    
 }
 
-.login-form .login-btn:hover,
-.login-form .login-btn:focus {
+.register-form .register-btn:hover,
+.register-form .register-btn:focus {
     color: #fff;
     background-color: #59A42C;
     box-shadow: 0 0 0 0.25rem #59A42C;
 }
 
-.login-form .login-btn:after {
-    content: none;
+.register-form .register-btn:after {
+    content: none;   
 }
 
-.login-form .login-btn:hover:after {
+.register-form .register-btn:hover:after {
     right: -70px;
     top: -30px;
 }
 
-.login-form .login-signup-link {
+.register-form .register-register-link {
     color: #000000;
     font-size: 18px;
     font-weight: 600;
@@ -105,60 +114,81 @@
     display: inline-block;
 }
 
-.login-form .login-signup-link a {
+.register-form .register-register-link a {
     color: #1D5E12;
-    
+    margin: 0 0 0 25px;
 }
 
-.login-form .login-signup-link a:hover {
+.register-form .register-register-link a:hover {
     color: #59A42C;
     transition: all 0.3s ease 0s;
 }
 
-.route-to-signUp:active{
-    
-    color: #007bff !important;
-}
-.login-form {
-    color: #1D5E12;
-    display: block;
+.route-to-login{
+    color: #1D5E12 !important;
 }
 
-.login-form a {
+.route-to-login :active{
+    color: #007bff !important;
+}
+.register-form{
     color: #1D5E12;
     transition: all 0.3s ease 0s;
 }
 
+.select-wrapper {
+    position: relative;
+    width: 100%;
+
+}
+  
+.select-wrapper svg {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none; 
+    fill: #000000;
+}
+
+.error-message {
+    color: red;
+    font-size: 14px;
+    position: relative;
+    border: none !important;    
+}
 
 @media only screen and (max-width: 479px) {
-    .login-form-container .login-form {
+    .register-form-container .register-form {
         padding-left: 20px;
         padding-right: 20px;
     }
 
-    .login-form .login-title {
+    .register-form .register-title {
         font-size: 55px;
     }
 
-    .login-form .login-description {
+    .register-form .register-description {
         font-size: 16px;
     }
 
-    .login-form .login-form-control::placeholder {
+    .register-form .register-form-control::placeholder {
         font-size: 14px;
+        text-decoration: none;
     }
 
-    .login-form .login-btn {
+    .register-form .register-btn {
         display: block;
         margin: 0 auto 20px;
     }
 
-    .login-form .login-signup-link {
+    .register-form .register-register-link {
         text-align: center;
+        margin: 0 auto 20px;
         display: block;
     }
 
-    .login-form {
+    .register-form  {
         text-align: center;
     }
 }

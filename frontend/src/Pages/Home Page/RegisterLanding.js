@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "./CreateAccountLanding.css";
+import "./RegisterLanding.css";
 
-function CreateAccountLanding() {
+function RegisterLanding() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
@@ -48,7 +48,7 @@ function CreateAccountLanding() {
     const payload = { username, email, password, role };
 
     try {
-      const response = await fetch("http://localhost:5000/register", {
+      const response = await fetch("http://35.225.79.158:5000/api/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -59,7 +59,7 @@ function CreateAccountLanding() {
       if (!response.ok) {
         // Handle error responses
         const errorData = await response.json();
-        console.error("Failed to create account:", errorData);
+        console.error("Failed to Register:", errorData);
         return;
       }
 
@@ -67,7 +67,7 @@ function CreateAccountLanding() {
       console.log("Account created successfully:", data);
 
       // navigate to the Sign In page
-      navigate("/logIn");
+      navigate("/login");
     } catch (err) {
       console.error("Error during registration:", err);
     }
@@ -75,14 +75,14 @@ function CreateAccountLanding() {
 
   return (
     <div className="form-bg">
-      <div className="signup-container">
-        <div className="signup-row">
-          <div className="signup-col">
-            <div className="signup-form-container">
-              <form className="signup-form" onSubmit={handleSubmit}>
-                <h3 className="signup-title">Create an Account</h3>
+      <div className="register-container">
+        <div className="register-row">
+          <div className="register-col">
+            <div className="register-form-container">
+              <form className="register-form" onSubmit={handleSubmit}>
+                <h3 className="register-title">Create an Account</h3>
 
-                <div className="signup-form-group">
+                <div className="register-form-group">
                   <label>Username</label>
                   <input
                     className="form-control"
@@ -95,7 +95,7 @@ function CreateAccountLanding() {
                   ></input>
                 </div>
 
-                <div className="signup-form-group">
+                <div className="register-form-group">
                   <label>Email</label>
                   <input
                     className="form-control"
@@ -108,7 +108,7 @@ function CreateAccountLanding() {
                   ></input>
                 </div>
 
-                <div className="signup-form-group">
+                <div className="register-form-group">
                   <label>Password</label>
                   <input
                     className="form-control"
@@ -121,7 +121,7 @@ function CreateAccountLanding() {
                   />
                 </div>
 
-                <div className="signup-form-group">
+                <div className="register-form-group">
                   <label>Confirm Password</label>
                   <input
                     type="password"
@@ -137,7 +137,7 @@ function CreateAccountLanding() {
                   )}
                 </div>
 
-                <div className="signup-form-group">
+                <div className="register-form-group">
                   <label>Role</label>
                   <div className="select-wrapper">
                     <select
@@ -167,10 +167,10 @@ function CreateAccountLanding() {
                     </svg>
                   </div>
                 </div>
-                <button className="signup-btn">Create Account</button>
+                <button className="register-btn">Register</button>
                 <span className="signin-link">
                   Already have an account? Click{" "}
-                  <a className="route-to-logIn" href="/LogIn">
+                  <a className="route-to-login" href="/login">
                     here
                   </a>
                 </span>
@@ -183,4 +183,4 @@ function CreateAccountLanding() {
   );
 }
 
-export default CreateAccountLanding;
+export default RegisterLanding;

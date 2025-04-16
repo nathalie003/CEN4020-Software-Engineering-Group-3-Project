@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "./LogInLanding.css"; // Import the necessary CSS file
+import "./LoginLanding.css"; // Import the necessary CSS file
 
-function LogInLanding() {
+function LoginLanding() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
@@ -22,7 +22,7 @@ function LogInLanding() {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:5000/login", {
+      const response = await fetch("http://35.225.79.158:5000/api/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -85,7 +85,7 @@ function LogInLanding() {
                 {errorMessage && (
                   <p className="error-message">{errorMessage}</p>
                 )}
-                <span className="login-signup-link">
+                <span className="login-register-link">
                   Not a user? Create an account{" "}
                   <a className="route-to-signUp" href="/register">
                     {" "}
@@ -101,4 +101,4 @@ function LogInLanding() {
   );
 }
 
-export default LogInLanding;
+export default LoginLanding;
