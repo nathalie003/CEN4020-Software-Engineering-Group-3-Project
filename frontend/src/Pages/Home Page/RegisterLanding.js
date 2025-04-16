@@ -48,7 +48,7 @@ function RegisterLanding() {
     const payload = { username, email, password, role };
 
     try {
-      const response = await fetch("http://35.225.79.158/:5000/api/register", {
+      const response = await fetch("http://35.225.79.158:5000/api/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
