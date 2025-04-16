@@ -1,52 +1,120 @@
-// ManualEntryForm.js
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
-function ManualEntryForm({ initialData, onConfirm }) {
-  // pull in total, time, date, payment_method, address, phone, items
-  const [form, setForm] = useState({
-    total: '', time: '', date: '',
-    payment_method:'', address:'', phone:'',
-    status: 'Pending'
-  });
-
-  // when OCR returns, seed the form
-  useEffect(()=>{
-    if (!initialData) return;
-    setForm({
-      ...form,
-      total: initialData.total || '',
-      time:  initialData.time  || '',
-      date:  initialData.date  || '',
-      payment_method: initialData.payment_method|| '',
-      address: initialData.address|| '',
-      phone: initialData.phone   || '',
-      status: 'Pending'
+function ManualEntryForm() {
+    const [formData, setFormData] = useState({
+        storeName: '',
+        dateOfPurchase: '',
+        category: '',
+        items: '',
+        total: '',
     });
-  }, [initialData]);
 
-  const handleChange = e => {
-    setForm({...form, [e.target.name]: e.target.value});
-  };
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
+    };
 
-  const handleSubmit = e => {
-    e.preventDefault();
-    onConfirm(form);
-  };
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        // Handle form submission logic here
+        alert('Form submitted with manual entry data');
+    };
 
-  return (
-    <form onSubmit={handleSubmit} className="manualEntryForm">
-      <input name="total"            value={form.total}            onChange={handleChange} />
-      <input name="time"             value={form.time}             onChange={handleChange} />
-      <input name="date"             value={form.date}             onChange={handleChange} />
-      <input name="payment_method"   value={form.payment_method}   onChange={handleChange} />
-      <textarea name="address"       value={form.address}          onChange={handleChange} />
-      <input name="phone"            value={form.phone}            onChange={handleChange} />
-      {/* status is hidden but submitted */}
-      <input type="hidden" name="status" value={form.status} />
-
-      <button type="submit">Submit to Database</button>
-    </form>
-  );
+    return (
+        <form className="manualEntryForm" onSubmit={handleSubmit}>
+            <label>
+                Store Name:
+                <input
+                    type="text"
+                    name="storeName"
+                    value={formData.storeName}
+                    onChange={handleChange}
+                    placeholder="Name"
+                />
+            </label>
+            <label>
+                Store Address:
+                <input
+                    type="text"
+                    name="storeAddress"
+                    value={formData.storeAddress}
+                    onChange={handleChange}
+                    placeholder="Address"
+                />
+            </label>
+            <div className="twoColumnLayout">
+                <label className="halfItem1">
+                    Store Number:
+                    <input
+                        type="text"
+                        name="storeNumber"
+                        value={formData.storeNumber}
+                        onChange={handleChange}
+                        placeholder="###-###-####"
+                    />
+                </label>
+                <label className="halfItem2">
+                    Date of Purchase:
+                    <input
+                        type="text"
+                        name="dateOfPurchase"
+                        value={formData.dateOfPurchase}
+                        onChange={handleChange}
+                        placeholder="MM/DD/YYYY"
+                    />
+                </label>
+            </div>
+            <label>
+                Items:
+                <textarea
+                    type="text"
+                    rows="4"
+                    name="items"
+                    value={formData.items}
+                    onChange={handleChange}
+                    placeholder=" Item 1,
+                    Item 2, 
+                    Item 3..."
+                />
+            </label>
+            <div className="twoColumnLayout">
+                <div className="halfItem1">
+                    <label>
+                        Total:
+                        <input
+                            type="text"
+                            name="total"
+                            value={formData.total}
+                            onChange={handleChange}
+                            placeholder="$0.00"
+                        />
+                    </label>
+                </div>
+                <div className="halfItem2">
+                    <label>
+                        Payment Method:
+                        <input
+                            type="text"
+                            name="payMethod"
+                            value={formData.payMethod}
+                            onChange={handleChange}
+                            placeholder="Method"
+                        />
+                    </label>
+                </div>
+            </div>
+            <label>
+                Category:
+                <input
+                    type="text"
+                    name="category"
+                    value={formData.category}
+                    onChange={handleChange}
+                />
+            </label>
+            <button type="submit">Submit</button>
+        </form>
+    );
 }
 
 export default ManualEntryForm;
