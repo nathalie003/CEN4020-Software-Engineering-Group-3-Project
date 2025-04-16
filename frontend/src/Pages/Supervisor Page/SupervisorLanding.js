@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import './SupervisorLanding.css';
 import logo from '../../Components/Images/CashPilot.png';
-import ReceiptUploadForm from '../Employee Page/receiptUploadForm.js';
+import ReceiptUploadForm from '../Employee Page/ReceiptUploadForm.js';
 import ManualEntryForm from '../Employee Page/ManualEntryForm.js';
 import ReceiptConfirmation from '../Employee Page/ReceiptConfirmation.js';
 
