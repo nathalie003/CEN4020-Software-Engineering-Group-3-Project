@@ -1,14 +1,14 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import App from './App';
-import RegisterLanding from './Pages/Home Page/RegisterLanding.js';
-import LoginLanding from './Pages/Home Page/LoginLanding.js';
-import ServicesLanding from './Pages/Home Page/ServicesLanding.js';
-import AdminLanding from './Pages/Admin Page/AdminLanding.js';
-import EmployeeLanding from './Pages/Employee Page/EmployeeLanding.js';
-import SupervisorLanding from './Pages/Supervisor Page/SupervisorLanding.js';
-import AutoFilledForm from './Pages/Employee Page/AutoFilledForm.js';
-import ManualEntryForm from './Pages/Employee Page/ManualEntryForm.js';
+import RegisterLanding from './Pages/Home Page/RegisterLanding.';
+import LoginLanding from './Pages/Home Page/LoginLanding';
+import ServicesLanding from './Pages/Home Page/ServicesLanding';
+import AdminLanding from './Pages/Admin Page/AdminLanding';
+import EmployeeLanding from './Pages/Employee Page/EmployeeLanding';
+import SupervisorLanding from './Pages/Supervisor Page/SupervisorLanding';
+import AutoFilledForm from './Pages/Employee Page/AutoFilledForm';
+import ManualEntryForm from './Pages/Employee Page/ManualEntryForm';
 
 function Main() {
     return (

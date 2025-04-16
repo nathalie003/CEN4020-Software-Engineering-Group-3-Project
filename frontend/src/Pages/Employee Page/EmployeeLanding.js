@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import ReceiptConfirmation from './ReceiptConfirmation.js';
+import ReceiptConfirmation from './ReceiptConfirmation';
 import './EmployeeLanding.css';
 import logo from '../../Components/Images/CashPilot.png';
-import ManualEntryForm from './ManualEntryForm.js';
-import ReceiptUploadForm from './ReceiptUploadForm.js';
+import ManualEntryForm from './ManualEntryForm';
+import ReceiptUploadForm from './ReceiptUploadForm';
 
 
 function EmployeeLanding() {
