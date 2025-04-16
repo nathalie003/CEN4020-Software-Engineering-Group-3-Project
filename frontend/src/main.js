@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import App from './App';
-import RegisterLanding from './Pages/Home Page/RegisterLanding.';
+import RegisterLanding from './Pages/Home Page/RegisterLanding';
 import LoginLanding from './Pages/Home Page/LoginLanding';
 import ServicesLanding from './Pages/Home Page/ServicesLanding';
 import AdminLanding from './Pages/Admin Page/AdminLanding';
