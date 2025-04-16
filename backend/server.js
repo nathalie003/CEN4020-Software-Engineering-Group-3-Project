@@ -8,7 +8,7 @@ const bcrypt = require("bcryptjs");
 const { spawn } = require("child_process");
 const multer = require("multer"); // For receipt uploading/storing
 const path = require("path");      // For constructing file paths
-const pythonExecutable = path.join(__dirname, "../venv/Scripts/python.exe");
+const pythonExecutable = "/home/terryastacio/myproject_env/bin/python";
 
 const port = process.env.PORT || 5000;
 app.use(cors());
@@ -21,7 +21,7 @@ app.use(express.static(path.join(__dirname, '../frontend/build')));
 // });
 // Root endpoint
 app.get("/", (req, res) => {
-  res.json("Backend Running Perfectly 4-9-25 10:23PM");
+  res.json("Backend Running Perfectly 4-15-25 8:18PM");
 });
 
 //test-db endpoint
