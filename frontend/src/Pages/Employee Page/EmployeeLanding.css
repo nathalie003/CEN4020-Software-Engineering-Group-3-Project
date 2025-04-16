@@ -40,7 +40,7 @@
     background-color: #FFF;
     padding: 20px;
     height: auto;
-    width: 50%;
+    width: 70%;
     box-shadow: #1D5E12 20px 20px 0px 0px;
   }
   .uploadReceipt h2 {
@@ -181,7 +181,7 @@
     padding-top: 20px;
     justify-content: center;
     z-index: 2;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.128);
   }
   .navbar {
     display: flex;
@@ -275,7 +275,7 @@
     flex-direction: row;
     justify-content: space-around;
     padding: 10px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 50px rgba(0, 0, 0, 0.766);
     margin-top: 0px;
   }
   .contentHolder {
