@@ -23,7 +23,7 @@ function EmployeeLanding() {
     formData.append('receiptPDF', selectedFile);
 
     try {
-      const response = await fetch('http://localhost:5000/api/upload-receipt', {
+      const response = await fetch('http://127.0.0.1:5000/api/upload-receipt', {
         method: 'POST',
         body: formData,
       });
@@ -42,7 +42,7 @@ function EmployeeLanding() {
 
   const handleConfirm = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/confirm-receipt', {
+      const response = await fetch('http://127.0.0.1:5000/api/confirm-receipt', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ receiptData: receiptSummary }),
