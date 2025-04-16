@@ -23,7 +23,7 @@ app.use('/api', receiptRoutes);
 
 // Root endpoint for basic server check
 app.get("/", (req, res) => {
-  res.json("Backend Running Perfectly 4-15-25 8:18PM");
+  res.json("Backend Running Perfectly 4-16-25 1:13PM");
 });
 
 // Start the server after ensuring a DB connection
