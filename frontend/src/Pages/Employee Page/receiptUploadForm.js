@@ -7,11 +7,10 @@ function ReceiptUploadForm () {
     const handleFileChange = (e) => {
         setSelectedFile(e.target.files[0]);
     };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!selectedFile) {
-            alert('Please upload a receipt PDF file.');
+            alert('Please upload receipt PDF file.');
             return;
         }
     };
