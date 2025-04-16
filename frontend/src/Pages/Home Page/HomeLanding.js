@@ -92,7 +92,7 @@ function HomeLanding() {
                     id="login"
                     href="/login"
                   >
-                    Log In
+                    Login
                   </a>
                 </li>
               </ul>

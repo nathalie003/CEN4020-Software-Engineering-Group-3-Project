@@ -54,7 +54,7 @@ function ServicesLanding() {
                     id="login"
                     href="/login"
                   >
-                    Log In
+                    Login
                   </a>
                 </li>
               </ul>

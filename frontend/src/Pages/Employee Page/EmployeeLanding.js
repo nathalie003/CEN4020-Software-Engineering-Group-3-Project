@@ -17,7 +17,7 @@ function EmployeeLanding() {
         const username = sessionStorage.getItem("username");
       
         if (username) {
-            fetch(`http://127.0.0.1:5000:5000/api/user/${username}`)
+            fetch(`http://127.0.0.1:5000/api/user/${username}`)
             .then((res) => res.json())
             .then((data) => setUser(data))
             .catch((err) => console.error("Error fetching user:", err));
