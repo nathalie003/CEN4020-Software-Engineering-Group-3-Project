@@ -19,7 +19,4 @@ const upload = multer({ storage: storage });
 // Receipt upload route – Phase 1: Process and return receipt summary
 router.post('/upload-receipt', upload.single('receiptPDF'), receiptController.uploadReceipt);
 
-// Receipt confirmation route – Phase 2: Confirm and insert receipt data into the DB
-router.post('/confirm-receipt', receiptController.confirmReceipt);
-
 module.exports = router;

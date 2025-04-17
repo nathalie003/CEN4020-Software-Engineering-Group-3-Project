@@ -68,8 +68,6 @@ overflow-y: auto;
   justify-content: center;
 }
 
-
-
 button.submitReceiptButton {
   background-color: var(--accent-light-green-primary);
   color: white;

@@ -13,9 +13,9 @@ def main(pdf_path):
         sys.exit(1)
 
     # 1) render first page of PDF → PIL image
-    poppler_path = r"C:\Users\terry\Downloads\Release-24.08.0-0\poppler-24.08.0\Library\bin"  # Replace with your actual poppler bin path
+    # poppler_path = r"C:\Users\terry\Downloads\Release-24.08.0-0\poppler-24.08.0\Library\bin"  # Replace with your actual poppler bin path
 
-    images = convert_from_path(pdf_path, poppler_path )  # for VM poppler_path='/usr/bin'
+    images = convert_from_path(pdf_path)  # for VM poppler_path='/usr/bin'
     img = images[0]
 
     # 2) OCR

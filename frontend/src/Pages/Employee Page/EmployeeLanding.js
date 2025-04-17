@@ -49,36 +49,13 @@ function EmployeeLanding() {
       }
     } catch (error) {
       console.error('Error:', error);
-      alert('An error occurred while processing the receipt.');
-    }
-  };
-
-
-  const handleConfirm = async () => {
-    try {
-      const response = await fetch('http://localhost:5000/api/confirm-receipt', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ receiptData: receiptSummary }),
-      });
-      const json = await response.json();
-      if (response.ok) {
-        alert(json.message);
-        // Optionally, clear the receipt summary or navigate away
-        setReceiptSummary(null);
-      } else {
-        alert('Failed to confirm receipt: ' + json.message);
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      alert('An error occurred while confirming the receipt.');
+      alert('A error occurred while processing the receipt.');
     }
   };
 
   // const traveltoSup = async (e) => {
   //   e.preventDefault();
   //   window.location.href = '/supervisor-landing';
-
   // };
 
   const [view, setView] = useState("expenseReportList"); // default view
@@ -106,10 +83,10 @@ function EmployeeLanding() {
         )}
         {view === "uploadReceipt" && (
           <div className="uploadReceiptContent">
-            <ReceiptUploadForm onFileSelect={file => {
+            {/* <ReceiptUploadForm onFileSelect={file => {
               setSelectedFile(file);
               handleFileSubmit(file);
-            }} />
+            }} /> */}
             <div className="uploadReceiptHeader">
               <h2>Upload Receipt</h2>
             </div>
@@ -123,14 +100,14 @@ function EmployeeLanding() {
             {/* render the manual form immediately, before any OCR result */}
             <ManualEntryForm 
                  initialData={manualData}
-                 onSubmit={handleConfirm}
+                //  onSubmit={handleConfirm}
             />
             </div>
           </div>
         )}
-        {receiptSummary && 
+        {/* {receiptSummary && 
           <ReceiptConfirmation receiptData={receiptSummary} onConfirm={handleConfirm} />
-        }
+        } */}
       </div>
     </div>
   );
