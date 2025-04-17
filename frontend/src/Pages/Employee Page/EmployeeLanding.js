@@ -94,11 +94,9 @@ function EmployeeLanding() {
       </div>
       <div className="Employee-main">
         {view === "expenseReportList" && (
-          <div className="expenseReportList">
-            <h2>Expense Report List</h2>
-            {/* Placeholder for the expense report list */}
-            <p>Here you can view your expense reports.</p>
-          </div>
+          <div className="expenseReportListContainer">
+          <UserExpenseReportList user={user} />
+         </div>
         )}
         {view === "uploadReceipt" && (
           <div className="uploadReceiptContent">
