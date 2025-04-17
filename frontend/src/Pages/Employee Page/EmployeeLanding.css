@@ -14,8 +14,8 @@
 /* Admin Landing Container */
   .EmployeeLanding {
     min-height: 100vh;
-  height: auto;
-  overflow-y: auto;
+    height: auto;
+    overflow-y: auto;
     background-color: #c2ddae; /* Blue background */
     color: white; /* Set text color to white for contrast */
     display: flex;
@@ -29,6 +29,8 @@
     padding-left: 200px;;
     position: relative;
     z-index: 1;
+    padding-top: 40px;
+    padding-bottom: 40px;
   }
 
   .uploadReceipt {
@@ -39,7 +41,7 @@
     background-color: #FFF;
     padding: 20px;
     height: auto;
-    width: 50%;
+    width: 70%;
     box-shadow: #1D5E12 20px 20px 0px 0px;
   }
   .uploadReceipt h2 {
@@ -181,6 +183,7 @@
     justify-content: center;
     z-index: 2;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    position: fixed;
   }
   .navbar {
     display: flex;
@@ -247,22 +250,18 @@
     cursor: pointer;
     font-size: 1rem;
   }
-  
-  /* Media query for mobile view */
-  /* @media (max-width: 768px) {
 
-    .buttons {
-      display: none;
-    }
-
-    .menu-toggle {
-        display: block;
-        cursor: pointer;
-        font-size: 24px;
-        position: absolute;
-        left: 20px;
+  .expenseReportListContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: #FFF;
+    padding: 20px;
+    height: auto;
+    width: 50%;
+    box-shadow: #1D5E12 20px 20px 0px 0px;
   }
-} */
+
 
 @media (max-width: 768px) {
   .Employee-sidebar {

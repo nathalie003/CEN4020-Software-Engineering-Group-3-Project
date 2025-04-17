@@ -4,6 +4,7 @@ import './EmployeeLanding.css';
 import logo from '../../Components/Images/CashPilot.png';
 import ManualEntryForm from './ManualEntryForm.js';
 import ReceiptUploadForm from './ReceiptUploadForm.js';
+import UserExpenseReportList from './UserExpenseReportList.js';
 
 
 function EmployeeLanding() {
@@ -14,15 +15,15 @@ function EmployeeLanding() {
     const [user, setUser] = useState(null);
 
     useEffect(() => {
-        const username = sessionStorage.getItem("username");
-      
-        if (username) {
-            fetch(`http://35.225.79.158:5000/api/user/${username}`)
-            .then((res) => res.json())
-            .then((data) => setUser(data))
-            .catch((err) => console.error("Error fetching user:", err));
-        }
-      }, []);
+      const username = sessionStorage.getItem("username");
+    
+      if (username) {
+        fetch(`http://35.225.79.158:5000/api/user/${username}`)
+          .then((res) => res.json())
+          .then((data) => {setUser(data)})
+          .catch((err) => console.error("Error fetching user:", err));
+      }
+    }, []);
 
   const handleFileChange = (e) => {
     setSelectedFile(e.target.files[0]);
@@ -100,10 +101,8 @@ function EmployeeLanding() {
       </div>
       <div className="Employee-main">
         {view === "expenseReportList" && (
-          <div className="expenseReportList">
-            <h2>Expense Report List</h2>
-            {/* Placeholder for the expense report list */}
-            <p>Here you can view your expense reports.</p>
+          <div className="expenseReportListContainer">
+            <UserExpenseReportList user={user} />
           </div>
         )}
         {view === "uploadReceipt" && (
