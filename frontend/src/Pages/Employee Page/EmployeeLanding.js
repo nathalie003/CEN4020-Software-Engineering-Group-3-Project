@@ -18,7 +18,7 @@ function EmployeeLanding() {
         const username = sessionStorage.getItem("username");
       
         if (username) {
-            fetch(`http://35.225.79.158:5000/api/user/${username}`)
+            fetch(`http://localhost:5000/api/user/${username}`)
             .then((res) => res.json())
             .then((data) => setUser(data))
             .catch((err) => console.error("Error fetching user:", err));
@@ -37,7 +37,7 @@ function EmployeeLanding() {
     const formData = new FormData();
     formData.append('receiptPDF', file);
     try {
-      const response = await fetch('http://35.225.79.158:5000/api/upload-receipt', {
+      const response = await fetch('http://localhost:5000/api/upload-receipt', {
         method: 'POST',
         body: formData,
       });
@@ -56,7 +56,7 @@ function EmployeeLanding() {
 
   const handleConfirm = async () => {
     try {
-      const response = await fetch('http://35.225.79.158:5000/api/confirm-receipt', {
+      const response = await fetch('http://localhost:5000/api/confirm-receipt', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ receiptData: receiptSummary }),
