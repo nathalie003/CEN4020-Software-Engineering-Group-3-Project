@@ -1,10 +1,10 @@
+//EmployeeLanding.js
 import React, { useState, useEffect } from 'react';
 import ReceiptConfirmation from './ReceiptConfirmation.js';
 import './EmployeeLanding.css';
 import logo from '../../Components/Images/CashPilot.png';
 import ManualEntryForm from './ManualEntryForm.js';
 import ReceiptUploadForm from './ReceiptUploadForm.js';
-
 
 function EmployeeLanding() {
     const [menuOpen, setMenuOpen] = useState(false);
@@ -28,33 +28,30 @@ function EmployeeLanding() {
     setSelectedFile(e.target.files[0]);
   };
 
-  const handleFileSubmit = async (e) => {
-    e.preventDefault();
-    if (!selectedFile) {
-      alert('Please upload a receipt PDF file.');
-      return;
+  const handleFileSubmit = async (file) => {
+  if (!file) {
+    alert('Please upload a receipt PDF file.');
+    return;
+  }
+  const formData = new FormData();
+  formData.append('receiptPDF', file);
+  try {
+    const response = await fetch('http://35.225.79.158:5000/api/upload-receipt', {
+      method: 'POST',
+      body: formData,
+    });
+    const json = await response.json();
+    if (response.ok) {
+      setReceiptSummary(json.receiptData);
+    } else {
+      alert('Failed to process receipt.');
     }
+  } catch (error) {
+    console.error('Error:', error);
+    alert('An error occurred while processing the receipt.');
+  }
+};
 
-    const formData = new FormData();
-    formData.append('receiptPDF', selectedFile);
-
-    try {
-      const response = await fetch('http://35.225.79.158:5000/api/upload-receipt', {
-        method: 'POST',
-        body: formData,
-      });
-      const json = await response.json();
-      if (response.ok) {
-        // Instead of redirecting immediately, store the receipt summary
-        setReceiptSummary(json.receiptData);
-      } else {
-        alert('Failed to process receipt.');
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      alert('An error occurred while processing the receipt.');
-    }
-  };
 
   const handleConfirm = async () => {
     try {
@@ -77,11 +74,11 @@ function EmployeeLanding() {
     }
   };
 
-  const traveltoSup = async (e) => {
-    e.preventDefault();
-    window.location.href = '/supervisor-landing';
+  // const traveltoSup = async (e) => {
+  //   e.preventDefault();
+  //   window.location.href = '/supervisor-landing';
 
-  };
+  // };
 
   const [view, setView] = useState("expenseReportList"); // default view
 
@@ -112,8 +109,14 @@ function EmployeeLanding() {
               <h2>Upload Receipt</h2>
             </div>
             <div className="uploadReceiptContent">
-                <ReceiptUploadForm onFileChange={handleFileChange} onFileSubmit={handleFileSubmit} />
-                <ManualEntryForm/>
+            <ReceiptUploadForm
+              onFileSelect={file => {
+                setSelectedFile(file);
+                handleFileSubmit(file);
+              }}
+            />
+            {/* render the manual form immediately, before any OCR result */}
+            <ManualEntryForm />
             </div>
           </div>
         )}
