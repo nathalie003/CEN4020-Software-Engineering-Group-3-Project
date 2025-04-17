@@ -1,7 +1,8 @@
+//receipts.js
 const multer = require("multer");
 const path   = require("path");
 const router = require("express").Router();
-const receiptCtrl = require("../controllers/receiptController");
+const receiptController  = require("../controllers/receiptController");
 
 // ── store in backend/uploads
 const storage = multer.diskStorage({
@@ -22,8 +23,10 @@ const upload = multer({ storage, fileFilter });
 router.post(
   "/upload-receipt",
   upload.single("receiptImage"),   // <‑‑ use this field name in the form
-  receiptCtrl.uploadReceipt
+  receiptController .uploadReceipt
 );
+// Final “Save to Database”
+router.post("/confirm-receipt", receiptController .confirmReceipt);
 
 module.exports = router;
 

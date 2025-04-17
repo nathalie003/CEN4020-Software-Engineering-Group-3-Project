@@ -16,7 +16,7 @@ function ReceiptConfirmation({ receiptData, onConfirm }) {
         <strong>Date:</strong> {receiptData.date}
       </div>
       <div className="receipt-detail">
-        <strong>Payment Method:</strong> {receiptData.payment_method}
+        <strong>Payment Method:</strong> {receiptData.paymentMethod}
       </div>
       <div className="receipt-detail">
         <strong>Address:</strong> {receiptData.address}

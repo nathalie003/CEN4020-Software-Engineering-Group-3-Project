@@ -1,10 +1,11 @@
 // backend/controllers/receiptController.js
 require("dotenv").config();
-
+const dbPromise = require("../config/database");
 const fs       = require("fs");
 const { OpenAI } = require("openai");
 const openai   = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
+//PARSE AND UPLOAD RECEIPT TO MANUALENTRYFORM HANDLER
 exports.uploadReceipt = async (req, res) => {
   // ───────── 0. sanity checks ─────────
   if (!req.file) {
@@ -20,6 +21,7 @@ exports.uploadReceipt = async (req, res) => {
   const dataUrl     = `data:${mime};base64,${imageBuffer.toString("base64")}`;
 
   // ───────── 2. ask OpenAI Vision to parse it ─────────
+
   const systemPrompt = `
 You are a receipt‑parsing assistant.  
 From the image extract ONLY the information below and reply with **valid JSON**:
@@ -49,6 +51,11 @@ From the image extract ONLY the information below and reply with **valid JSON**:
         },
       ],
     });
+  // --- token accounting -----------------------------------------------
+  const u = completion.usage; // { prompt_tokens, completion_tokens, total_tokens }
+  console.log(
+    `OpenAI tokens — prompt: ${u.prompt_tokens}, completion: ${u.completion_tokens}, total: ${u.total_tokens}`
+  );
   } catch (err) {
     console.error("OpenAI Vision error:", err);
     fs.unlink(req.file.path, () => {});
@@ -77,4 +84,118 @@ try {
 
   fs.unlink(req.file.path, () => {});     // tidy up temporary upload
   return res.status(200).json({ receiptData });
+};
+
+
+
+// SUBMIT TO DATABASE HANDLER
+// exports.confirmReceipt = async (req, res) => {
+//   const r = req.body;               // the JSON the React form posts
+//   if (!r) return res.status(400).json({ message: "No receipt data." });
+
+//   try {
+//     const db = await dbPromise;
+
+//     // ── 1. insert into receipts ─────────────────────────────────────────────
+//     const receiptSql = `
+//       INSERT INTO receipts
+//       (total, date, payment_method, address, phone, category)
+//       VALUES (?, ?, ?, ?, ?, ?)
+//     `;
+//     const receiptResult = await db.query(receiptSql, [
+//       r.total,
+//       r.dateOfPurchase,
+//       r.paymentMethod || "",
+//       r.storeAddress  || "",      
+//       r.storePhone   || "",      
+//       r.category      || ""
+//     ]);
+//     const receiptId = receiptResult.insertId;
+
+//     // ── 2. insert line‑items (if any) ───────────────────────────────────────
+//     if (Array.isArray(r.items)) {
+//       const itemSql =
+//         "INSERT INTO item (receipt_id, description, price) VALUES (?, ?, ?)";
+//       for (const it of r.items) {
+//         await db.query(itemSql, [receiptId, it.description, it.price]);
+//       }
+//     }
+
+//     res.status(200).json({ message: "Receipt saved.", receiptId });
+//   } catch (err) {
+//     console.error("DB insert error:", err);
+//     res.status(500).json({ message: "DB insert failed." });
+//   }
+// };
+
+// controllers/receiptController.js
+exports.confirmReceipt = (req, res) => {
+  const r = req.body;
+  if (!r) return res.status(400).json({ message: "No receipt data." });
+
+  // 1) normalize items upfront
+  let items = Array.isArray(r.items)
+    ? r.items
+    : typeof r.items === 'string'
+      ? r.items
+          .split(",")
+          .map(s => s.trim())
+          .map(s => {
+            const m = s.match(/^(.+?)\s*\(\s*\$?([\d.]+)\)$/);
+            return m
+              ? { description: m[1], price: parseFloat(m[2]) }
+              : { description: s, price: null };
+          })
+      : [];
+
+  const receiptSql = `
+    INSERT INTO receipts
+      (total, date, payment_method, address, phone, category)
+    VALUES (?, ?, ?, ?, ?, ?)
+  `;
+  const receiptParams = [
+    r.total,
+    r.dateOfPurchase,
+    r.paymentMethod || "",
+    r.storeAddress  || "",
+    r.storePhone    || "",
+    r.category      || ""
+  ];
+
+  dbPromise
+    .then(db => {
+      // 2) insert receipt
+      db.query(receiptSql, receiptParams, (err, receiptResult) => {
+        if (err) {
+          console.error("Receipt insert error:", err);
+          return res.status(500).json({ message: "DB insert failed." });
+        }
+        const receiptId = receiptResult.insertId;
+
+        // 3) if we have items, do a bulk insert
+        if (items.length) {
+          const itemSql = `
+            INSERT INTO item (receipt_id, description, price)
+            VALUES ?
+          `;
+          // build the 2D array for bulk insert
+          const values = items.map(it => [receiptId, it.description, it.price]);
+          db.query(itemSql, [values], err2 => {
+            if (err2) {
+              console.error("Item bulk insert error:", err2);
+              return res.status(500).json({ message: "DB insert failed." });
+            }
+            // done!
+            return res.status(200).json({ message: "Receipt saved.", receiptId });
+          });
+        } else {
+          // no items → respond immediately
+          return res.status(200).json({ message: "Receipt saved.", receiptId });
+        }
+      });
+    })
+    .catch(err => {
+      console.error("DB connection error:", err);
+      res.status(500).json({ message: "DB connection failed." });
+    });
 };

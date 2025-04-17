@@ -52,7 +52,26 @@ function EmployeeLanding() {
       alert('A error occurred while processing the receipt.');
     }
   };
-
+  // 1. handler
+  const handleSaveToDb = async (formData) => {
+    try {
+      const res = await fetch("http://localhost:5000/api/confirm-receipt", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      const json = await res.json();
+      if (res.ok) {
+        alert("Saved! receipt ID " + json.receiptId);
+        setManualData(null);      // clear the form / reset state
+      } else {
+        alert("DB error: " + json.message);
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Network / server error.");
+    }
+  };
   // const traveltoSup = async (e) => {
   //   e.preventDefault();
   //   window.location.href = '/supervisor-landing';
@@ -96,6 +115,7 @@ function EmployeeLanding() {
             {/* render the manual form immediately, before any OCR result */}
             <ManualEntryForm 
                  initialData={manualData}
+                 onSubmit={handleSaveToDb} 
                 //  onSubmit={handleConfirm}
             />
             </div>
