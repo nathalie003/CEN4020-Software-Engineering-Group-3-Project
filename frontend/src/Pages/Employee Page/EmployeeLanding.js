@@ -5,6 +5,7 @@ import './EmployeeLanding.css';
 import logo from '../../Components/Images/CashPilot.png';
 import ManualEntryForm from './ManualEntryForm.js';
 import ReceiptUploadForm from './ReceiptUploadForm.js';
+import UserExpenseReportList from './UserExpenseReportList.js';
 
 function EmployeeLanding() {
     const [menuOpen, setMenuOpen] = useState(false);
