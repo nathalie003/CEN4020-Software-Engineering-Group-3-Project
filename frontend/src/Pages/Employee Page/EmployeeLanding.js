@@ -12,6 +12,7 @@ function EmployeeLanding() {
     const [manualEntry, setManualEntry] = useState('');
     const [receiptSummary, setReceiptSummary] = useState(null);
     const [user, setUser] = useState(null);
+    const [manualData, setManualData] = useState(null);
 
     useEffect(() => {
         const username = sessionStorage.getItem("username");
@@ -29,28 +30,28 @@ function EmployeeLanding() {
   };
 
   const handleFileSubmit = async (file) => {
-  if (!file) {
-    alert('Please upload a receipt PDF file.');
-    return;
-  }
-  const formData = new FormData();
-  formData.append('receiptPDF', file);
-  try {
-    const response = await fetch('http://35.225.79.158:5000/api/upload-receipt', {
-      method: 'POST',
-      body: formData,
-    });
-    const json = await response.json();
-    if (response.ok) {
-      setReceiptSummary(json.receiptData);
-    } else {
-      alert('Failed to process receipt.');
+    if (!file) {
+      alert('Please upload a receipt PDF file.');
+      return;
     }
-  } catch (error) {
-    console.error('Error:', error);
-    alert('An error occurred while processing the receipt.');
-  }
-};
+    const formData = new FormData();
+    formData.append('receiptPDF', file);
+    try {
+      const response = await fetch('http://35.225.79.158:5000/api/upload-receipt', {
+        method: 'POST',
+        body: formData,
+      });
+      const json = await response.json();
+      if (response.ok) {
+        setManualData(json.receiptData);
+      } else {
+        alert('Failed to process receipt.');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('An error occurred while processing the receipt.');
+    }
+  };
 
 
   const handleConfirm = async () => {
@@ -104,7 +105,11 @@ function EmployeeLanding() {
           </div>
         )}
         {view === "uploadReceipt" && (
-          <div className="uploadReceipt">
+          <div className="uploadReceiptContent">
+            <ReceiptUploadForm onFileSelect={file => {
+              setSelectedFile(file);
+              handleFileSubmit(file);
+            }} />
             <div className="uploadReceiptHeader">
               <h2>Upload Receipt</h2>
             </div>
@@ -116,13 +121,16 @@ function EmployeeLanding() {
               }}
             />
             {/* render the manual form immediately, before any OCR result */}
-            <ManualEntryForm />
+            <ManualEntryForm 
+                 initialData={manualData}
+                 onSubmit={handleConfirm}
+            />
             </div>
           </div>
         )}
-        {receiptSummary && (
+        {receiptSummary && 
           <ReceiptConfirmation receiptData={receiptSummary} onConfirm={handleConfirm} />
-        )}
+        }
       </div>
     </div>
   );

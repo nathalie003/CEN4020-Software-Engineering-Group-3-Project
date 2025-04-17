@@ -1,4 +1,4 @@
-# readImage.py
+# readimgandfillform.py
 from PIL import Image
 from pytesseract import pytesseract
 from pdf2image import convert_from_path

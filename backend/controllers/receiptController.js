@@ -1,10 +1,12 @@
 // controllers/receiptController.js
 const { spawn } = require("child_process");
 const path = require("path");
+const fs = require("fs");
 const dbPromise = require('../config/database');
 
 // Path to the Python executable in your virtual environment
-const pythonExecutable = "/home/terryastacio/myproject_env/bin/python";
+// const pythonExecutable = "/home/terryastacio/myproject_env/bin/python";
+const pythonExecutable = path.join(__dirname, '../..', 'venv', 'bin', 'python');
 
 exports.uploadReceipt = (req, res) => {
   console.log("POST /api/upload-receipt route hit");
@@ -17,7 +19,7 @@ exports.uploadReceipt = (req, res) => {
   console.log("Uploaded file saved to:", filePath);
 
   // Construct the relative path to your Python script
-  const pythonScriptPath = path.join(__dirname, "../python/readImage.py");
+  const pythonScriptPath = path.join(__dirname, "../python/readimgandfillform.py");
   console.log("Using Python script at:", pythonScriptPath);
 
   // Spawn the Python process

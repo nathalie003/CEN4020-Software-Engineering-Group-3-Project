@@ -1,24 +1,54 @@
 //ManualEntryForm.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-function ManualEntryForm() {
+export default function ManualEntryForm({
+    initialData = {},
+    onSubmit,
+}) {
     const [formData, setFormData] = useState({
-        storeName: '',
+        storeName:      '',
+        storeAddress:   '',
+        storeNumber:    '',
         dateOfPurchase: '',
-        category: '',
-        items: '',
-        total: '',
+        items:          '',
+        total:          '',
+        payMethod:      '',
+        category:       '',
     });
-
-    const handleChange = (e) => {
+// function ManualEntryForm() {
+//     const [formData, setFormData] = useState({
+//         storeName: '',
+//         dateOfPurchase: '',
+//         category: '',
+//         items: '',
+//         total: '',
+//     });
+  // **when the OCR JSON arrives**, populate the fields**
+  useEffect(() => {
+    if (!initialData) return;
+    setFormData({
+      storeName:      initialData.storeName      || '',
+      storeAddress:   initialData.storeAddress   || '',
+      storeNumber:    initialData.storeNumber    || '',
+      dateOfPurchase: initialData.dateOfPurchase || '',
+      items:          Array.isArray(initialData.items)
+                         ? initialData.items.join(', ')
+                         : initialData.items || '',
+      total:          initialData.total          || '',
+      payMethod:      initialData.paymentMethod || '',
+      category:       initialData.category       || '',
+    });
+  }, [initialData]);
+  
+    const handleChange = e => {
         const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
+        setFormData(f => ({ ...f, [name]: value }));
     };
+    
 
-    const handleSubmit = (e) => {
+    const handleSubmit = e => {
         e.preventDefault();
-        // Handle form submission logic here
-        alert('Form submitted with manual entry data');
+        if (typeof onSubmit === 'function') onSubmit(formData);
     };
 
     return (
@@ -113,9 +143,9 @@ function ManualEntryForm() {
                     onChange={handleChange}
                 />
             </label>
-            <button type="submit">Submit</button>
+            <button type="submit">Submit to database</button>
         </form>
     );
 }
 
-export default ManualEntryForm;
+// export default ManualEntryForm;
