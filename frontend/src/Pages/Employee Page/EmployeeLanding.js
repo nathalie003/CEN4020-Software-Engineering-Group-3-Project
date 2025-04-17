@@ -35,7 +35,7 @@ function EmployeeLanding() {
       return;
     }
     const formData = new FormData();
-    formData.append('receiptPDF', file);
+    formData.append('receiptImage', file);
     try {
       const response = await fetch('http://localhost:5000/api/upload-receipt', {
         method: 'POST',
@@ -83,16 +83,12 @@ function EmployeeLanding() {
         )}
         {view === "uploadReceipt" && (
           <div className="uploadReceiptContent">
-            {/* <ReceiptUploadForm onFileSelect={file => {
-              setSelectedFile(file);
-              handleFileSubmit(file);
-            }} /> */}
             <div className="uploadReceiptHeader">
               <h2>Upload Receipt</h2>
             </div>
             <div className="uploadReceiptContent">
             <ReceiptUploadForm
-              onFileSelect={file => {
+              onFileSelect={(file) => {
                 setSelectedFile(file);
                 handleFileSubmit(file);
               }}

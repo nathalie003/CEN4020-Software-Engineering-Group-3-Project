@@ -68,7 +68,7 @@ def main(pdf_path):
     form_data = {
         "storeName":        store_name,
         "storeAddress":     store_address or "",
-        "storeNumber":      store_phone or "",
+        "storePhone":      store_phone or "",
         "dateOfPurchase":   receipt_date or "",
         "category":         "",            # fill in if you have logic
         "items":            items,

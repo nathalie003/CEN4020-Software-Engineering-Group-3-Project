@@ -1,22 +1,29 @@
-// routes/receipts.js
-const express = require('express');
-const router = express.Router();
-const multer = require('multer');
-const path = require('path');
-const receiptController = require('../controllers/receiptController');
+const multer = require("multer");
+const path   = require("path");
+const router = require("express").Router();
+const receiptCtrl = require("../controllers/receiptController");
 
-// Configure multer for file uploads – files will be stored in the "uploads" folder
+// ── store in backend/uploads
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, '../uploads'));
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + "-" + file.originalname);
-  }
+  destination: (req, file, cb) =>
+    cb(null, path.join(__dirname, "../uploads")),
+  filename   : (req, file, cb) =>
+    cb(null, `${Date.now()}-${file.originalname}`)
 });
-const upload = multer({ storage: storage });
 
-// Receipt upload route – Phase 1: Process and return receipt summary
-router.post('/upload-receipt', upload.single('receiptPDF'), receiptController.uploadReceipt);
+// ── ACCEPT **ONLY** JPEG / PNG
+const fileFilter = (req, file, cb) => {
+  const ok = /image\/(jpeg|png)/.test(file.mimetype);
+  cb(null, ok);
+};
+
+const upload = multer({ storage, fileFilter });
+
+router.post(
+  "/upload-receipt",
+  upload.single("receiptImage"),   // <‑‑ use this field name in the form
+  receiptCtrl.uploadReceipt
+);
 
 module.exports = router;
+

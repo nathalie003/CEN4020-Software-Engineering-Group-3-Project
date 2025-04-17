@@ -8,32 +8,26 @@ export default function ManualEntryForm({
     const [formData, setFormData] = useState({
         storeName:      '',
         storeAddress:   '',
-        storeNumber:    '',
+        storePhone:    '',
         dateOfPurchase: '',
         items:          '',
         total:          '',
         payMethod:      '',
         category:       '',
     });
-// function ManualEntryForm() {
-//     const [formData, setFormData] = useState({
-//         storeName: '',
-//         dateOfPurchase: '',
-//         category: '',
-//         items: '',
-//         total: '',
-//     });
   // **when the OCR JSON arrives**, populate the fields**
   useEffect(() => {
     if (!initialData) return;
     setFormData({
       storeName:      initialData.storeName      || '',
       storeAddress:   initialData.storeAddress   || '',
-      storeNumber:    initialData.storeNumber    || '',
+      storePhone:    initialData.storePhone    || '',
       dateOfPurchase: initialData.dateOfPurchase || '',
       items:          Array.isArray(initialData.items)
-                         ? initialData.items.join(', ')
-                         : initialData.items || '',
+                      ? initialData.items
+                        .map(it => `${it.description} - $${it.price}`)
+                        .join(', ')
+                      : initialData.items || '',
       total:          initialData.total          || '',
       payMethod:      initialData.paymentMethod || '',
       category:       initialData.category       || '',
@@ -78,8 +72,8 @@ export default function ManualEntryForm({
                     Store Number:
                     <input
                         type="text"
-                        name="storeNumber"
-                        value={formData.storeNumber}
+                        name="storePhone"
+                        value={formData.storePhone}
                         onChange={handleChange}
                         placeholder="###-###-####"
                     />
