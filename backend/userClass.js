@@ -1,16 +1,4 @@
-//server.js file
-const express = require("express");
-const app = express();
-const cors = require("cors");
-const db = require("./database");
-// Password hashing library
-const bcrypt = require("bcryptjs");
-
-const port = process.env.PORT || 5000;
-
-app.use(cors());
-app.use(express.json());
-
+//userClass.js
 class User {
   constructor(id, username, password, email, role) {
     this.id = id;
