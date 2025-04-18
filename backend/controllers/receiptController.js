@@ -106,20 +106,33 @@ exports.confirmReceipt = (req, res) => {
               : { description: s, price: null };
           })
       : [];
-  const receiptSql = `
-    INSERT INTO receipts
-      (receipt_total, receipt_date, payment_method, store_address, store_phone, category_id)
-    VALUES (?, ?, ?, ?, ?, ?)
+  // const receiptSql = `
+  //   INSERT INTO receipts
+  //     (receipt_total, receipt_date, payment_method, store_address, store_phone, category_id)
+  //   VALUES (?, ?, ?, ?, ?, ?)
+  // `;
+  // const receiptParams = [
+  //   r.total,
+  //   r.dateOfPurchase,
+  //   r.paymentMethod || "",
+  //   r.storeAddress  || "",
+  //   r.storePhone    || "",
+  //   r.category_id      || null  
+  // ];
+   const receiptSql = `
+     INSERT INTO receipts
+       (user_id, receipt_total, receipt_date, payment_method, store_address, store_phone, category_id)
+     VALUES (?, ?, ?, ?, ?, ?, ?)
   `;
-  const receiptParams = [
-    r.total,
-    r.dateOfPurchase,
-    r.paymentMethod || "",
-    r.storeAddress  || "",
-    r.storePhone    || "",
-    r.category_id      || null  
-  ];
-
+   const receiptParams = [
+     r.userId,                  // ← now required
+     r.total,
+     r.dateOfPurchase,
+     r.paymentMethod  || "",
+     r.storeAddress   || "",
+     r.storePhone     || "",
+     r.category_id    || null  
+   ];
   dbPromise
     .then(db => {
       // 2) insert receipt

@@ -64,11 +64,20 @@ function EmployeeLanding() {
   // 1. handler
   const handleSaveToDb = async (formData) => {
     try {
+      // const res = await fetch("http://localhost:5000/api/receipts/confirm-receipt", {
+      //   method: "POST",
+      //   headers: { "Content-Type": "application/json" },
+      //   body: JSON.stringify(formData),
+      // });
+      const payload = {
+           userId: sessionStorage.getItem("userId"),
+           ...formData
+      };
       const res = await fetch("http://localhost:5000/api/receipts/confirm-receipt", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+           method: "POST",
+           headers: { "Content-Type": "application/json" },
+           body: JSON.stringify(payload),
+        });
       const json = await res.json();
       if (res.ok) {
         alert("Saved! receipt ID " + json.receiptId);
