@@ -27,103 +27,138 @@
 }
 
 /* Admin Landing Container */
-.EmployeeLanding {
-  min-height: 100vh;
-height: auto;
-overflow-y: auto;
-  background-color: #c2ddae; /* Blue background */
-  color: white; /* Set text color to white for contrast */
-  display: flex;
-}
-.Employee-main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding-left: 200px;;
-  position: relative;
-  z-index: 1;
-}
+  .EmployeeLanding {
+    min-height: 100vh;
+    height: auto;
+    overflow-y: auto;
+    background-color: #c2ddae; /* Blue background */
+    color: white; /* Set text color to white for contrast */
+    display: flex;
+  }
+  .Employee-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-left: 200px;;
+    position: relative;
+    z-index: 1;
+    padding-top: 40px;
+    padding-bottom: 40px;
+  }
 
 .uploadReceipt {
   display: flex;
   flex-direction: column;
   justify-content: center;
 
-  background-color: #FFF;
-  padding: 20px;
-  height: auto;
-  width: 50%;
-  box-shadow: #1D5E12 20px 20px 0px 0px;
-}
-.uploadReceipt h2 {
-  color: var(--accent-dark-green);
-  text-align: center;
-}
-.uploadReceiptHeader {
-  display: flex;
-  width: 100%;
-  margin-bottom: 20px;
-  justify-content: center;
-}
+    background-color: #FFF;
+    padding: 20px;
+    height: auto;
+    width: 70%;
+    box-shadow: #1D5E12 20px 20px 0px 0px;
+  }
+  .uploadReceipt h2 {
+    color: var(--accent-dark-green);
+    text-align: center;
+  }
+  .uploadReceiptHeader {
+    display: flex;
+    width: 100%;
+    margin-bottom: 20px;
+    justify-content: center;
+  }
+  .uploadReceiptContent {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+  }
+  .ReceiptUploadForm {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: left;
+    height: 100%;
+    width: 50%;
 
-button.submitReceiptButton {
-  background-color: var(--accent-light-green-primary);
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  cursor: pointer;
-  font-size: 1rem;
-  margin-top: 10px;
-  width: 40%;
-  align-self: center;
-}
-
-.manualEntryForm label {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start; /* optional, for left-aligning the label text */
-  gap: 2px; /* adds spacing between label text and input */
-  font-size: 20px;
-  color: var(--accent-dark-green);
-}
-.manualEntryForm input {
-  padding: 5px;
-  border: 1px solid #EEE;
-  width: 100%;
-  background-color: #EEE;
-}
-.manualEntryForm textarea {
-  padding: 5px;
-  border: 1px solid #EEE;
-  width: 100%;
-  background-color: #EEE;
-}
-.twoColumnLayout {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: left;
-  height: 100%;
-  width: 100%;
-}
-.halfItem1 {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: left;
-  height: 100%;
-  width: 50%;
-  padding-right: 20px;
-}
-.halfItem2 {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: left;
-  height: 100%;
-  width: 50%;
+  }
+  button.uploadReceiptButton {
+    background-color: #DDD;
+    color: #999;
+    border: 3px solid #CCC;
+    cursor: pointer;
+    font-size: 1rem;
+    width: 100%;
+    height: 80%;
+    align-self: center;
+  }
+  button.submitReceiptButton {
+    background-color: var(--accent-light-green-primary);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: 10px;
+    width: 40%;
+    align-self: center;
+  }
+  .manualEntryForm {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: left;
+    height: 100%;
+    width: 50%;
+    margin: 10px;
+    padding-right: 20px;
+  }
+  .manualEntryForm label {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* optional, for left-aligning the label text */
+    gap: 2px; /* adds spacing between label text and input */
+    font-size: 20px;
+    color: var(--accent-dark-green);
+  }
+  .manualEntryForm input {
+    padding: 5px;
+    border: 1px solid #EEE;
+    width: 100%;
+    background-color: #EEE;
+  }
+  .manualEntryForm textarea {
+    padding: 5px;
+    border: 1px solid #EEE;
+    width: 100%;
+    background-color: #EEE;
+  }
+  .twoColumnLayout {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: left;
+    height: 100%;
+    width: 100%;
+  }
+  .halfItem1 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: left;
+    height: 100%;
+    width: 50%;
+    padding-right: 20px;
+  }
+  .halfItem2 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: left;
+    height: 100%;
+    width: 50%;
 
 }
 .manualEntryForm button {
@@ -147,47 +182,48 @@ button.submitReceiptButton {
   width: 100%;
   margin-top: -50px;
 
-}
-
-/* Header Styling */
-.Employee-sidebar {
-  background-color: #FFF;
-  width: 200px; /* fixed */
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  padding-top: 20px;
-  justify-content: center;
-  z-index: 2;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-.navbar {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  gap: 10px;
-  margin-top: -50px;
-}
-.navbar-logo-container {
-  height: 80px;
-  top: 0px;
-  margin-left: 10px;
-  margin-bottom: 20px;
-}
-.navbar-logo {
-  width: 150px; 
-  height: 150px
-}
-
-/* Headline Styling */
-.Employee-landing-container h1 {
-  font-size: 2.5rem;
-  color: white; 
-}
+  }
+  
+  /* Header Styling */
+  .Employee-sidebar {
+    background-color: #FFF;
+    width: 200px; /* fixed */
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding-top: 20px;
+    justify-content: center;
+    z-index: 2;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    position: fixed;
+  }
+  .navbar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 10px;
+    margin-top: -50px;
+  }
+  .navbar-logo-container {
+    height: 80px;
+    top: 0px;
+    margin-left: 10px;
+    margin-bottom: 20px;
+  }
+  .navbar-logo {
+    width: 150px; 
+    height: 150px
+  }
+  
+  /* Headline Styling */
+  .Employee-landing-container h1 {
+    font-size: 2.5rem;
+    color: white; 
+  }
 
 
 
@@ -214,41 +250,34 @@ button.Buttonoption {
   cursor: pointer;
 }
 
-button.Buttonoption:hover {
-  background-color: var(--accent-light-green-primary);
-  color: white;
-  border-color: var(--accent-dark-green);
-}
+  button.Buttonoption:hover {
+    background-color: var(--accent-light-green-primary);
+    color: white;
+    border-color: var(--accent-dark-green);
+  }
+  
+  /* Sign Out Button */
+  .sign-out-btn {
+    background-color: var(--light-green);
+    color: var(--black);
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 1rem;
+  }
 
-/* Sign Out Button */
-.sign-out-btn {
-  background-color: var(--light-green);
-  color: var(--black);
-  border: none;
-  padding: 10px 20px;
-  cursor: pointer;
-  font-size: 1rem;
-}
-.expenseReportListContainer {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  background-color: #FFF;
-  padding: 20px;
-  height: auto;
-  width: 50%;
-  box-shadow: #1D5E12 20px 20px 0px 0px;
-}
-.expenseReportListContainer {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  background-color: #FFF;
-  padding: 20px;
-  height: auto;
-  width: 50%;
-  box-shadow: #1D5E12 20px 20px 0px 0px;
-}
+  .expenseReportListContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: #FFF;
+    padding: 20px;
+    height: auto;
+    width: 50%;
+    box-shadow: #1D5E12 20px 20px 0px 0px;
+  }
+
+
 @media (max-width: 768px) {
   .Employee-sidebar {
     width: 100%;

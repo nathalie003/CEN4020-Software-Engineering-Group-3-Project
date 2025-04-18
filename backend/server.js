@@ -9,6 +9,8 @@ const port = process.env.PORT || 5000;
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use(express.static(path.join(__dirname, '../frontend/build')));
+
 
 // Serve static files from the frontend build directory (adjust the path as needed)
 app.use(express.static(path.join(__dirname, 'frontend/build')));

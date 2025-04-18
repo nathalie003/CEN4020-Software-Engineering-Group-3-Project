@@ -5,7 +5,7 @@ import ReceiptUploadForm from '../Employee Page/ReceiptUploadForm.js';
 import ManualEntryForm from '../Employee Page/ManualEntryForm.js';
 import ReceiptConfirmation from '../Employee Page/ReceiptConfirmation.js';
 
-function EmployeeLanding() {
+function SupervisorLanding() {
     const [menuOpen, setMenuOpen] = useState(false);
     const [view, setView] = useState("expenseReportList"); // default view
     const [selectedFile, setSelectedFile] = useState(null);
@@ -125,4 +125,4 @@ function EmployeeLanding() {
  );
 }
 
-export default EmployeeLanding;
+export default SupervisorLanding;
