@@ -20,13 +20,11 @@ const fileFilter = (req, file, cb) => {
 
 const upload = multer({ storage, fileFilter });
 
-router.post(
-  "/upload-receipt",
-  upload.single("receiptImage"),   // <‑‑ use this field name in the form
-  receiptController .uploadReceipt
+router.post("/upload-receipt", upload.single("receiptImage"), 
+  receiptController.uploadReceipt
 );
 // Final “Save to Database”
-router.post("/confirm-receipt", receiptController .confirmReceipt);
+router.post("/confirm-receipt", receiptController.confirmReceipt);
 
 module.exports = router;
 
