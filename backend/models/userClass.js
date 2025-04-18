@@ -122,16 +122,15 @@ class Supervisor extends User {
 }
 
 module.exports = { User, Employee, Supervisor };
-// Route for supervisor to generate expense analytics by category
-app.post("/supervisor/analytics", (req, res) => {
-  const { supervisorId } = req.body;
+//THIS DOES NOT BELONG HERE
+// // Route for supervisor to generate expense analytics by category
+// app.post("/supervisor/analytics", (req, res) => {
+//   const { supervisorId } = req.body;
 
-  const supervisor = new Supervisor(supervisorId);
-  supervisor.generateAnalytics(db, (err, analytics) => {
-    if (err)
-      return res.status(500).json({ error: "Failed to generate analytics" });
-    res.status(200).json(analytics);
-  });
-});
-
-module.exports = { User, Employee, Supervisor };
+//   const supervisor = new Supervisor(supervisorId);
+//   supervisor.generateAnalytics(db, (err, analytics) => {
+//     if (err)
+//       return res.status(500).json({ error: "Failed to generate analytics" });
+//     res.status(200).json(analytics);
+//   });
+// });

@@ -2,18 +2,13 @@
 const dbPromise = require('../config/database');
 const { User, Employee, Supervisor } = require("../models/userClass");
 
-exports.user = (req, res) => {
-    const { username } = req.params;
+exports.user = async (req, res) => {
+  try {
+    const db = await dbPromise;
   
-    User.findByUsername(db, username, (err, user) => {
-      if (err) {
-        console.error("DB error:", err);
-        return res.status(500).json({ error: "Database error" });
-      }
-  
-      if (!user) {
-        return res.status(404).json({ error: "User not found" });
-      }
+    User.findByUsername(db, req.params.usernam, (err, user) => {
+      if (err)    return res.status(500).json({ error: err.message });
+      if (!user)  return res.status(404).json({ error: 'Not found' });
   
       if (user.role === 3) {
         const employee = new Employee(user.id, user.username, user.password, user.email, user.role);
@@ -26,7 +21,7 @@ exports.user = (req, res) => {
       }
     });
   };
-
+};
 exports.getEmployeeExpenseReports = (req, res) => {
     const employeeId = req.params.id;
     const employee = new Employee(employeeId); // ID is enough since the method only uses `this.id`
