@@ -4,6 +4,8 @@ import './ManualEntryForm.css';
 
 export default function ManualEntryForm({
     initialData = {},
+    categories = [],      // ← grab the array you passed in
+
     onSubmit,
 }) {
     const [formData, setFormData] = useState({
