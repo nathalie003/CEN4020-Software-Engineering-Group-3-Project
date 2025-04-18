@@ -17,6 +17,7 @@ export default function ManualEntryForm({
         total:          '',
         paymentMethod:      '',
         category_id:       '',
+        subcategory: '',
     });
 
       // wire up generic changes for text/number inputs
@@ -109,33 +110,33 @@ export default function ManualEntryForm({
                     />
                 </label>
             </div>
-                <div className="items-section">
-                    <label>Items Purchased:</label>
-                    {formData.items.map((it, i) => (
-                        <div key={i} className="item-row">
-                            <input id="desc"
-                                type="text"
-                                placeholder="Description"
-                                value={it.description}
-                                onChange={e => handleItemChange(i, "description", e.target.value)}
-                            />
-                            <input id="price"
-                                type="number"
-                                placeholder="Price"
-                                step="0.01"
-                                value={it.price}
-                                onChange={e => handleItemChange(i, "price", e.target.value)}
-                            />
-                            <button
-                                type="button"
-                                className="remove-item-btn"
-                                onClick={() => removeItem(i)}
-                            >
-                                ×
-                            </button>
-                        </div>
-            ))}
-            <button type="button" id="add-item-btn" onClick={addItem}>+ Add Item</button>
+            <div className="items-section">
+                <label>Items Purchased:</label>
+                {formData.items.map((it, i) => (
+                    <div key={i} className="item-row">
+                        <input id="desc"
+                            type="text"
+                            placeholder="Description"
+                            value={it.description}
+                            onChange={e => handleItemChange(i, "description", e.target.value)}
+                        />
+                        <input id="price"
+                            type="number"
+                            placeholder="Price"
+                            step="0.01"
+                            value={it.price}
+                            onChange={e => handleItemChange(i, "price", e.target.value)}
+                        />
+                        <button
+                            type="button"
+                            className="remove-item-btn"
+                            onClick={() => removeItem(i)}
+                        >
+                            ×
+                        </button>
+                    </div>
+                ))}
+                <button type="button" id="add-item-btn" onClick={addItem}>+ Add Item</button>
             </div>
             <div className="twoColumnLayout">
                 <div className="halfItem1">
@@ -186,8 +187,8 @@ export default function ManualEntryForm({
                         Subcategory:
                         <input 
                             type="text"
-                            name="category"
-                            value={formData.category} // NEED TO CHANGE VALUE
+                            name="subcategory"
+                            value={formData.subcategory} // NEED TO CHANGE VALUE
                             onChange={handleChange}
                         />
                     </label>
