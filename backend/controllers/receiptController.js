@@ -39,7 +39,7 @@ From the image extract ONLY the information below and reply with **valid JSON**:
   let completion;
   try {
     completion = await openai.chat.completions.create({
-      model: "gpt-4.1-mini", // any Vision‑capable model
+      model:       "gpt-4.1-nano",       // any Vision‑capable model
       temperature: 0,
       messages: [
         { role: "system", content: systemPrompt },
@@ -84,46 +84,6 @@ From the image extract ONLY the information below and reply with **valid JSON**:
   return res.status(200).json({ receiptData });
 };
 
-// SUBMIT TO DATABASE HANDLER
-// exports.confirmReceipt = async (req, res) => {
-//   const r = req.body;               // the JSON the React form posts
-//   if (!r) return res.status(400).json({ message: "No receipt data." });
-
-//   try {
-//     const db = await dbPromise;
-
-//     // ── 1. insert into receipts ─────────────────────────────────────────────
-//     const receiptSql = `
-//       INSERT INTO receipts
-//       (total, date, payment_method, address, phone, category)
-//       VALUES (?, ?, ?, ?, ?, ?)
-//     `;
-//     const receiptResult = await db.query(receiptSql, [
-//       r.total,
-//       r.dateOfPurchase,
-//       r.paymentMethod || "",
-//       r.storeAddress  || "",
-//       r.storePhone   || "",
-//       r.category      || ""
-//     ]);
-//     const receiptId = receiptResult.insertId;
-
-//     // ── 2. insert line‑items (if any) ───────────────────────────────────────
-//     if (Array.isArray(r.items)) {
-//       const itemSql =
-//         "INSERT INTO item (receipt_id, description, price) VALUES (?, ?, ?)";
-//       for (const it of r.items) {
-//         await db.query(itemSql, [receiptId, it.description, it.price]);
-//       }
-//     }
-
-//     res.status(200).json({ message: "Receipt saved.", receiptId });
-//   } catch (err) {
-//     console.error("DB insert error:", err);
-//     res.status(500).json({ message: "DB insert failed." });
-//   }
-// };
-
 // controllers/receiptController.js
 exports.confirmReceipt = (req, res) => {
   const r = req.body;
@@ -132,21 +92,20 @@ exports.confirmReceipt = (req, res) => {
   // 1) normalize items upfront
   let items = Array.isArray(r.items)
     ? r.items
-    : typeof r.items === "string"
-    ? r.items
-        .split(",")
-        .map((s) => s.trim())
-        .map((s) => {
-          const m = s.match(/^(.+?)\s*\(\s*\$?([\d.]+)\)$/);
-          return m
-            ? { description: m[1], price: parseFloat(m[2]) }
-            : { description: s, price: null };
-        })
-    : [];
-
+    : typeof r.items === 'string'
+      ? r.items
+          .split(",")
+          .map(s => s.trim())
+          .map(s => {
+            const m = s.match(/^(.+?)\s*\(\s*\$?([\d.]+)\)$/);
+            return m
+              ? { description: m[1], price: parseFloat(m[2]) }
+              : { description: s, price: null };
+          })
+      : [];
   const receiptSql = `
     INSERT INTO receipts
-      (total, date, payment_method, address, phone, category)
+      (receipt_total, receipt_date, payment_method, store_address, store_phone, category)
     VALUES (?, ?, ?, ?, ?, ?)
   `;
   const receiptParams = [
