@@ -14,7 +14,7 @@ export default function ManualEntryForm({
         items: [ { description: "", price: "" } ],
         total:          '',
         paymentMethod:      '',
-        category:       '',
+        category_id:       '',
     });
 
       // wire up generic changes for text/number inputs
@@ -36,7 +36,7 @@ export default function ManualEntryForm({
       : [{ description: "", price: "" }],
       total:          initialData.total          || f.total,
       paymentMethod:      initialData.paymentMethod || f.paymentMethod,
-      category:       initialData.category       || f.category,
+      category_id:       initialData.category_id       || f.category_id,
     }));
   }, [initialData]);
 
@@ -161,18 +161,22 @@ export default function ManualEntryForm({
                     </label>
                 </div>
             </div>
-            <label>
-                Category:
-                <input
-                    type="text"
-                    name="category"
-                    value={formData.category}
+                <label>
+                    Category:
+                    <select
+                    name="category_id"
+                    value={formData.category_id}
                     onChange={handleChange}
-                />
-            </label>
+                    >
+                    <option value="">— pick one —</option>
+                    {categories.map(c => (
+                        <option key={c.category_id} value={c.category_id}>
+                        {c.category_name}
+                        </option>
+                    ))}
+                    </select>
+                </label>
             <button type="submit">Submit to database</button>
         </form>
     );
 }
-
-// export default ManualEntryForm;

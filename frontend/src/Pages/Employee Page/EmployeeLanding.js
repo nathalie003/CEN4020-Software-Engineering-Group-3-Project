@@ -14,7 +14,14 @@ function EmployeeLanding() {
     const [receiptSummary, setReceiptSummary] = useState(null);
     const [user, setUser] = useState(null);
     const [manualData, setManualData] = useState(null);
-
+    const [categories, setCategories] = useState([]);
+      // fetch categories once
+  useEffect(() => {
+      fetch("http://localhost:5000/api/category")
+        .then(r => r.json())
+        .then(data => setCategories(data))
+        .catch(console.error);
+   }, []);
     useEffect(() => {
         const username = sessionStorage.getItem("username");
       
@@ -111,18 +118,14 @@ function EmployeeLanding() {
                 handleFileSubmit(file);
               }}
             />
-            {/* render the manual form immediately, before any OCR result */}
             <ManualEntryForm 
                  initialData={manualData}
+                 categories={categories}
                  onSubmit={handleSaveToDb} 
-                //  onSubmit={handleConfirm}
             />
             </div>
           </div>
         )}
-        {/* {receiptSummary && 
-          <ReceiptConfirmation receiptData={receiptSummary} onConfirm={handleConfirm} />
-        } */}
       </div>
     </div>
   );
