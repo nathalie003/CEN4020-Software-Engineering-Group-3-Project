@@ -96,7 +96,7 @@ function EmployeeLanding() {
       <div className="Employee-main">
         {view === "expenseReportList" && (
           <div className="expenseReportListContainer">
-          <UserExpenseReportList user={user} />
+            <UserExpenseReportList user={user} />
          </div>
         )}
         {view === "uploadReceipt" && (
