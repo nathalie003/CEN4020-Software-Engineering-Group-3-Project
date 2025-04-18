@@ -73,7 +73,7 @@ function EmployeeLanding() {
         alert("Saved! receipt ID " + json.receiptId);
         setManualData(null);      // clear the form / reset state
       } else {
-        alert("DB error: " + json.message);
+        alert("DB errors: " + json.message);
       }
     } catch (err) {
       console.error(err);

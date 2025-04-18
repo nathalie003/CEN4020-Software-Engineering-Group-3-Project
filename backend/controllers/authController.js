@@ -30,11 +30,11 @@ exports.register = async (req, res) => {
 
 exports.login = async (req, res) => {
   const { username, password } = req.body;
-  const sql = "SELECT user_id,password,role FROM users WHERE username = ?";
+  const sql = "SELECT user_id,password,role FROM user WHERE username = ?";
   try {
     const db = await dbPromise;
     db.query(sql, [username], async (err, rows) => {
-      if (err)   return res.status(500).json({ error: "DB error" });
+      if (err)   return res.status(500).json({ error: "Database error" });
       if (!rows.length) 
         return res.status(401).json({ error: "No such user" });
 
