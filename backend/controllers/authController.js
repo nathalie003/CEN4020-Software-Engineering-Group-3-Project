@@ -4,48 +4,53 @@ const dbPromise = require('../config/database');
 
 exports.register = async (req, res) => {
   const { username, email, password, role } = req.body;
+  if (!['employee','supervisor'].includes(role)) {
+    return res.status(400).json({ error: 'Invalid role' });
+  }
 
   try {
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const sql = "INSERT INTO user (username, password, email, role) VALUES (?, ?, ?, ?)";
-    const db = await dbPromise;
-
-    db.query(sql, [username, hashedPassword, email, role], (err, result) => {
+    const hashed = await bcrypt.hash(password, 10);
+    const sql    = "INSERT INTO user (username,password,email,role) VALUES(?,?,?,?)";
+    const db     = await dbPromise;
+    db.query(sql, [username, hashed, email, role], (err, result) => {
       if (err) {
         console.error("Error inserting new user:", err);
         return res.status(500).json({ error: "Failed to create user" });
       }
-      res.status(201).json({ message: "User created successfully", userId: result.insertId });
+      res.status(201).json({
+        message: "User created successfully",
+        userId:  result.insertId
+      });
     });
-  } catch (error) {
-    console.error("Error during registration:", error);
+  } catch (e) {
+    console.error("Error during registration:", e);
     res.status(500).json({ error: "Failed to register user" });
   }
 };
 
 exports.login = async (req, res) => {
   const { username, password } = req.body;
-  const sql = "SELECT * FROM user WHERE username = ?";
-
+  const sql = "SELECT user_id, username, password AS hash, role FROM user WHERE username = ?";
   try {
     const db = await dbPromise;
-    db.query(sql, [username], async (err, data) => {
-      if (err) {
-        console.error("Error during login query:", err);
-        return res.status(500).json({ error: "Failed to log in" });
-      }
-      if (!data || data.length === 0) {
-        return res.status(401).json({ error: "Invalid username or password. Please try again" });
-      }
-      const user = data[0];
-      const isMatch = await bcrypt.compare(password, user.password);
-      if (!isMatch) {
-        return res.status(401).json({ error: "Invalid username or password. Please try again" });
-      }
-      res.json({ role: user.role });
+    db.query(sql, [username], async (err, rows) => {
+      if (err) return res.status(500).json({ error: "Database error" });
+      if (!rows.length) return res.status(401).json({ error: "No such user" });
+
+      // Pull out all four fields in one go:
+      const { user_id: userId, username: uname, hash, role } = rows[0];
+
+      // Check their password _before_ sending anything:
+      const ok = await bcrypt.compare(password, hash);
+      if (!ok) return res.status(401).json({ error: "Bad credentials" });
+
+      // Only once it’s verified do we send back the payload:
+      res.json({ userId, role, username: uname });
     });
-  } catch (error) {
-    console.error("Error during login:", error);
+  } catch (e) {
+    console.error("Error during login:", e);
     res.status(500).json({ error: "Failed to log in" });
   }
 };
+
+

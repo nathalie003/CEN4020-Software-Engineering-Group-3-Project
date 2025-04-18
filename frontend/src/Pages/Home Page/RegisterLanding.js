@@ -48,7 +48,7 @@ function RegisterLanding() {
     const payload = { username, email, password, role };
 
     try {
-      const response = await fetch("http://localhost:5000/api/register", {
+      const response = await fetch("http://localhost:5000/api/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -70,7 +70,7 @@ function RegisterLanding() {
       navigate("/login");
     } catch (err) {
       console.error("Error during registration:", err);
-    }
+    };
   };
 
   return (
@@ -146,21 +146,19 @@ function RegisterLanding() {
                       value={formData.role}
                       onChange={handleInputChange}
                       required
-                      defaultValue=""
                     >
                       <option value="" disabled>
                         Select Your Role
                       </option>
-                      <option value="1">System Administrator</option>
-                      <option value="2">Supervisor</option>
-                      <option value="3">Employee</option>
+                      <option value="employee">Employee</option>
+                      <option value="supervisor">Supervisor</option>
                     </select>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="16"
                       height="16"
                       fill="currentColor"
-                      class="bi bi-caret-down-fill"
+                      className="bi bi-caret-down-fill"
                       viewBox="0 0 16 16"
                     >
                       <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />

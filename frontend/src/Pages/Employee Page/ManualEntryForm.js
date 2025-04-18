@@ -4,6 +4,8 @@ import './ManualEntryForm.css';
 
 export default function ManualEntryForm({
     initialData = {},
+    categories = [],      // ← grab the array you passed in
+
     onSubmit,
 }) {
     const [formData, setFormData] = useState({
@@ -14,7 +16,7 @@ export default function ManualEntryForm({
         items: [ { description: "", price: "" } ],
         total:          '',
         paymentMethod:      '',
-        category:       '',
+        category_id:       '',
     });
 
       // wire up generic changes for text/number inputs
@@ -36,7 +38,7 @@ export default function ManualEntryForm({
       : [{ description: "", price: "" }],
       total:          initialData.total          || f.total,
       paymentMethod:      initialData.paymentMethod || f.paymentMethod,
-      category:       initialData.category       || f.category,
+      category_id:       initialData.category_id       || f.category_id,
     }));
   }, [initialData]);
 
@@ -165,12 +167,18 @@ export default function ManualEntryForm({
                 <div className="halfItem1">
                     <label>
                         Category:
-                        <input 
-                            type="text"
-                            name="category"
-                            value={formData.category}
-                            onChange={handleChange}
-                        />
+                        <select
+                        name="category_id"
+                        value={formData.category_id}
+                        onChange={handleChange}
+                        >
+                        <option value="">— pick one —</option>
+                        {categories.map(c => (
+                            <option key={c.category_id} value={c.category_id}>
+                            {c.category_name}
+                            </option>
+                        ))}
+                        </select>
                     </label>
                 </div>
                 <div className="halfItem2">
@@ -189,5 +197,3 @@ export default function ManualEntryForm({
         </form>
     );
 }
-
-// export default ManualEntryForm;

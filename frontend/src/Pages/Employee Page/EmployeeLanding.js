@@ -13,18 +13,26 @@ function EmployeeLanding() {
     const [manualEntry, setManualEntry] = useState('');
     const [receiptSummary, setReceiptSummary] = useState(null);
     const [user, setUser] = useState(null);
+    const userId = sessionStorage.getItem("userId");
     const [manualData, setManualData] = useState(null);
-
-    useEffect(() => {
-        const username = sessionStorage.getItem("username");
-      
-        if (username) {
-            fetch(`http://localhost:5000/api/user/${username}`)
-            .then((res) => res.json())
-            .then((data) => setUser(data))
-            .catch((err) => console.error("Error fetching user:", err));
-        }
-      }, []);
+    const [categories, setCategories] = useState([]);
+      // fetch categories once
+  useEffect(() => {
+      fetch("http://localhost:5000/api/category")
+        .then(r => r.json())
+        .then(data => setCategories(data))
+        .catch(console.error);
+   }, []);
+   useEffect(() => {
+    if (!userId) return;
+    fetch(`http://localhost:5000/api/user/${userId}`)
+      .then((res) => {
+        if (!res.ok) throw new Error("User fetch failed");
+        return res.json();
+      })
+      .then((data) => setUser(data))
+      .catch((err) => console.error("Error fetching user:", err));
+  }, [userId]);
 
   const handleFileChange = (e) => {
     setSelectedFile(e.target.files[0]);
@@ -66,7 +74,7 @@ function EmployeeLanding() {
         alert("Saved! receipt ID " + json.receiptId);
         setManualData(null);      // clear the form / reset state
       } else {
-        alert("DB error: " + json.message);
+        alert("DB errors: " + json.message);
       }
     } catch (err) {
       console.error(err);
@@ -111,18 +119,14 @@ function EmployeeLanding() {
                 handleFileSubmit(file);
               }}
             />
-            {/* render the manual form immediately, before any OCR result */}
             <ManualEntryForm 
                  initialData={manualData}
+                 categories={categories}
                  onSubmit={handleSaveToDb} 
-                //  onSubmit={handleConfirm}
             />
             </div>
           </div>
         )}
-        {/* {receiptSummary && 
-          <ReceiptConfirmation receiptData={receiptSummary} onConfirm={handleConfirm} />
-        } */}
       </div>
     </div>
   );

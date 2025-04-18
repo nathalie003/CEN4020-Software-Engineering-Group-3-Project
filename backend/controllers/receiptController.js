@@ -86,7 +86,8 @@ try {
   return res.status(200).json({ receiptData });
 };
 
-// controllers/receiptController.js
+
+// confirmReceipt handler
 exports.confirmReceipt = (req, res) => {
   const r = req.body;
   if (!r) return res.status(400).json({ message: "No receipt data." });
@@ -107,7 +108,7 @@ exports.confirmReceipt = (req, res) => {
       : [];
   const receiptSql = `
     INSERT INTO receipts
-      (receipt_total, receipt_date, payment_method, store_address, store_phone, category)
+      (receipt_total, receipt_date, payment_method, store_address, store_phone, category_id)
     VALUES (?, ?, ?, ?, ?, ?)
   `;
   const receiptParams = [
@@ -116,7 +117,7 @@ exports.confirmReceipt = (req, res) => {
     r.paymentMethod || "",
     r.storeAddress  || "",
     r.storePhone    || "",
-    r.category      || ""
+    r.category_id      || null  
   ];
 
   dbPromise
