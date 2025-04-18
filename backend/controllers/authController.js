@@ -30,23 +30,27 @@ exports.register = async (req, res) => {
 
 exports.login = async (req, res) => {
   const { username, password } = req.body;
-  const sql = "SELECT user_id,password,role FROM user WHERE username = ?";
+  const sql = "SELECT user_id, username, password AS hash, role FROM user WHERE username = ?";
   try {
     const db = await dbPromise;
     db.query(sql, [username], async (err, rows) => {
-      if (err)   return res.status(500).json({ error: "Database error" });
-      if (!rows.length) 
-        return res.status(401).json({ error: "No such user" });
+      if (err) return res.status(500).json({ error: "Database error" });
+      if (!rows.length) return res.status(401).json({ error: "No such user" });
 
-      const { user_id, password: hash, role } = rows[0];
-      if (!await bcrypt.compare(password, hash))
-        return res.status(401).json({ error: "Bad credentials" });
+      // Pull out all four fields in one go:
+      const { user_id: userId, username: uname, hash, role } = rows[0];
 
-      res.json({ userId: user_id, role });
+      // Check their password _before_ sending anything:
+      const ok = await bcrypt.compare(password, hash);
+      if (!ok) return res.status(401).json({ error: "Bad credentials" });
+
+      // Only once it’s verified do we send back the payload:
+      res.json({ userId, role, username: uname });
     });
   } catch (e) {
     console.error("Error during login:", e);
     res.status(500).json({ error: "Failed to log in" });
   }
 };
+
 

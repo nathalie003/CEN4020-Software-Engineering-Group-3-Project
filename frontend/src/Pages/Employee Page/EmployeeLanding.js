@@ -13,6 +13,7 @@ function EmployeeLanding() {
     const [manualEntry, setManualEntry] = useState('');
     const [receiptSummary, setReceiptSummary] = useState(null);
     const [user, setUser] = useState(null);
+    const userId = sessionStorage.getItem("userId");
     const [manualData, setManualData] = useState(null);
     const [categories, setCategories] = useState([]);
       // fetch categories once
@@ -22,16 +23,16 @@ function EmployeeLanding() {
         .then(data => setCategories(data))
         .catch(console.error);
    }, []);
-    useEffect(() => {
-        const username = sessionStorage.getItem("username");
-      
-        if (username) {
-            fetch(`http://localhost:5000/api/user/${username}`)
-            .then((res) => res.json())
-            .then((data) => setUser(data))
-            .catch((err) => console.error("Error fetching user:", err));
-        }
-      }, []);
+   useEffect(() => {
+    if (!userId) return;
+    fetch(`http://localhost:5000/api/user/${userId}`)
+      .then((res) => {
+        if (!res.ok) throw new Error("User fetch failed");
+        return res.json();
+      })
+      .then((data) => setUser(data))
+      .catch((err) => console.error("Error fetching user:", err));
+  }, [userId]);
 
   const handleFileChange = (e) => {
     setSelectedFile(e.target.files[0]);

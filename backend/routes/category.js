@@ -4,8 +4,6 @@ const router  = express.Router();
 const { listCategories } = require('../controllers/categoryController');
 const ctrl    = require('../controllers/categoryController');
 
-// GET /api/category → return [ { category_id, category_name }, … ]
-router.get('/category', listCategories);
 
 // GET   /api/category         → list all
 router.get('/', ctrl.listCategories);

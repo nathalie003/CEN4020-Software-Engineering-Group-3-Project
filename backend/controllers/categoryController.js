@@ -2,16 +2,20 @@
 const dbPromise = require('../config/database');
 
 exports.listCategories = async (req, res) => {
-    try {
-      const db = await dbPromise;
-      const [rows] = await db.query(
-        'SELECT category_id, category_name FROM category ORDER BY category_name'
-      );
+  try {
+    const db = await dbPromise;
+    const sql = 'SELECT category_id, category_name FROM category ORDER BY category_name';
+    db.query(sql, (err, rows) => {
+      if (err) {
+        console.error('Could not fetch categories:', err);
+        return res.status(500).json({ message: 'Server error' });
+      }
       res.json(rows);
-    } catch (err) {
-      console.error('Could not fetch categories:', err);
-      res.status(500).json({ message: 'Server error' });
-    }
+    });
+  } catch (err) {
+    console.error('DB connection error:', err);
+    res.status(500).json({ message: 'Server error' });
+  }
 };
 exports.getCategoryById = async (req, res) => {
   const id = req.params.id;

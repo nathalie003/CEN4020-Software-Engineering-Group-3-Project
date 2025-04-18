@@ -1,7 +1,26 @@
 // backend/controllers/userController.js
 const dbPromise = require('../config/database');
-const { User, Employee, Supervisor } = require("../models/userClass");
 
+const { User, Employee, Supervisor } = require("../models/userClass");
+// GET /api/user/:id
+exports.getById = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const db = await dbPromise;
+    db.query(
+      "SELECT user_id, username, email, role FROM user WHERE user_id = ?",
+      [id],
+      (err, rows) => {
+        if (err) return res.status(500).json({ error: err.message });
+        if (!rows.length) return res.status(404).json({ error: "User not found" });
+        res.json(rows[0]);
+      }
+    );
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+};
 exports.user = async (req, res) => {
   try {
     const db = await dbPromise;

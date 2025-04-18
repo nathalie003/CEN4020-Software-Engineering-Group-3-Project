@@ -11,17 +11,14 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '../frontend/build')));
 
-const authRouter       = require('./routes/auth');
 const receiptsRouter   = require('./routes/receipts');
 const categoryRouter   = require('./routes/category');
-const userRouter       = require('./routes/user');
 const supervisorRouter = require('./routes/supervisor');
-const authRoutes = require("./routes/auth");
-app.use("/api", authRoutes);
-app.use('/api/auth',        authRouter);        // e.g. POST /api/auth/login, /api/auth/register
+
+app.use("/api/auth", require("./routes/auth"))
 app.use('/api/receipts',    receiptsRouter);    // e.g. POST /api/receipts/upload, /api/receipts/confirm
 app.use('/api/category',  categoryRouter);    // e.g. GET  /api/categories, POST /api/categories
-app.use('/api/users',       userRouter);        // e.g. GET  /api/users/:username
+app.use("/api/user", require("./routes/user"));
 app.use('/api/supervisor',  supervisorRouter);  // e.g. POST /api/supervisor/analytics
 
 // Root endpoint for basic server check
