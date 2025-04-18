@@ -5,5 +5,11 @@ const supervisorController    = require('../controllers/supervisorController');
 
 router.post('/analytics', supervisorController.analytics);
 
+// GET  /api/supervisor/user/:userId
+router.get('/user/:userId', supervisorController.getSupervisorIdByUser);
+
+// GET  /api/supervisor/:supervisorId/pending-expense-reports
+router.get('/:supervisorId/pending-expense-reports', supervisorController.getPendingReports);
+
 
 module.exports = router;

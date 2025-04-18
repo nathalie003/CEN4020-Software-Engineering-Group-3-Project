@@ -4,6 +4,8 @@ import logo from '../../Components/Images/CashPilot.png';
 import ReceiptUploadForm from '../Employee Page/ReceiptUploadForm.js';
 import ManualEntryForm from '../Employee Page/ManualEntryForm.js';
 import ReceiptConfirmation from '../Employee Page/ReceiptConfirmation.js';
+import SupervisorExpenseReportList
+  from '../Supervisor Page/SupervisorExpenseReportList';
 
 function SupervisorLanding() {
     const [menuOpen, setMenuOpen] = useState(false);
@@ -12,6 +14,7 @@ function SupervisorLanding() {
     const [manualEntry, setManualEntry] = useState('');
     const [receiptSummary, setReceiptSummary] = useState(null);
     const [user, setUser] = useState(null);
+    const [supervisorId, setSupervisorId] = useState(null);
 
     useEffect(() => {
         const username = sessionStorage.getItem("username");
@@ -23,6 +26,16 @@ function SupervisorLanding() {
             .catch((err) => console.error("Error fetching user:", err));
         }
       }, []);
+
+    // If they’re a supervisor, fetch their supervisor_id
+    useEffect(() => {
+      if (!user || user.role !== 'supervisor') return;
+
+      fetch(`http://localhost:5000/api/supervisor/user/${user.user_id}`)
+        .then(res => res.json())
+        .then(data => setSupervisorId(data.supervisor_id))
+        .catch(err => console.error(err));
+    }, [user]);
 
   const handleFileChange = (e) => {
     setSelectedFile(e.target.files[0]);
@@ -111,12 +124,11 @@ function SupervisorLanding() {
           </div>
         )}
         {view === "employeeExpenses" && (
-          <div className="employeeExpenses">
-            <h2>Employee Expense Reports</h2>
-            {/* Placeholder for employee expense reports */}
-            <p>Here you can view employee expense reports.</p>
-          </div>
+          supervisorId
+            ? <SupervisorExpenseReportList supervisorId={supervisorId} />
+            : <p>Loading employee reports…</p>
         )}
+        
         {receiptSummary && (
           <ReceiptConfirmation receiptData={receiptSummary} onConfirm={handleConfirm} />
         )}
