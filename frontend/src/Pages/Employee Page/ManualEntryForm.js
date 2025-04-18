@@ -67,7 +67,7 @@ export default function ManualEntryForm({
         <form className="manualEntryForm" onSubmit={handleSubmit}>
             <label>
                 Store Name:
-                <input
+                <input className="fullWidthInput"
                     type="text"
                     name="storeName"
                     value={formData.storeName}
@@ -77,7 +77,7 @@ export default function ManualEntryForm({
             </label>
             <label>
                 Store Address:
-                <input
+                <input className="fullWidthInput"
                     type="text"
                     name="storeAddress"
                     value={formData.storeAddress}
@@ -110,30 +110,30 @@ export default function ManualEntryForm({
                 <div className="items-section">
                     <label>Items Purchased:</label>
                     {formData.items.map((it, i) => (
-                <div key={i} className="item-row">
-                <input
-                    type="text"
-                    placeholder="Description"
-                    value={it.description}
-                    onChange={e => handleItemChange(i, "description", e.target.value)}
-                />
-                <input
-                    type="number"
-                    placeholder="Price"
-                    step="0.01"
-                    value={it.price}
-                    onChange={e => handleItemChange(i, "price", e.target.value)}
-                />
-                <button
-                    type="button"
-                    className="remove-item-btn"
-                    onClick={() => removeItem(i)}
-                >
-                    ×
-                </button>
-                </div>
+                        <div key={i} className="item-row">
+                            <input id="desc"
+                                type="text"
+                                placeholder="Description"
+                                value={it.description}
+                                onChange={e => handleItemChange(i, "description", e.target.value)}
+                            />
+                            <input id="price"
+                                type="number"
+                                placeholder="Price"
+                                step="0.01"
+                                value={it.price}
+                                onChange={e => handleItemChange(i, "price", e.target.value)}
+                            />
+                            <button
+                                type="button"
+                                className="remove-item-btn"
+                                onClick={() => removeItem(i)}
+                            >
+                                ×
+                            </button>
+                        </div>
             ))}
-            <button type="button" onClick={addItem}>+ Add Item</button>
+            <button type="button" id="add-item-btn" onClick={addItem}>+ Add Item</button>
             </div>
             <div className="twoColumnLayout">
                 <div className="halfItem1">
@@ -161,16 +161,31 @@ export default function ManualEntryForm({
                     </label>
                 </div>
             </div>
-            <label>
-                Category:
-                <input
-                    type="text"
-                    name="category"
-                    value={formData.category}
-                    onChange={handleChange}
-                />
-            </label>
-            <button type="submit">Submit to database</button>
+            <div className="twoColumnLayout">
+                <div className="halfItem1">
+                    <label>
+                        Category:
+                        <input 
+                            type="text"
+                            name="category"
+                            value={formData.category}
+                            onChange={handleChange}
+                        />
+                    </label>
+                </div>
+                <div className="halfItem2">
+                    <label>
+                        Subcategory:
+                        <input 
+                            type="text"
+                            name="category"
+                            value={formData.category} // NEED TO CHANGE VALUE
+                            onChange={handleChange}
+                        />
+                    </label>
+                </div>
+            </div>
+            <button id="submit-receipt-form-btn" type="submit">Submit Expense</button>
         </form>
     );
 }
