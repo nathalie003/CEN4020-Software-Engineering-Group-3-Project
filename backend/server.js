@@ -16,7 +16,8 @@ const receiptsRouter   = require('./routes/receipts');
 const categoryRouter   = require('./routes/category');
 const userRouter       = require('./routes/user');
 const supervisorRouter = require('./routes/supervisor');
-
+const authRoutes = require("./routes/auth");
+app.use("/api", authRoutes);
 app.use('/api/auth',        authRouter);        // e.g. POST /api/auth/login, /api/auth/register
 app.use('/api/receipts',    receiptsRouter);    // e.g. POST /api/receipts/upload, /api/receipts/confirm
 app.use('/api/category',  categoryRouter);    // e.g. GET  /api/categories, POST /api/categories

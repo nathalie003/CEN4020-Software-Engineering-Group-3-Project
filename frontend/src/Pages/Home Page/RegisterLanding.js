@@ -146,14 +146,12 @@ function RegisterLanding() {
                       value={formData.role}
                       onChange={handleInputChange}
                       required
-                      defaultValue=""
                     >
                       <option value="" disabled>
                         Select Your Role
                       </option>
-                      <option value="1">System Administrator</option>
-                      <option value="2">Supervisor</option>
-                      <option value="3">Employee</option>
+                      <option value="employee">Employee</option>
+                      <option value="supervisor">Supervisor</option>
                     </select>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
