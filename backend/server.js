@@ -17,11 +17,13 @@ app.use(express.static(path.join(__dirname, 'frontend/build')));
 const authRoutes = require('./routes/auth');
 const receiptRoutes = require('./routes/receipts');
 const categoriesRoutes = require('./routes/categories');
+const userRoutes = require('./routes/user');
 
 // Use routes with the '/api' prefix (e.g., /api/register, /api/upload-receipt)
 app.use('/api', authRoutes);
 app.use('/api', receiptRoutes);
 app.use('/api', categoriesRoutes);
+app.use('/api', userRoutes);
 
 // Root endpoint for basic server check
 app.get("/", (req, res) => {
