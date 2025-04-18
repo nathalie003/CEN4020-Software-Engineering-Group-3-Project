@@ -86,6 +86,7 @@ try {
   return res.status(200).json({ receiptData });
 };
 
+
 // confirmReceipt handler
 exports.confirmReceipt = (req, res) => {
   const r = req.body;
