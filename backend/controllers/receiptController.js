@@ -1,135 +1,158 @@
-// controllers/receiptController.js
-const { spawn } = require("child_process");
-const path = require("path");
-const dbPromise = require('../config/database');
+// backend/controllers/receiptController.js
+require("dotenv").config();
+const dbPromise = require("../config/database");
+const fs       = require("fs");
+const { OpenAI } = require("openai");
+const openai   = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-// Path to the Python executable in your virtual environment
-const pythonExecutable = "/home/terryastacio/myproject_env/bin/python";
-
-exports.uploadReceipt = (req, res) => {
-  console.log("POST /api/upload-receipt route hit");
-
+//PARSE AND UPLOAD RECEIPT TO MANUALENTRYFORM HANDLER
+exports.uploadReceipt = async (req, res) => {
+  // ───────── 0. sanity checks ─────────
   if (!req.file) {
     return res.status(400).json({ message: "No file uploaded." });
   }
+  const mime = req.file.mimetype;                   // image/jpeg  |  image/png
+  if (!["image/jpeg", "image/png"].includes(mime)) {
+    return res.status(400).json({ message: "Only JPEG or PNG accepted." });
+  }
 
-  const filePath = req.file.path;
-  console.log("Uploaded file saved to:", filePath);
+  // ───────── 1. read the image → data‑URL ─────────
+  const imageBuffer = fs.readFileSync(req.file.path);
+  const dataUrl     = `data:${mime};base64,${imageBuffer.toString("base64")}`;
 
-  // Construct the relative path to your Python script
-  const pythonScriptPath = path.join(__dirname, "../python/readImage.py");
-  console.log("Using Python script at:", pythonScriptPath);
+  // ───────── 2. ask OpenAI Vision to parse it ─────────
 
-  // Spawn the Python process
-  const pythonProcess = spawn(pythonExecutable, [pythonScriptPath, filePath]);
-  let pythonOutput = "";
+  const systemPrompt = `
+You are a receipt‑parsing assistant.  
+From the image extract ONLY the information below and reply with **valid JSON**:
+{
+  "storeName":      string,
+  "storeAddress":   string,
+  "storePhone":    string,
+  "dateOfPurchase": string,
+  "paymentMethod":  string,
+  "total":          string,
+  "items": [ { "description": string, "price": number } ],
+  "category":       string
+}`;
 
-  pythonProcess.stdout.on("data", (data) => {
-    pythonOutput += data.toString();
-    console.log("Python stdout:", data.toString());
-  });
+  let completion;
+  try {
+    completion = await openai.chat.completions.create({
+      model:       "gpt-4.1-nano",       // any Vision‑capable model
+      temperature: 0,
+      messages: [
+        { role: "system", content: systemPrompt },
+        {
+          role: "user",
+          content: [
+            { type: "image_url", image_url: { url: dataUrl } }
+          ],
+        },
+      ],
+    });
+  // --- token accounting -----------------------------------------------
+  const u = completion.usage; // { prompt_tokens, completion_tokens, total_tokens }
+  console.log(
+    `OpenAI tokens — prompt: ${u.prompt_tokens}, completion: ${u.completion_tokens}, total: ${u.total_tokens}`
+  );
+  } catch (err) {
+    console.error("OpenAI Vision error:", err);
+    fs.unlink(req.file.path, () => {});
+    return res.status(500).json({ message: "OpenAI request failed." });
+  }
 
-  pythonProcess.stderr.on("data", (data) => {
-    console.error(`Python stderr: ${data}`);
-  });
+  // ───────── 3. parse the model’s JSON ─────────
+let assistantMsg = completion.choices?.[0]?.message?.content ?? "";
 
-  pythonProcess.on("close", (code) => {
-    console.log(`Python process exited with code ${code}`);
-    if (code === 0) {
-      try {
-        // Assume the JSON summary is the last non-empty line
-        const outputLines = pythonOutput.split("\n").filter(line => line.trim() !== "");
-        const jsonLine = outputLines[outputLines.length - 1];
-        const receiptData = JSON.parse(jsonLine);
-        console.log("Receipt data from Python:", receiptData);
-        return res.status(200).json({ receiptData: receiptData });
-      } catch (error) {
-        console.error("Error parsing Python output:", error);
-        return res.status(500).json({ message: "Receipt processing failed due to JSON parsing error." });
-      }
-    } else {
-      return res.status(500).json({ message: "Receipt processing failed in the OCR process." });
-    }
-  });
+// ▸ delete leading  ```json / ``` and trailing ```
+if (assistantMsg.startsWith("```")) {
+    assistantMsg = assistantMsg
+      .replace(/^```(?:json)?\s*/i, "")   // opening fence
+      .replace(/\s*```$/, "");            // closing fence
+}
+let receiptData;
+try {
+    receiptData = JSON.parse(assistantMsg);
+} catch (err) {
+    console.error("AI did not return valid JSON:", assistantMsg);
+    fs.unlink(req.file.path, () => {});
+    return res
+      .status(500)
+      .json({ message: "Failed to parse AI response.", raw: assistantMsg });
+  }
+
+  fs.unlink(req.file.path, () => {});     // tidy up temporary upload
+  return res.status(200).json({ receiptData });
 };
 
-exports.confirmReceipt = async (req, res) => {
-  const receiptData = req.body.receiptData;
-  if (!receiptData) {
-    return res.status(400).json({ message: "No receipt data provided." });
-  }
-  console.log("Confirming receipt with data:", receiptData);
+// controllers/receiptController.js
+exports.confirmReceipt = (req, res) => {
+  const r = req.body;
+  if (!r) return res.status(400).json({ message: "No receipt data." });
 
-  const insertReceiptQuery = `
-    INSERT INTO receipts (total, time, date, payment_method, address, phone)
+  // 1) normalize items upfront
+  let items = Array.isArray(r.items)
+    ? r.items
+    : typeof r.items === 'string'
+      ? r.items
+          .split(",")
+          .map(s => s.trim())
+          .map(s => {
+            const m = s.match(/^(.+?)\s*\(\s*\$?([\d.]+)\)$/);
+            return m
+              ? { description: m[1], price: parseFloat(m[2]) }
+              : { description: s, price: null };
+          })
+      : [];
+  const receiptSql = `
+    INSERT INTO receipts
+      (receipt_total, receipt_date, payment_method, store_address, store_phone, category)
     VALUES (?, ?, ?, ?, ?, ?)
   `;
-  const receiptValues = [
-    receiptData.total,
-    receiptData.time,
-    receiptData.date,
-    receiptData.payment_method,
-    receiptData.address,
-    receiptData.phone
+  const receiptParams = [
+    r.total,
+    r.dateOfPurchase,
+    r.paymentMethod || "",
+    r.storeAddress  || "",
+    r.storePhone    || "",
+    r.category      || ""
   ];
 
-  try {
-    const db = await dbPromise;
-    db.query(insertReceiptQuery, receiptValues, (err, result) => {
-      if (err) {
-        console.error("Error inserting receipt data:", err);
-        return res.status(500).json({ 
-          message: "Receipt confirmation failed during DB insertion.",
-          error: err.message 
-        });
-      }
-      console.log("Receipt insert result:", result);
-      const receiptId = result.insertId;
+  dbPromise
+    .then(db => {
+      // 2) insert receipt
+      db.query(receiptSql, receiptParams, (err, receiptResult) => {
+        if (err) {
+          console.error("Receipt insert error:", err);
+          return res.status(500).json({ message: "DB insert failed." });
+        }
+        const receiptId = receiptResult.insertId;
 
-      // Check if there are item entries to insert
-      if (receiptData.items && Array.isArray(receiptData.items) && receiptData.items.length > 0) {
-        const insertItemQuery = `
-          INSERT INTO item (receipt_id, description, price)
-          VALUES (?, ?, ?)
-        `;
-        let insertCount = 0;
-        let itemErrors = [];
-
-        receiptData.items.forEach((item) => {
-          db.query(insertItemQuery, [receiptId, item.description, item.price], (err, itemResult) => {
-            insertCount++;
-            if (err) {
-              console.error("Error inserting item:", err);
-              itemErrors.push(err.message);
-            } else {
-              console.log("Item inserted:", itemResult);
+        // 3) if we have items, do a bulk insert
+        if (items.length) {
+          const itemSql = `
+            INSERT INTO item (receipt_id, description, price)
+            VALUES ?
+          `;
+          // build the 2D array for bulk insert
+          const values = items.map(it => [receiptId, it.description, it.price]);
+          db.query(itemSql, [values], err2 => {
+            if (err2) {
+              console.error("Item bulk insert error:", err2);
+              return res.status(500).json({ message: "DB insert failed." });
             }
-            if (insertCount === receiptData.items.length) {
-              if (itemErrors.length > 0) {
-                return res.status(500).json({ 
-                  message: "Receipt confirmed but failed to insert some items.",
-                  errors: itemErrors 
-                });
-              } else {
-                return res.status(200).json({
-                  message: "Receipt has been successfully uploaded to the database and is pending review.",
-                  receiptId: receiptId,
-                  data: receiptData
-                });
-              }
-            }
+            // done!
+            return res.status(200).json({ message: "Receipt saved.", receiptId });
           });
-        });
-      } else {
-        return res.status(200).json({
-          message: "Receipt has been successfully uploaded to the database and is pending review.",
-          receiptId: receiptId,
-          data: receiptData
-        });
-      }
+        } else {
+          // no items → respond immediately
+          return res.status(200).json({ message: "Receipt saved.", receiptId });
+        }
+      });
+    })
+    .catch(err => {
+      console.error("DB connection error:", err);
+      res.status(500).json({ message: "DB connection failed." });
     });
-  } catch (error) {
-    console.error("Error during receipt confirmation:", error);
-    res.status(500).json({ message: "Receipt confirmation failed.", error: error.message });
-  }
 };
