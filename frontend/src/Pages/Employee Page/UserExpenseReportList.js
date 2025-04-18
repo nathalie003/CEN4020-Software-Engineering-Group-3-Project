@@ -15,7 +15,7 @@ function UserExpenseReportList ({ user }) {
 
     useEffect(() => {
         if (user && user.id) {
-        fetch(`http://35.225.79.158:5000/api/employee/${user.id}/expense-reports`)
+        fetch(`http://localhost:5000/api/employee/${user.id}/expense-reports`)
             .then((res) => res.json())
             .then((data) => setExpenseReports(data))
             .catch((err) => console.error("Error fetching expense reports:", err));
