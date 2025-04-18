@@ -33,7 +33,7 @@ From the image extract ONLY the information below and reply with **valid JSON**:
   "paymentMethod":  string,
   "total":          string,
   "items": [ { "description": string, "price": number } ],
-  "category":       int
+  "category":       string
 }`;
 
   let completion;

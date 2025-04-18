@@ -1,6 +1,6 @@
-//userController.js
+//backend/controllers/userController.js
 const dbPromise = require('../config/database');
-const { User, Employee, Supervisor } = require("../path/to/your/userClass");
+const { User, Employee, Supervisor } = require("../models/userClass");
 
 exports.user = (req, res) => {
     const { username } = req.params;

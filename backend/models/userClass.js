@@ -1,7 +1,7 @@
-//userClass.js
+//backend/models/userClass.js
 class User {
-  constructor(id, username, password, email, role) {
-    this.id = id;
+  constructor(user_id, username, password, email, role) {
+    this.user_id = user_id;
     this.username = username;
     this.password = password;
     this.email = email;
@@ -9,23 +9,23 @@ class User {
   }
 
   static getIdByUsername(db, username, callback) {
-    const sql = "SELECT id FROM user WHERE username = ?";
+    const sql = "SELECT user_id FROM user WHERE username = ?";
     db.query(sql, [username], callback);
   }
   static getUsernameById(db, id, callback) {
-    const sql = "SELECT username FROM user WHERE id = ?";
+    const sql = "SELECT username FROM user WHERE user_id = ?";
     db.query(sql, [id], callback);
   }
   static getPassword(db, id, callback) {
-    const sql = "SELECT password FROM user WHERE id = ?";
+    const sql = "SELECT password FROM user WHERE user_id = ?";
     db.query(sql, [id], callback);
   }
   static getEmail(db, id, callback) {
-    const sql = "SELECT email FROM user WHERE id = ?";
+    const sql = "SELECT email FROM user WHERE user_id = ?";
     db.query(sql, [id], callback);
   }
   static getRole(db, id, callback) {
-    const sql = "SELECT role FROM user WHERE id = ?";
+    const sql = "SELECT role FROM user WHERE user_id = ?";
     db.query(sql, [id], callback);
   }
   static printUser(db, id, callback) {
@@ -47,17 +47,17 @@ class User {
 
 // Employee Class
 class Employee extends User {
-  constructor(id, username, password, email, role) {
-    super(id, username, password, email, role);
+  constructor(user_id, username, password, email, role) {
+    super(user_id, username, password, email, role);
   }
 
   viewExpenseReports(db, callback) {
-    const sql = "SELECT * FROM expense_reports WHERE employee_id = ?";
+    const sql = "SELECT * FROM expense_report WHERE employee_id = ?";
     db.query(sql, [this.id], callback);
   }
 
   viewDashboard(db, callback) {
-    const sql = "SELECT * FROM expense_reports WHERE employee_id = ?";
+    const sql = "SELECT * FROM expense_report WHERE employee_id = ?";
     db.query(sql, [this.id], callback);
   }
 }
@@ -70,28 +70,28 @@ class Supervisor extends User {
 
   // View all expense reports from employees
   viewExpenseReports(db, callback) {
-    const sql = "SELECT * FROM expense_reports WHERE supervisor_id = ?";
+    const sql = "SELECT * FROM expense_report WHERE supervisor_id = ?";
     db.query(sql, [this.id], callback);
   }
 
   // View a specific employee's expense reports
   viewEmployeeReports(db, employeeId, callback) {
     const sql =
-      "SELECT * FROM expense_reports WHERE employee_id = ? AND supervisor_id = ?";
+      "SELECT * FROM expense_report WHERE employee_id = ? AND supervisor_id = ?";
     db.query(sql, [employeeId, this.id], callback);
   }
 
   // Track the status of a specific expense report
   trackExpenseReportStatus(db, reportId, callback) {
     const sql =
-      "SELECT status FROM expense_reports WHERE id = ? AND supervisor_id = ?";
+      "SELECT status FROM expense_report WHERE id = ? AND supervisor_id = ?";
     db.query(sql, [reportId, this.id], callback);
   }
 
   // Flag an expense report for review (change status to "Flagged")
   flagExpenseReport(db, reportId, callback) {
     const sql =
-      "UPDATE expense_reports SET status = 'Flagged' WHERE id = ? AND supervisor_id = ?";
+      "UPDATE expense_report SET status = 'Flagged' WHERE id = ? AND supervisor_id = ?";
     db.query(sql, [reportId, this.id], callback);
   }
 
@@ -100,7 +100,7 @@ class Supervisor extends User {
   generateAnalytics(db, callback) {
     const sql = `
       SELECT category, SUM(amount) AS total_amount 
-      FROM expense_reports 
+      FROM expense_report 
       WHERE supervisor_id = ?
       GROUP BY category
     `;

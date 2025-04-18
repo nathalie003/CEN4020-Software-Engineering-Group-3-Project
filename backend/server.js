@@ -11,10 +11,6 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '../frontend/build')));
 
-
-// Serve static files from the frontend build directory (adjust the path as needed)
-app.use(express.static(path.join(__dirname, 'frontend/build')));
-
 // Define routes
 const authRoutes = require('./routes/auth');
 const receiptRoutes = require('./routes/receipts');
