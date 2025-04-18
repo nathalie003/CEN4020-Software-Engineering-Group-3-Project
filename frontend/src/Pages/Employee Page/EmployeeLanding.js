@@ -1,3 +1,4 @@
+//EmployeeLanding.js
 import React, { useState, useEffect } from 'react';
 import ReceiptConfirmation from './ReceiptConfirmation.js';
 import './EmployeeLanding.css';
@@ -6,83 +7,76 @@ import ManualEntryForm from './ManualEntryForm.js';
 import ReceiptUploadForm from './ReceiptUploadForm.js';
 import UserExpenseReportList from './UserExpenseReportList.js';
 
-
 function EmployeeLanding() {
     const [menuOpen, setMenuOpen] = useState(false);
     const [selectedFile, setSelectedFile] = useState(null);
     const [manualEntry, setManualEntry] = useState('');
     const [receiptSummary, setReceiptSummary] = useState(null);
     const [user, setUser] = useState(null);
+    const [manualData, setManualData] = useState(null);
 
     useEffect(() => {
-      const username = sessionStorage.getItem("username");
-    
-      if (username) {
-        fetch(`http://35.225.79.158:5000/api/user/${username}`)
-          .then((res) => res.json())
-          .then((data) => {setUser(data)})
-          .catch((err) => console.error("Error fetching user:", err));
-      }
-    }, []);
+        const username = sessionStorage.getItem("username");
+      
+        if (username) {
+            fetch(`http://localhost:5000/api/user/${username}`)
+            .then((res) => res.json())
+            .then((data) => setUser(data))
+            .catch((err) => console.error("Error fetching user:", err));
+        }
+      }, []);
 
   const handleFileChange = (e) => {
     setSelectedFile(e.target.files[0]);
   };
 
-  const handleFileSubmit = async (e) => {
-    e.preventDefault();
-    if (!selectedFile) {
+  const handleFileSubmit = async (file) => {
+    if (!file) {
       alert('Please upload a receipt PDF file.');
       return;
     }
-
     const formData = new FormData();
-    formData.append('receiptPDF', selectedFile);
-
+    formData.append('receiptImage', file);
     try {
-      const response = await fetch('http://35.225.79.158:5000/api/upload-receipt', {
+      const response = await fetch('http://localhost:5000/api/upload-receipt', {
         method: 'POST',
         body: formData,
       });
       const json = await response.json();
       if (response.ok) {
-        // Instead of redirecting immediately, store the receipt summary
-        setReceiptSummary(json.receiptData);
+        setManualData(json.receiptData);
       } else {
         alert('Failed to process receipt.');
       }
     } catch (error) {
       console.error('Error:', error);
-      alert('An error occurred while processing the receipt.');
+      alert('A error occurred while processing the receipt.');
     }
   };
-
-  const handleConfirm = async () => {
+  // 1. handler
+  const handleSaveToDb = async (formData) => {
     try {
-      const response = await fetch('http://35.225.79.158:5000/api/confirm-receipt', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ receiptData: receiptSummary }),
+      const res = await fetch("http://localhost:5000/api/confirm-receipt", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
       });
-      const json = await response.json();
-      if (response.ok) {
-        alert(json.message);
-        // Optionally, clear the receipt summary or navigate away
-        setReceiptSummary(null);
+      const json = await res.json();
+      if (res.ok) {
+        alert("Saved! receipt ID " + json.receiptId);
+        setManualData(null);      // clear the form / reset state
       } else {
-        alert('Failed to confirm receipt: ' + json.message);
+        alert("DB error: " + json.message);
       }
-    } catch (error) {
-      console.error('Error:', error);
-      alert('An error occurred while confirming the receipt.');
+    } catch (err) {
+      console.error(err);
+      alert("Network / server error.");
     }
   };
-
-  const traveltoSup = async (e) => {
-    e.preventDefault();
-    window.location.href = '/supervisor-landing';
-
-  };
+  // const traveltoSup = async (e) => {
+  //   e.preventDefault();
+  //   window.location.href = '/supervisor-landing';
+  // };
 
   const [view, setView] = useState("expenseReportList"); // default view
 
@@ -102,23 +96,33 @@ function EmployeeLanding() {
       <div className="Employee-main">
         {view === "expenseReportList" && (
           <div className="expenseReportListContainer">
-            <UserExpenseReportList user={user} />
-          </div>
+          <UserExpenseReportList user={user} />
+         </div>
         )}
         {view === "uploadReceipt" && (
-          <div className="uploadReceipt">
+          <div className="uploadReceiptContent">
             <div className="uploadReceiptHeader">
               <h2>Upload Receipt</h2>
             </div>
             <div className="uploadReceiptContent">
-                <ReceiptUploadForm onFileChange={handleFileChange} onFileSubmit={handleFileSubmit} />
-                <ManualEntryForm/>
+            <ReceiptUploadForm
+              onFileSelect={(file) => {
+                setSelectedFile(file);
+                handleFileSubmit(file);
+              }}
+            />
+            {/* render the manual form immediately, before any OCR result */}
+            <ManualEntryForm 
+                 initialData={manualData}
+                 onSubmit={handleSaveToDb} 
+                //  onSubmit={handleConfirm}
+            />
             </div>
           </div>
         )}
-        {receiptSummary && (
+        {/* {receiptSummary && 
           <ReceiptConfirmation receiptData={receiptSummary} onConfirm={handleConfirm} />
-        )}
+        } */}
       </div>
     </div>
   );

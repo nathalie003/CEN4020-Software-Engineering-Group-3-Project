@@ -1,3 +1,4 @@
+//userController.js
 const dbPromise = require('../config/database');
 const { User, Employee, Supervisor } = require("../path/to/your/userClass");
 

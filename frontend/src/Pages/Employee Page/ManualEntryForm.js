@@ -1,23 +1,66 @@
-import React, { useState } from 'react';
+//ManualEntryForm.js
+import React, { useState, useEffect } from 'react';
+import './ManualEntryForm.css';
 
-function ManualEntryForm() {
+export default function ManualEntryForm({
+    initialData = {},
+    onSubmit,
+}) {
     const [formData, setFormData] = useState({
-        storeName: '',
+        storeName:      '',
+        storeAddress:   '',
+        storePhone:    '',
         dateOfPurchase: '',
-        category: '',
-        items: '',
-        total: '',
+        items: [ { description: "", price: "" } ],
+        total:          '',
+        paymentMethod:      '',
+        category:       '',
     });
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
+      // wire up generic changes for text/number inputs
+  const handleChange = e => {
+    const { name, value } = e.target;
+    setFormData(f => ({ ...f, [name]: value }));
+  };
+  // **when the OCR JSON arrives**, populate the fields**
+  useEffect(() => {
+    if (!initialData) return;
+    setFormData(f => ({
+        ...f,
+      storeName:      initialData.storeName      || f.storeName,
+      storeAddress:   initialData.storeAddress   || f.storeAddress,
+      storePhone:    initialData.storePhone    || f.storePhone,
+      dateOfPurchase: initialData.dateOfPurchase || f.dateOfPurchase,
+      items: Array.isArray(initialData.items)
+      ? initialData.items.map(it => ({ description: it.description, price: it.price }))
+      : [{ description: "", price: "" }],
+      total:          initialData.total          || f.total,
+      paymentMethod:      initialData.paymentMethod || f.paymentMethod,
+      category:       initialData.category       || f.category,
+    }));
+  }, [initialData]);
+
+    // helper for updating a single item row:
+    const handleItemChange = (index, field, value) => {
+        setFormData(f => {
+        const newItems = [...f.items];
+        newItems[index] = { ...newItems[index], [field]: value };
+        return { ...f, items: newItems };
+        });
     };
 
-    const handleSubmit = (e) => {
+    // helper to add / remove rows:
+    const addItem = () =>
+        setFormData(f => ({ ...f, items: [...f.items, { description: "", price: "" }] }));
+    const removeItem = idx =>
+        setFormData(f => ({
+        ...f,
+        items: f.items.filter((_, i) => i !== idx)
+        }));
+  
+    const handleSubmit = e => {
         e.preventDefault();
-        // Handle form submission logic here
-        alert('Form submitted with manual entry data');
+        if (typeof onSubmit === 'function') onSubmit(formData);
     };
 
     return (
@@ -44,11 +87,11 @@ function ManualEntryForm() {
             </label>
             <div className="twoColumnLayout">
                 <label className="halfItem1">
-                    Store Number:
+                    Store Phone:
                     <input
                         type="text"
-                        name="storeNumber"
-                        value={formData.storeNumber}
+                        name="storePhone"
+                        value={formData.storePhone}
                         onChange={handleChange}
                         placeholder="###-###-####"
                     />
@@ -64,19 +107,34 @@ function ManualEntryForm() {
                     />
                 </label>
             </div>
-            <label>
-                Items:
-                <textarea
+                <div className="items-section">
+                    <label>Items Purchased:</label>
+                    {formData.items.map((it, i) => (
+                <div key={i} className="item-row">
+                <input
                     type="text"
-                    rows="4"
-                    name="items"
-                    value={formData.items}
-                    onChange={handleChange}
-                    placeholder=" Item 1,
-                    Item 2, 
-                    Item 3..."
+                    placeholder="Description"
+                    value={it.description}
+                    onChange={e => handleItemChange(i, "description", e.target.value)}
                 />
-            </label>
+                <input
+                    type="number"
+                    placeholder="Price"
+                    step="0.01"
+                    value={it.price}
+                    onChange={e => handleItemChange(i, "price", e.target.value)}
+                />
+                <button
+                    type="button"
+                    className="remove-item-btn"
+                    onClick={() => removeItem(i)}
+                >
+                    ×
+                </button>
+                </div>
+            ))}
+            <button type="button" onClick={addItem}>+ Add Item</button>
+            </div>
             <div className="twoColumnLayout">
                 <div className="halfItem1">
                     <label>
@@ -95,8 +153,8 @@ function ManualEntryForm() {
                         Payment Method:
                         <input
                             type="text"
-                            name="payMethod"
-                            value={formData.payMethod}
+                            name="paymentMethod"
+                            value={formData.paymentMethod}
                             onChange={handleChange}
                             placeholder="Method"
                         />
@@ -112,9 +170,9 @@ function ManualEntryForm() {
                     onChange={handleChange}
                 />
             </label>
-            <button type="submit">Submit</button>
+            <button type="submit">Submit to database</button>
         </form>
     );
 }
 
-export default ManualEntryForm;
+// export default ManualEntryForm;
