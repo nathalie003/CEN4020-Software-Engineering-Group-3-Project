@@ -11,10 +11,14 @@ import { useNavigate } from "react-router-dom";
 // import "./ViewDashboard.css";
 import "./dash.css";
 
-window.$ = $; // <<<<<< ADD THIS
+window.$ = $;
 window.jQuery = $;
 function ViewDashboard() {
+  const [view, setView] = useState("dashboard");
   const [employees, setEmployees] = useState([]);
+  const [availableEmployees, setAvailableEmployees] = useState([]); // New available employees
+  const [selectedEmployees, setSelectedEmployees] = useState([]); // Selected employee IDs
+
   const [searchTerm, setSearchTerm] = useState("");
   const [barData, setBarData] = useState({});
   const [pieData, setPieData] = useState({});
@@ -27,20 +31,75 @@ function ViewDashboard() {
   jQueryBridget("isotope", Isotope, $);
 
   useEffect(() => {
-    const userString = sessionStorage.getItem("user"); // <<<<<<<< correct key
+    const userString = sessionStorage.getItem("user");
     console.log("User from sessionStorage:", userString);
 
     if (userString) {
       const user = JSON.parse(userString); // must parse JSON
       const userId = user.user_id; // match your DB fields!
       const supervisorId = user.supervisor_id; // match your DB fields!
+      setSupervisorId(supervisorId); // Set the supervisor ID in state
 
       console.log("User ID:", userId);
       console.log("Supervisor ID:", supervisorId);
-
-      setSupervisorId(supervisorId); // Set the supervisor ID in state
     }
   }, []);
+
+  const fetchAvailableEmployees = async () => {
+    try {
+      const response = await fetch(`http://localhost:5000/api/employee/all`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch employees.");
+      }
+      const data = await response.json();
+      console.log("🔵 All employees in 'employee' table:", data);
+      setAvailableEmployees(data);
+    } catch (error) {
+      console.error("Error fetching employees:", error);
+    }
+  };
+
+  const fetchAssignedEmployees = async () => {
+    if (!supervisorId) return;
+  
+    try {
+      const response = await fetch(`http://localhost:5000/api/manages/${supervisorId}`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch assigned employees.");
+      }
+      const data = await response.json();
+      console.log("🟡 Employees already assigned to this supervisor (manages table):", data);
+      setEmployees(data);
+    } catch (error) {
+      console.error("Error fetching assigned employees:", error);
+      setEmployees([]); // fallback to empty
+    }
+  };
+  
+
+  const handleAssignEmployees = async () => {
+    if (selectedEmployees.length === 0 || !supervisorId) {
+      alert("Please select employees to assign.");
+      return;
+    }
+
+    try {
+      for (const employeeId of selectedEmployees) {
+        await fetch(`http://localhost:5000/api/manages/assign`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ supervisorId, employeeId }),
+        });
+      }
+      alert("Employees assigned successfully!");
+      setSelectedEmployees([]);
+      setView("viewAssignedEmployees"); // Go back to view assigned
+      fetchAssignedEmployees(); // Refresh
+    } catch (error) {
+      console.error("Error assigning employees:", error);
+      alert("Error assigning employees.");
+    }
+  };
 
   return (
     <div id="page-top">
@@ -62,51 +121,73 @@ function ViewDashboard() {
             <div className="sidebar-brand-text mx-3">Supervisor</div>
           </a>
 
-          {/* <!-- Divider --> */}
+          {/* Divider */}
           <hr className="sidebar-divider my-0" />
-          {/* <!-- Nav Item - Dashboard --> */}
-          <li className="nav-item">
-            <a className="nav-link" href="#!">
-              <i id="sidenav-headicon" className="bx bxs-dashboard"></i>
-              <span id="dash-name">Dashboard</span>
-            </a>
-          </li>
-          {/* <!-- Divider --> */}
-          <hr className="sidebar-divider" />
 
-          {/* <!-- Nav Item - Pages Collapse Menu --> */}
-          <li className="nav-item active">
+          {/* Dashboard Link */}
+          <li className="nav-item">
             <a
               className="nav-link"
               href="#!"
-              data-toggle="collapse"
-              data-target="#collapseTwo"
-              aria-expanded="true"
-              aria-controls="collapseTwo"
+              onClick={() => setView("dashboard")}
             >
-              <i id="sidenav-headicon" className="bx bxs-user"></i>
-              <span id="dash-name">Employees</span>
+              <i className="bx bxs-dashboard"></i>
+              <span>Dashboard</span>
+            </a>
+          </li>
+
+          <hr className="sidebar-divider" />
+
+          {/* Employees Dropdown */}
+          <li className="nav-item">
+            <a
+              className="nav-link collapsed"
+              href="#!"
+              data-toggle="collapse"
+              data-target="#collapseEmployees"
+              aria-expanded="true"
+              aria-controls="collapseEmployees"
+            >
+              <i className="bx bxs-user"></i>
+              <span>Employees</span>
             </a>
             <div
-              id="collapseTwo"
-              className="collapse show"
-              aria-labelledby="headingTwo"
+              id="collapseEmployees"
+              className="collapse"
+              aria-labelledby="headingEmployees"
               data-parent="#accordionSidebar"
             >
               <div className="bg-white py-2 collapse-inner rounded">
-                <h6 className="collapse-header">Custom Components:</h6>
-                <a className="collapse-item" href="#!">
-                  View Employees
+                <h6 className="collapse-header">Manage Employees:</h6>
+                <a
+                  className="collapse-item"
+                  href="#!"
+                  onClick={() => {
+                    fetchAssignedEmployees();
+                    setView("viewAssignedEmployees");
+                  }}
+                >
+                  View Assigned Employees
                 </a>
-                <a className="collapse-item" href="#!">
-                  Add Employee
+                <a
+                  className="collapse-item"
+                  href="#!"
+                  onClick={() => {
+                    fetchAvailableEmployees();
+                    console.log("🟣 Available employees for assignment:", availableEmployees);
+                    setView("addAssignedEmployees");
+                  }}
+                >
+                  Add Assigned Employees
                 </a>
               </div>
             </div>
           </li>
-          {/* <!-- Divider --> */}
+
+          {/* Divider */}
           <hr className="sidebar-divider" />
-          {/* <!-- Nav Item - Utilities Collapse Menu --> */}
+
+          {/* Reports Dropdown */}
           <li className="nav-item">
             <a
               className="nav-link collapsed"
@@ -116,8 +197,8 @@ function ViewDashboard() {
               aria-expanded="true"
               aria-controls="collapseUtilities"
             >
-              <i id="sidenav-headicon" className="bx bxs-file"></i>
-              <span id="dash-name">Reports</span>
+              <i className="bx bxs-file"></i>
+              <span>Reports</span>
             </a>
             <div
               id="collapseUtilities"
@@ -126,7 +207,7 @@ function ViewDashboard() {
               data-parent="#accordionSidebar"
             >
               <div className="bg-white py-2 collapse-inner rounded">
-                <h6 className="collapse-header">Custom Utilities:</h6>
+                <h6 className="collapse-header">Reports:</h6>
                 <a className="collapse-item" href="#!">
                   View My Reports
                 </a>
@@ -139,6 +220,7 @@ function ViewDashboard() {
               </div>
             </div>
           </li>
+
           {/* <!-- Divider --> */}
           <hr className="sidebar-divider" />
           {/* <!-- Heading --> */}
@@ -152,22 +234,39 @@ function ViewDashboard() {
           </div>
         </ul>
         {/* <!-- End of Sidebar --> */}
-        {/* <!-- Content Wrapper --> */}
+
+        {/* Content */}
         <div id="content-wrapper" className="d-flex flex-column">
-          {/* <!-- Main Content --> */}
           <div id="content">
-            {/* <!-- Topbar --> */}
+            {/* Topbar */}
             <nav className="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-              {/* <!-- Sidebar Toggle (Topbar) --> */}
               <button
                 id="sidebarToggleTop"
                 className="btn btn-link d-md-none rounded-circle mr-3"
               >
                 <i className="fa fa-bars"></i>
               </button>
-              {/* <!-- Topbar Navbar --> */}
+
+              {/* Search Bar */}
+              <form className="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                <div className="input-group">
+                  <input
+                    type="text"
+                    className="form-control bg-light border-0 small"
+                    placeholder="Search for..."
+                    aria-label="Search"
+                  />
+                  <div className="input-group-append">
+                    <button className="btn btn-primary" type="button">
+                      <i className="fas fa-search fa-sm"></i>
+                    </button>
+                  </div>
+                </div>
+              </form>
+
+              {/* Topbar Navbar */}
               <ul className="navbar-nav ml-auto">
-                {/* <!-- Nav Item - User Information --> */}
+                {/* Alerts */}
                 <li className="nav-item dropdown no-arrow mx-1">
                   <a
                     className="nav-link dropdown-toggle"
@@ -181,7 +280,6 @@ function ViewDashboard() {
                     <i className="bx bxs-bell"></i>
                     <span className="badge badge-danger badge-counter">3+</span>
                   </a>
-                  {/* <!-- Dropdown - Alerts --> */}
                   <div
                     className="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                     aria-labelledby="alertsDropdown"
@@ -205,29 +303,10 @@ function ViewDashboard() {
                         </span>
                       </div>
                     </a>
-                    {/* More alerts... */}
                   </div>
                 </li>
-                {/* <!-- Nav Item - User Information --> */}
 
-                {/*Topbar Search */}
-                <form className="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                  <div className="input-group">
-                    <input
-                      type="text"
-                      className="form-control bg-light border-0 small"
-                      placeholder="Search for..."
-                      aria-label="Search"
-                      aria-describedby="basic-addon2"
-                    />
-                    <div className="input-group-append">
-                      <button className="btn btn-primary" type="button">
-                        <i className="fas fa-search fa-sm"></i>
-                      </button>
-                    </div>
-                  </div>
-                </form>
-                {/* Nav Item - User Information */}
+                {/* User Information */}
                 <li className="nav-item dropdown no-arrow">
                   <a
                     className="nav-link dropdown-toggle"
@@ -239,10 +318,9 @@ function ViewDashboard() {
                     aria-expanded="false"
                   >
                     <span className="mr-2 d-none d-lg-inline text-gray-600 small">
-                      Valerie Luna
+                      Supervisor
                     </span>
                   </a>
-                  {/* <!-- Dropdown - User Information --> */}
                   <div
                     className="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                     aria-labelledby="userDropdown"
@@ -269,45 +347,90 @@ function ViewDashboard() {
                 </li>
               </ul>
             </nav>
-            {/* <!-- End of Topbar --> */}
-            {/* <!-- Begin Page Content --> */}
-            <div className="container-fluid">
-              {/* <!-- Page Heading --> */}
-              <h1 className="h3 mb-2 text-gray-800">Dashboard</h1>
-              <p className="mb-4">
-                Welcome to the Supervisor Dashboard. Here you can view employee
-                reports and statistics.
-              </p>
 
-              {/* <!-- Pending Requests Card Example --> */}
-              <div class="col-xl-3 col-md-6 mb-4">
-                <div class="card border-left-warning shadow h-100 py-2">
-                  <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                      <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                          Pending Requests
-                        </div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">
-                          18
-                        </div>
-                      </div>
-                      <div class="col-auto">
-                        <i class="fas fa-comments fa-2x text-gray-300"></i>
-                      </div>
+            {/* Page Content */}
+            <div className="container-fluid">
+              {view === "dashboard" && (
+                <>
+                  <h1 className="h3 mb-2 text-gray-800">Dashboard</h1>
+                  <p>
+                    Welcome to the Supervisor Dashboard. Here you can view
+                    employee reports and statistics.
+                  </p>
+                </>
+              )}
+
+              {view === "viewAssignedEmployees" && (
+                <>
+                  <h1 className="h3 mb-2 text-gray-800">Assigned Employees</h1>
+                  {employees.length === 0 ? (
+                    <p>You must assign an employee to continue.</p>
+                  ) : (
+                    <div className="table-responsive">
+                      <table className="table table-striped table-bordered">
+                        <thead className="thead-dark">
+                          <tr>
+                            <th>Username</th>
+                            <th>Employee ID</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {employees.map((emp) => (
+                            <tr key={emp.employee_id}>
+                              <td>{emp.username}</td>
+                              <td>{emp.employee_id}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
                     </div>
+                  )}
+                </>
+              )}
+
+              {view === "addAssignedEmployees" && (
+                <>
+                  <h1 className="h3 mb-2 text-gray-800">Assign Employees</h1>
+                  <p>Select one or more employees to assign to yourself:</p>
+
+                  <div className="form-group">
+                    <select
+                      multiple
+                      className="form-control"
+                      value={selectedEmployees}
+                      onChange={(e) => {
+                        const options = Array.from(
+                          e.target.selectedOptions,
+                          (option) => option.value
+                        );
+                        setSelectedEmployees(options);
+                      }}
+                    >
+                      {availableEmployees.map((emp) => (
+                        <option key={emp.employee_id} value={emp.employee_id}>
+                          {emp.username} (Employee ID: {emp.employee_id})
+                        </option>
+                      ))}
+                    </select>
                   </div>
-                </div>
-              </div>
+
+                  <button
+                    className="btn btn-primary"
+                    onClick={handleAssignEmployees}
+                  >
+                    Assign Selected Employees
+                  </button>
+                </>
+              )}
             </div>
-            {/* <!-- End of Main Content --> */}
           </div>
-          {/* <!-- End of Content Wrapper --> */}
-          {/* <!-- Scroll to Top Button--> */}
+
+          {/* Scroll to Top */}
           <a className="scroll-to-top rounded" href="#page-top">
             <i className="fas fa-angle-up"></i>
           </a>
-          {/* <!-- Logout Modal--> */}
+
+          {/* Logout Modal */}
           <div
             className="modal fade"
             id="logoutModal"
@@ -343,16 +466,12 @@ function ViewDashboard() {
                   >
                     Cancel
                   </button>
-                  <a className="btn btn-primary" href="#!">
-                    Logout
-                  </a>
+                  {/* <button className="btn btn-primary" onClick={handleLogout}>Logout</button> */}
                 </div>
               </div>
             </div>
           </div>
         </div>
-        {/* <!-- End of Page Wrapper --> */}
-        {/* <!-- Bootstrap core JavaScript--> */}
       </div>
     </div>
   );

@@ -17,6 +17,8 @@ app.use('/api/category',  require('./routes/category'));    // e.g. GET  /api/ca
 app.use("/api/user", require("./routes/user"));
 app.use('/api/supervisor', require('./routes/supervisor'));  // e.g. POST /api/supervisor/analytics
 app.use('/api/employee', require('./routes/employee'));  // e.g. POST /api/employee/analytics
+app.use('/api/manages', require('./routes/manages'));
+
 
 // Root endpoint for basic server check
 app.get("/", (req, res) => {
