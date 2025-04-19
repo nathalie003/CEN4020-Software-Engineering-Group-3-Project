@@ -1,18 +1,17 @@
-import React, { useState, useEffect } from "react";
-import "./SupervisorLanding.css";
-import logo from "../../Components/Images/CashPilot.png";
-import ReceiptUploadForm from "../Employee Page/ReceiptUploadForm.js";
-import ManualEntryForm from "../Employee Page/ManualEntryForm.js";
-import ReceiptConfirmation from "../Employee Page/ReceiptConfirmation.js";
-import DashboardLanding from "./DashboardLanding"; // Adjust path if needed
+import React, {useState, useEffect} from 'react';
+import './SupervisorLanding.css';
+import logo from '../../Components/Images/CashPilot.png';
+import ReceiptUploadForm from '../Employee Page/ReceiptUploadForm.js';
+import ManualEntryForm from '../Employee Page/ManualEntryForm.js';
+import ReceiptConfirmation from '../Employee Page/ReceiptConfirmation.js';
 
 function SupervisorLanding() {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [view, setView] = useState("expenseReportList"); // default view
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [manualEntry, setManualEntry] = useState("");
-  const [receiptSummary, setReceiptSummary] = useState(null);
-  const [user, setUser] = useState(null);
+    const [menuOpen, setMenuOpen] = useState(false);
+    const [view, setView] = useState("expenseReportList"); // default view
+    const [selectedFile, setSelectedFile] = useState(null);
+    const [manualEntry, setManualEntry] = useState('');
+    const [receiptSummary, setReceiptSummary] = useState(null);
+    const [user, setUser] = useState(null);
 
   useEffect(() => {
     const username = sessionStorage.getItem("username");
@@ -59,14 +58,11 @@ function SupervisorLanding() {
 
   const handleConfirm = async () => {
     try {
-      const response = await fetch(
-        "http://localhost:5000/api/confirm-receipt",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ receiptData: receiptSummary }),
-        }
-      );
+      const response = await fetch('http://localhost:5000/api/receipts/confirm-receipt', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ receiptData: receiptSummary }),
+      });
       const json = await response.json();
       if (response.ok) {
         alert(json.message);

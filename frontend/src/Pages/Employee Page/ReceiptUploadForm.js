@@ -4,12 +4,28 @@ import "./ReceiptUploadForm.css";
 export default function ReceiptUploadForm({ onFileSelect }) {
   const [previewUrl, setPreviewUrl] = useState(null);
   const fileInputRef = useRef();
+  const cameraInputRef = useRef();
+  const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
     setPreviewUrl(URL.createObjectURL(file));
     if (typeof onFileSelect === "function") onFileSelect(file);
+  };
+
+  const handleUploadClick = () => {
+    if (isMobile) {
+      // on mobile, give camera vs file choice
+      if (window.confirm("Would you like to upload your receipt using the camera?")) {
+        cameraInputRef.current.click();
+      } else {
+        fileInputRef.current.click();
+      }
+    } else {
+      // on desktop just open file picker
+      fileInputRef.current.click();
+    }
   };
 
   return (
@@ -21,11 +37,19 @@ export default function ReceiptUploadForm({ onFileSelect }) {
           <div className="placeholder">No image selected</div>
         )}
       </div>
-
+      <input
+          ref={cameraInputRef}
+          type="file"
+          accept="image/*"
+          capture="environment"
+          style={{ display: "none" }}
+          onChange={handleFileChange}
+      />
       <button
-        className="uploadReceiptButton"
-        onClick={() => fileInputRef.current.click()}>
-        Upload Image
+          type="button"
+          className="uploadReceiptButton"
+          onClick={handleUploadClick}>
+          Upload Image
       </button>
 
       <input

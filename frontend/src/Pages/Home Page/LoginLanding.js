@@ -1,3 +1,4 @@
+//LoginLanding.js
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./LoginLanding.css"; // Import the necessary CSS file
@@ -22,7 +23,7 @@ function LoginLanding() {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:5000/api/login", {
+      const response = await fetch("http://localhost:5000/api/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -33,15 +34,14 @@ function LoginLanding() {
       const result = await response.json();
 
       if (response.ok) {
-        const role = result.role;
-        sessionStorage.setItem("username", result.username);
+        const { userId, role } = result;
+        sessionStorage.setItem("userId", userId);
+        sessionStorage.setItem("role", role);
       
-        if (role === 1) {
-          navigate("/admin-landing");
-        } else if (role === 2) {
-          navigate("/supervisor-landing");
-        } else if (role === 3) {
-          navigate("/employee-landing");
+        if (role === "employee") {
+              navigate("/employee-landing");
+        } else if (role === "supervisor") {
+              navigate("/supervisor-landing");
         }
       } else {
         setErrorMessage(result.error || "Invalid login credentials");

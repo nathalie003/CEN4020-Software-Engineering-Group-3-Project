@@ -9,21 +9,13 @@ const port = process.env.PORT || 5000;
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use(express.static(path.join(__dirname, '../frontend/build')));
 
-// Serve static files from the frontend build directory (adjust the path as needed)
-app.use(express.static(path.join(__dirname, "frontend/build")));
-
-// Define routes
-const authRoutes = require('./routes/auth');
-const receiptRoutes = require('./routes/receipts');
-const categoriesRoutes = require('./routes/categories');
-const userRoutes = require('./routes/user');
-
-// Use routes with the '/api' prefix (e.g., /api/register, /api/upload-receipt)
-app.use('/api', authRoutes);
-app.use('/api', receiptRoutes);
-app.use('/api', categoriesRoutes);
-app.use('/api', userRoutes);
+app.use("/api/auth", require("./routes/auth"))
+app.use('/api/receipts',    require('./routes/receipts'));    // e.g. POST /api/receipts/upload, /api/receipts/confirm
+app.use('/api/category',  require('./routes/category'));    // e.g. GET  /api/categories, POST /api/categories
+app.use("/api/user", require("./routes/user"));
+app.use('/api/supervisor', require('./routes/supervisor'));  // e.g. POST /api/supervisor/analytics
 
 // Root endpoint for basic server check
 app.get("/", (req, res) => {
