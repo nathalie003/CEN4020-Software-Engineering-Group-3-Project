@@ -103,6 +103,9 @@ function UserExpenseReportList ({ user }) {
         {view === "editableReport" && selectedReport && (
           <>
             {console.log("Rendering EditableReport with selectedReceiptID:", selectedReport)}
+            <div id="editHeader">
+              <h2>Edit Report</h2>
+            </div>
             <EditableReport selectedReceiptID={selectedReport} goBack={() => setView("reportsList")} onSubmit={handleEditSubmit} />
           </>
         )}

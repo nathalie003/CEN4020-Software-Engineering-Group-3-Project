@@ -18,7 +18,7 @@ function EditableReport ({selectedReceiptID, onSubmit}) {
         store_website: null,
         category_id: 8,
         subcategory_name: "",
-        items: [ { description: "", price: "" } ],
+        items: [ { item_description: "", item_price: "" } ],
     });
 
     console.log(receiptData);
@@ -58,7 +58,7 @@ function EditableReport ({selectedReceiptID, onSubmit}) {
       
               setReceiptData((prev) => ({
                 ...prev,
-                items: itemsData.items || [],
+                items: itemsData.reports || [],
               }));
       
             } catch (error) {
@@ -88,7 +88,7 @@ function EditableReport ({selectedReceiptID, onSubmit}) {
     
         // helper to add / remove rows:
         const addItem = () =>
-            setReceiptData(f => ({ ...f, items: [...f.items, { description: "", price: "" }] }));
+            setReceiptData(f => ({ ...f, items: [...f.items, { item_description: "", item_price: "" }] }));
         const removeItem = idx =>
             setReceiptData(f => ({
             ...f,
@@ -166,14 +166,14 @@ function EditableReport ({selectedReceiptID, onSubmit}) {
                         <input id="descER"
                             type="text"
                             placeholder="Description"
-                            value={it.description}
+                            value={it.item_description}
                             onChange={e => handleItemChange(i, "description", e.target.value)}
                         />
                         <input id="priceER"
                             type="number"
                             placeholder="Price"
                             step="0.01"
-                            value={it.price}
+                            value={it.item_price}
                             onChange={e => handleItemChange(i, "price", e.target.value)}
                         />
                         <button

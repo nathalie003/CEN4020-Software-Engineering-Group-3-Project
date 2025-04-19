@@ -3,9 +3,8 @@
     flex-direction: column;
     justify-content: center;
     align-items: left;
-    height: 100%;
-    width: 60%;
-    margin: 10px;
+    height: auto;
+    width: 100%;
   }
   .editableReport label {
     display: flex;
