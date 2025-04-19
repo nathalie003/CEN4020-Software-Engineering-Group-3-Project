@@ -25,6 +25,7 @@ Extract ONLY the following and reply **valid JSON**:
   "storeName":      string,
   "storeAddress":   string,
   "storePhone":     string,
+  "storeWebsite":   string,
   "dateOfPurchase": string,
   "paymentMethod":  string,
   "total":          string,
