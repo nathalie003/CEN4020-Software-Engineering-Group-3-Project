@@ -117,7 +117,7 @@ function EmployeeLanding() {
          </div>
         )}
         {view === "uploadReceipt" && (
-          <div className="uploadReceiptContent">
+          <div className="uploadReceipt">
             <div className="uploadReceiptHeader">
               <h2>Upload Receipt</h2>
             </div>
