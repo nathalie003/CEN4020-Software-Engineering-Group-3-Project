@@ -1,0 +1,154 @@
+:root {
+    --main-green: #c2ddae;
+    --accent-dark-green: #1D5E12;
+    --accent-light-green-primary: #59A42C;
+    --accent-light-green-secondary: #236715;
+    --blue-click: #007bff;
+    --black: #000000;
+    --white: #ffffff;
+}
+
+/* Full height layout */
+html, body, #page-top, #wrapper {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: var(--main-green);
+}
+
+/* Sidebar */
+#accordionSidebar {
+    background-color: var(--accent-light-green-primary) !important;
+    width: 20rem;
+    min-height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow-y: auto;
+}
+
+/* Sidebar brand text (Supervisor) */
+.sidebar-brand-text.mx-3 {
+    font-size: 1.5rem;
+    color: var(--white);
+    text-decoration: none !important; /* Remove purple underline */
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+/* Sidebar brand container */
+.sidebar-brand {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    text-decoration: none; /* No underline on the brand */
+}
+
+/* Divider lines in sidebar */
+.sidebar-divider, .sidebar-divider.my-0 {
+    margin: 0;
+    height: 1px;
+    background-color: var(--white);
+    opacity: 1;
+}
+
+/* Sidebar icons */
+.nav-link i {
+    color: var(--white) !important;
+    margin-right: 8px;
+    vertical-align: middle;
+    font-size: 1.25rem;
+}
+
+/* Sidebar link text */
+.nav-link span {
+    color: var(--white) !important;
+    font-size: 1rem;
+}
+
+/* Sidebar item padding */
+.nav-item {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+/* Sidebar collapse headers */
+.collapse-header {
+    font-size: 0.85rem;
+    color: var(--white);
+    margin-top: 0.5rem;
+}
+
+/* Main content next to sidebar */
+#content-wrapper {
+    margin-left: 20rem; /* Match sidebar width */
+    background-color: var(--main-green);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Topbar */
+.topbar {
+    background-color: var(--white) !important;
+    border-bottom: 1px solid var(--accent-light-green-secondary);
+    padding: 0.5rem 1rem;
+    height: 4rem;
+    display: flex;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1030;
+}
+
+/* Topbar text */
+.topbar .navbar-nav .nav-link,
+.topbar .navbar-nav .nav-link span,
+.topbar .navbar-nav .dropdown-menu a {
+    color: var(--black) !important;
+}
+
+/* Topbar input (search bar) */
+.topbar .form-control {
+    background-color: #f8f9fc;
+}
+
+/* Page content area */
+.container-fluid {
+    padding: 2rem;
+    flex-grow: 1;
+}
+
+/* Text coloring for dashboard, tables, etc */
+h1, p, .container-fluid p, .container-fluid h1, .table th, .table td {
+    color: var(--black);
+}
+
+/* Pending Requests Card Example */
+.card.border-left-warning {
+    border-left: 0.25rem solid var(--accent-light-green-primary) !important;
+}
+
+.card .card-body .text-warning {
+    color: var(--accent-light-green-primary) !important;
+}
+
+/* Scroll to Top button */
+.scroll-to-top {
+    background-color: var(--accent-light-green-secondary);
+}
+
+.scroll-to-top:hover {
+    background-color: var(--accent-light-green-primary);
+}
+
+/* Alerts dropdown badge */
+#alertsDropdown .badge-counter {
+    background-color: var(--accent-light-green-primary);
+}
+
+/* Dropdown menus */
+.dropdown-menu {
+    background-color: var(--white);
+}

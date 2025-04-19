@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import "./HomeLanding.css";
-// import '../../bootstrap.css';
 import "./templatemo.css";
-import "../../boxicon.min.css";
-import "../../bootstrap.min.css";
-import "../../fslightbox.js";
-import "../../jquery.min.js";
+import "../../Design Functionality/boxicon.min.css";
+import "../../Design Functionality/bootstrap.min.css";
+import "../../Design Functionality/fslightbox.js";
+import "../../Design Functionality/jquery.min.js";
 import newCatImage from "../../Components/Images/sorting categories.png";
 import subcatImage from "../../Components/Images/customcat.jpg";
 import reportImage from "../../Components/Images/reports.png";

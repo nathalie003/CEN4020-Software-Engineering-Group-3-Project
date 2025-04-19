@@ -1,9 +1,9 @@
 // backend/controllers/receiptController.js
 require("dotenv").config();
 const dbPromise = require("../config/database");
-const fs       = require("fs");
+const fs = require("fs");
 const { OpenAI } = require("openai");
-const openai   = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 // ── Phase 1: parse image via OpenAI Vision ─────────────────────────────────
 exports.uploadReceipt = async (req, res) => {
@@ -164,7 +164,7 @@ exports.confirmReceipt = (req, res) => {
         });
       });
     })
-    .catch(err => {
+    .catch((err) => {
       console.error("DB connection error:", err);
       res.status(500).json({ message: "DB connection failed." });
     });

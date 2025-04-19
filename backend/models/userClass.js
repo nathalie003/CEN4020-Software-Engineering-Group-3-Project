@@ -107,18 +107,44 @@ class Supervisor extends User {
     db.query(sql, [this.id], callback);
   }
 
-  // Assign an employee to the supervisor (relationship between employee and supervisor)
-  assignEmployeeToSupervisor(db, employeeId, callback) {
-    const sql = "UPDATE user SET supervisor_id = ? WHERE id = ?";
-    db.query(sql, [this.id, employeeId], callback);
+  assignEmployee(db, employeeId, callback) {
+    const checkSql = "SELECT * FROM manages WHERE supervisor_id = ? AND employee_id = ?";
+    const insertSql = "INSERT INTO manages (supervisor_id, employee_id) VALUES (?, ?)";
+  
+    // First check if already assigned
+    db.query(checkSql, [this.user_id, employeeId], (err, results) => {
+      if (err) {
+        return callback(err);
+      }
+  
+      if (results.length > 0) {
+        // Already exists
+        return callback(new Error("Employee already assigned to this supervisor."));
+      }
+  
+      // If not assigned yet, insert
+      db.query(insertSql, [this.user_id, employeeId], (insertErr, insertResult) => {
+        if (insertErr) {
+          return callback(insertErr);
+        }
+        callback(null, insertResult);
+      });
+    });
   }
+  
+  
 
   // Remove an employee from supervisor's management (unassign)
   removeEmployeeFromSupervisor(db, employeeId, callback) {
-    const sql =
-      "UPDATE user SET supervisor_id = NULL WHERE id = ? AND supervisor_id = ?";
-    db.query(sql, [employeeId, this.id], callback);
+    const sql = "DELETE FROM manages WHERE supervisor_id = ? AND employee_id = ?";
+    db.query(sql, [this.user_id, employeeId], (err, result) => {
+      if (err) {
+        return callback(err);
+      }
+      callback(null, result);
+    });
   }
+  
 }
 
 module.exports = { User, Employee, Supervisor };
