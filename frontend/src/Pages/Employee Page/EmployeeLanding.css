@@ -216,15 +216,11 @@ button.Buttonoption {
     height: 80px;
     margin-top: -25px;
   }
-  button.Buttonoption {
-    width: auto;
-    padding: 5px 10px;
-    font-size: 14px;
-  }
   .uploadReceipt {
     width: 90%;
     flex-direction: column;
     justify-content: center;
   }
+
   
 }

@@ -88,6 +88,14 @@
   border: 1px solid #EEE;
   background-color: #EEE;
 }
+
+.manualEntryForm select {
+  padding: 2px;
+  border: 1px solid #EEE;
+  background-color: #EEE;
+  width: 100%;
+  font-size: 15px;
+}
 .item-row {
   margin: 0px;
 }
@@ -128,4 +136,12 @@
 
 #submit-receipt-form-btn:hover {
   background-color: var(--accent-light-green-primary);
+}
+
+@media (max-width: 768px) {
+  .manualEntryForm {
+    width: 100%;
+    margin: 0px;
+    margin-top: 20px;
+  }
 }

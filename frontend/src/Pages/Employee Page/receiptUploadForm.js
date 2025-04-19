@@ -32,6 +32,7 @@ export default function ReceiptUploadForm({ onFileSelect }) {
         ref={fileInputRef}
         type="file"
         accept="image/jpeg,image/png"
+        capture='environment'
         style={{ display: "none" }}
         onChange={handleFileChange}
       />
