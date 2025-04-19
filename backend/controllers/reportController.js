@@ -1,3 +1,4 @@
+// backend/controllers/reportController.js
 const dbPromise = require('../config/database');
 
 exports.createReport = async (req, res) => {

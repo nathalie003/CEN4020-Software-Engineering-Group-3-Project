@@ -120,14 +120,24 @@ exports.confirmReceipt = (req, res) => {
     r.subcategory_name || null  // <-- your new subcategory field
   ];
 
-  dbPromise
-    .then(db => {
+  dbPromise.then(db => {
       db.query(receiptSql, receiptParams, (err, result) => {
         if (err) {
           console.error("Receipt insert error:", err);
           return res.status(500).json({ message: "DB insert failed." });
         }
         const receiptId = result.insertId;
+         // 5) Create the expense report entry
+        const reportSql = `
+          INSERT INTO expense_report
+            (user_id, date_generated, receipt_id)
+          VALUES (?, CURDATE(), ?)
+        `;
+      db.query(reportSql, [r.userId, receiptId], (err2) => {
+        if (err2) {
+          console.error("Expense report insert error:", err2);
+          // not fatal: we can still attempt items
+        }
 
         // 5) Bulk insert items if any
         if (items.length) {
@@ -135,21 +145,23 @@ exports.confirmReceipt = (req, res) => {
             INSERT INTO item (receipt_id, item_description, item_price)
             VALUES ?
           `;
-          const values = items.map(it => [receiptId, it.description, it.price]);
-          db.query(itemSql, [values], err2 => {
-            if (err2) {
-              console.error("Item bulk insert error:", err2);
-              return res.status(500).json({ message: "DB insert failed." });
-            }
-            return res.status(200).json({ message: "Receipt saved.", receiptId });
-          });
+        
+        const values = items.map(it => [receiptId, it.description, it.price]);
+        db.query(itemSql, [values], err2 => {
+          if (err2) {
+            console.error("Item bulk insert error:", err2);
+            return res.status(500).json({ message: "DB insert failed." });
+          }
+          return res.status(200).json({ message: "Receipt saved.", receiptId });
+        });
         } else {
           return res.status(200).json({ message: "Receipt saved.", receiptId });
         }
+        });
       });
     })
     .catch(err => {
       console.error("DB connection error:", err);
       res.status(500).json({ message: "DB connection failed." });
     });
-};
+  };
