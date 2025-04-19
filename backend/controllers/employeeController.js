@@ -1,13 +1,13 @@
-// backend/controllers/supervisorController.js
+// backend/controllers/employeeController.js
 const dbPromise       = require('../config/database');
-const { Supervisor } = require('../models/userClass');
+const { Employee } = require('../models/userClass');
 
-exports.getSupervisorByUserId = async (req, res) => {
+exports.getEmployeeByUserId = async (req, res) => {
   const { userId } = req.params;
   try {
     const db = await dbPromise;
     db.query(
-      "SELECT supervisor_id, user_id FROM supervisor WHERE user_id = ?",
+      "SELECT employee_id, user_id FROM employee WHERE user_id = ?",
       [userId],
       (err, result) => {
         if (err) {
@@ -15,24 +15,24 @@ exports.getSupervisorByUserId = async (req, res) => {
           return res.status(500).json({ error: "Database error" });
         }
         if (result.length === 0) {
-          return res.status(404).json({ error: "Supervisor not found" });
+          return res.status(404).json({ error: "employee not found" });
         }
 
-        res.json(result[0]); // send back { supervisor_id: ..., user_id: ... }
+        res.json(result[0]); // send back { employee_id: ..., user_id: ... }
       }
     );
   } catch (err) {
-    console.error("Error fetching supervisor:", err);
+    console.error("Error fetching employee:", err);
     res.status(500).json({ error: "Server error" });
   }
 };
 
 exports.analytics = async (req, res) => {
-  const { supervisorId } = req.body;
+  const { employeeId } = req.body;
   try {
     const db = await dbPromise;
-    // load basic Supervisor instance (you might need another finder)
-    const sup = new Supervisor(supervisorId);
+    // load basic employee instance (you might need another finder)
+    const sup = new employee(employeeId);
     sup.generateAnalytics(db, (err, analytics) => {
       if (err) return res.status(500).json({ error: err.message });
       res.json(analytics);

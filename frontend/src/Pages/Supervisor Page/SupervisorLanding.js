@@ -1,18 +1,19 @@
-import React, {useState, useEffect} from 'react';
-import './SupervisorLanding.css';
-import logo from '../../Components/Images/CashPilot.png';
-import ReceiptUploadForm from '../Employee Page/ReceiptUploadForm.js';
-import ManualEntryForm from '../Employee Page/ManualEntryForm.js';
-import ReceiptConfirmation from '../Employee Page/ReceiptConfirmation.js';
-import DashboardLanding from './DashboardLanding.js';
+import React, { useState, useEffect } from "react";
+import "./SupervisorLanding.css";
+import logo from "../../Components/Images/CashPilot.png";
+import ReceiptUploadForm from "../Employee Page/ReceiptUploadForm.js";
+import ManualEntryForm from "../Employee Page/ManualEntryForm.js";
+import ReceiptConfirmation from "../Employee Page/ReceiptConfirmation.js";
+import { useNavigate } from "react-router-dom";
 
 function SupervisorLanding() {
-    const [menuOpen, setMenuOpen] = useState(false);
-    const [view, setView] = useState("expenseReportList"); // default view
-    const [selectedFile, setSelectedFile] = useState(null);
-    const [manualEntry, setManualEntry] = useState('');
-    const [receiptSummary, setReceiptSummary] = useState(null);
-    const [user, setUser] = useState(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [view, setView] = useState("expenseReportList"); // default view
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [manualEntry, setManualEntry] = useState("");
+  const [receiptSummary, setReceiptSummary] = useState(null);
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const username = sessionStorage.getItem("username");
@@ -20,7 +21,10 @@ function SupervisorLanding() {
     if (username) {
       fetch(`http://localhost:5000/api/user/${username}`)
         .then((res) => res.json())
-        .then((data) => setUser(data))
+        .then((data) => {
+          setUser(data);
+          sessionStorage.setItem("user", JSON.stringify(data));
+        })
         .catch((err) => console.error("Error fetching user:", err));
     }
   }, []);
@@ -59,11 +63,14 @@ function SupervisorLanding() {
 
   const handleConfirm = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/receipts/confirm-receipt', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ receiptData: receiptSummary }),
-      });
+      const response = await fetch(
+        "http://localhost:5000/api/receipts/confirm-receipt",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ receiptData: receiptSummary }),
+        }
+      );
       const json = await response.json();
       if (response.ok) {
         alert(json.message);
@@ -106,7 +113,7 @@ function SupervisorLanding() {
             </button>
             <button
               className="Buttonoption"
-              onClick={() => setView("viewDashboard")}
+              onClick={() => navigate("/dashboard")}
             >
               View Dashboard
             </button>
@@ -147,11 +154,6 @@ function SupervisorLanding() {
             receiptData={receiptSummary}
             onConfirm={handleConfirm}
           />
-        )}
-        {view === "viewDashboard" && (
-          <div className="viewDashboard">
-            <DashboardLanding/>
-          </div>
         )}
       </div>
     </div>
