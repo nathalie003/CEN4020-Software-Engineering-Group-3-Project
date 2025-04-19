@@ -65,7 +65,7 @@ From the image extract ONLY the information below and reply with **valid JSON**:
   // ───────── 3. parse the model’s JSON ─────────
 let assistantMsg = completion.choices?.[0]?.message?.content ?? "";
 
-// ▸ delete leading  ```json / ``` and trailing ```
+// ▸ delete leading  ```json / ``` and trailing ```
 if (assistantMsg.startsWith("```")) {
     assistantMsg = assistantMsg
       .replace(/^```(?:json)?\s*/i, "")   // opening fence
@@ -106,20 +106,20 @@ exports.confirmReceipt = (req, res) => {
               : { description: s, price: null };
           })
       : [];
-  const receiptSql = `
-    INSERT INTO receipts
-      (receipt_total, receipt_date, payment_method, store_address, store_phone, category_id)
-    VALUES (?, ?, ?, ?, ?, ?)
+   const receiptSql = `
+     INSERT INTO receipts
+       (user_id, receipt_total, receipt_date, payment_method, store_address, store_phone, category_id)
+     VALUES (?, ?, ?, ?, ?, ?, ?)
   `;
-  const receiptParams = [
-    r.total,
-    r.dateOfPurchase,
-    r.paymentMethod || "",
-    r.storeAddress  || "",
-    r.storePhone    || "",
-    r.category_id      || null  
-  ];
-
+   const receiptParams = [
+     r.userId,                  // ← now required
+     r.total,
+     r.dateOfPurchase,
+     r.paymentMethod  || "",
+     r.storeAddress   || "",
+     r.storePhone     || "",
+     r.category_id    || null  
+   ];
   dbPromise
     .then(db => {
       // 2) insert receipt
