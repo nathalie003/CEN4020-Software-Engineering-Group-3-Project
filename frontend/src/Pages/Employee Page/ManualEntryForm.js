@@ -42,6 +42,7 @@ export default function ManualEntryForm({
       total:          initialData.total          || f.total,
       paymentMethod:      initialData.paymentMethod || f.paymentMethod,
       category_id:       initialData.category_id       || f.category_id,
+      subcategory: initialData.subcategory || f.subcategory
     }));
   }, [initialData]);
 

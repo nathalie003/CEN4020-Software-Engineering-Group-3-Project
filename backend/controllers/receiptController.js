@@ -113,7 +113,7 @@ exports.confirmReceipt = (req, res) => {
     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
   `;
   const receiptParams = [
-    r.userId,                   // must come from your front‑end payload
+    r.user_id,                   // must come from your front‑end payload
     total,                      // pure number, e.g. 50.59
     receiptDate,                // ISO date, e.g. "2025-01-20"
     r.paymentMethod || "",
@@ -121,7 +121,7 @@ exports.confirmReceipt = (req, res) => {
     r.storePhone    || "",
     r.storeWebsite || null,
     r.category_id   || null,
-    r.subcategory_name || null  // <-- your new subcategory field
+    r.subcategory_name || ""  // <-- your new subcategory field
   ];
 
   dbPromise.then(db => {

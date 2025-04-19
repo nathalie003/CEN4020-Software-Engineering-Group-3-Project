@@ -76,7 +76,7 @@ function EmployeeLanding() {
   // 1. handler
   const handleSaveToDb = async (formData) => {
     try {
-      const payload = {userId: sessionStorage.getItem("userId"), ...formData};
+      const payload = {user_id: userId, ...formData};
       const res = await fetch("http://localhost:5000/api/receipts/confirm-receipt", {
            method: "POST",
            headers: { "Content-Type": "application/json" },
@@ -84,7 +84,7 @@ function EmployeeLanding() {
         });
       const json = await res.json();
       if (res.ok) {
-        alert("Receipt was successfully uploaded, Receipt ID " + json.receiptId);
+        showSuccessToast("Receipt saved!");
         setManualData(null);      // clear the form / reset state
         setNotifications(n => [
           {
@@ -103,6 +103,15 @@ function EmployeeLanding() {
     }
   };
 
+  const [toastMessage, setToastMessage] = useState("");
+  const [showToast, setShowToast] = useState(false);
+  const showSuccessToast = (message) => {
+    console.log("Triggering toast with message:", message);
+    setToastMessage(message);
+    setShowToast(true);
+    setTimeout(() => setShowToast(false), 6000); // hide after 3s
+  };
+
   const [view, setView] = useState("expenseReportList");
   const [viewKey, setViewKey] = useState(0);
 
@@ -113,15 +122,20 @@ function EmployeeLanding() {
 
   return (
     <div className="EmployeeLanding">
+      {showToast && (
+        <div id="toast">
+          {toastMessage}
+        </div>
+      )}
       <div className="Employee-sidebar">
         <div className="contentHolder">
           <div className="navbar-logo-container">
             <img src={logo} className="navbar-logo" alt="logo" />
           </div>
           <nav className="navbar">
-            <button className="Buttonoption" onClick={() => handleViewChange("notifications")}>Notifications</button>
             <button className="Buttonoption" onClick={() => handleViewChange("uploadReceipt")}>Upload Receipt</button>
             <button className="Buttonoption" onClick={() => handleViewChange("expenseReportList")}>View Reports</button>
+            <button className="Buttonoption" onClick={() => handleViewChange("notifications")}>Notifications</button>
           </nav>
         </div>
       </div>
