@@ -13,7 +13,23 @@ function EmployeeLanding() {
     const [manualEntry, setManualEntry] = useState('');
     const [receiptSummary, setReceiptSummary] = useState(null);
     const [user, setUser] = useState(null);
-    const userId = sessionStorage.getItem("userId");
+    const [userId, setUserId] = useState(null);
+
+    useEffect(() => {
+      const storedUser = sessionStorage.getItem("user");
+      if (storedUser) {
+        setUser(JSON.parse(storedUser));
+      }
+    }, []);
+
+    useEffect(() => {
+      if (user) {
+        setUserId(user.user_id);
+        console.log("User ID:", user.user_id);
+      }
+    }, [user]);
+
+
     const [manualData, setManualData] = useState(null);
     const [categories, setCategories] = useState([]);
     const [notifications, setNotifications] = useState([]);
@@ -31,7 +47,7 @@ function EmployeeLanding() {
       .then((res) => res.json())
       .then((data) => setUser(data))
       .catch((err) => console.error("Error fetching user:", err));
-    }, [userId, user]);
+    }, [user]);
 
 
   const handleFileSubmit = async (file) => {
@@ -103,9 +119,9 @@ function EmployeeLanding() {
             <img src={logo} className="navbar-logo" alt="logo" />
           </div>
           <nav className="navbar">
-            <button className="Buttonoption" onClick={() => setView("notifications")}>Notifications</button>
-            <button className="Buttonoption" onClick={() => setView("uploadReceipt")}>Upload Receipt</button>
-            <button className="Buttonoption" onClick={() => setView("expenseReportList")}>View Reports</button>
+            <button className="Buttonoption" onClick={() => handleViewChange("notifications")}>Notifications</button>
+            <button className="Buttonoption" onClick={() => handleViewChange("uploadReceipt")}>Upload Receipt</button>
+            <button className="Buttonoption" onClick={() => handleViewChange("expenseReportList")}>View Reports</button>
           </nav>
         </div>
       </div>

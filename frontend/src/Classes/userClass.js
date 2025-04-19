@@ -2,18 +2,17 @@
 
 // Base User class
 class User {
-    constructor(user_id, username, email, role) {
+    constructor(user_id, username, role) {
       this.user_id = user_id;
       this.username = username;
-      this.email = email;
       this.role = role;
     }
   }
   
   // Employee class extending User
   class Employee extends User {
-    constructor(user_id, username, employee_id) {
-      super(user_id, username);
+    constructor(user_id, username, role, employee_id) {
+      super(user_id, username, role);
       this.employee_id = employee_id;
     }
   
@@ -25,8 +24,8 @@ class User {
   
   // Supervisor class extending User
   class Supervisor extends User {
-    constructor(user_id, username,supervisor_id) {
-      super(user_id, username);
+    constructor(user_id, username, role, supervisor_id) {
+      super(user_id, username, role);
       this.supervisor_id = supervisor_id;
     }
   

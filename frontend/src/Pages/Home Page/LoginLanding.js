@@ -47,12 +47,13 @@ function LoginLanding() {
 
         const res = await fetch(apiUrl);
         const data = await res.json();
+        console.log(data)
 
         let currentUser;
         if (role === "employee") {
-          currentUser = new Employee(userId, username, data.employee_id);
+          currentUser = new Employee(userId, username, role, data.employee_id);
         } else if (role === "supervisor") {
-          currentUser = new Supervisor(userId, username, data.supervisor_id);
+          currentUser = new Supervisor(userId, username, role, data.supervisor_id);
         }
 
         console.log("Constructed User Object:", currentUser); // 🔍 Check the object
