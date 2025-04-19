@@ -5,6 +5,7 @@ export default function ReceiptUploadForm({ onFileSelect }) {
   const [previewUrl, setPreviewUrl] = useState(null);
   const fileInputRef = useRef();
   const cameraInputRef = useRef();
+  const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -14,10 +15,15 @@ export default function ReceiptUploadForm({ onFileSelect }) {
   };
 
   const handleUploadClick = () => {
-    // you can replace window.confirm with a nicer modal if you want
-    if (window.confirm("Use your camera? OK = Camera, Cancel = Pick a file")) {
-      cameraInputRef.current.click();
+    if (isMobile) {
+      // on mobile, give camera vs file choice
+      if (window.confirm("Would you like to upload your receipt using the camera?")) {
+        cameraInputRef.current.click();
+      } else {
+        fileInputRef.current.click();
+      }
     } else {
+      // on desktop just open file picker
       fileInputRef.current.click();
     }
   };
