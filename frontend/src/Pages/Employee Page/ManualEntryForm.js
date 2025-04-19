@@ -12,6 +12,7 @@ export default function ManualEntryForm({
         storeName:      '',
         storeAddress:   '',
         storePhone:    '',
+        storeWebsite: '',
         dateOfPurchase: '',
         items: [ { description: "", price: "" } ],
         total:          '',
@@ -33,6 +34,7 @@ export default function ManualEntryForm({
       storeName:      initialData.storeName      || f.storeName,
       storeAddress:   initialData.storeAddress   || f.storeAddress,
       storePhone:    initialData.storePhone    || f.storePhone,
+      storeWebsite: initialData.storeWebsite || f.storeWebsite,
       dateOfPurchase: initialData.dateOfPurchase || f.dateOfPurchase,
       items: Array.isArray(initialData.items)
       ? initialData.items.map(it => ({ description: it.description, price: it.price }))
@@ -86,6 +88,16 @@ export default function ManualEntryForm({
                     value={formData.storeAddress}
                     onChange={handleChange}
                     placeholder="Address"
+                />
+            </label>
+            <label>
+                Store Website:
+                <input className="fullWidthInput"
+                    type="text"
+                    name="storeWebsite"
+                    value={formData.storeWebsite}
+                    onChange={handleChange}
+                    placeholder="Website"
                 />
             </label>
             <div className="twoColumnLayout">
