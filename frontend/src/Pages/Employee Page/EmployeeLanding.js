@@ -46,7 +46,7 @@ function EmployeeLanding() {
     const formData = new FormData();
     formData.append('receiptImage', file);
     try {
-      const response = await fetch('http://localhost:5000/api/upload-receipt', {
+      const response = await fetch('http://localhost:5000/api/receipts/upload-receipt', {
         method: 'POST',
         body: formData,
       });
@@ -64,11 +64,20 @@ function EmployeeLanding() {
   // 1. handler
   const handleSaveToDb = async (formData) => {
     try {
-      const res = await fetch("http://localhost:5000/api/confirm-receipt", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+      // const res = await fetch("http://localhost:5000/api/receipts/confirm-receipt", {
+      //   method: "POST",
+      //   headers: { "Content-Type": "application/json" },
+      //   body: JSON.stringify(formData),
+      // });
+      const payload = {
+           userId: sessionStorage.getItem("userId"),
+           ...formData
+      };
+      const res = await fetch("http://localhost:5000/api/receipts/confirm-receipt", {
+           method: "POST",
+           headers: { "Content-Type": "application/json" },
+           body: JSON.stringify(payload),
+        });
       const json = await res.json();
       if (res.ok) {
         alert("Saved! receipt ID " + json.receiptId);
