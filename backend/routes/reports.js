@@ -1,7 +1,7 @@
 // backend/routes/reports.js
 const express = require('express');
 const router  = express.Router();
-const reportController = require('../controllers/reportController copy.js');
+const reportController = require('../controllers/reportController.js');
 
 
 router.get('/getReceipt/:id', reportController.getReceipt);

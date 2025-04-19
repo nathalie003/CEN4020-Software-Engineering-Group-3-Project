@@ -221,6 +221,41 @@ button.Buttonoption {
     flex-direction: column;
     justify-content: center;
   }
-
   
+  .navbar .Buttonoption + .Buttonoption {
+    margin-top: 8px;   /* space between buttons */
+  }
+  
+}
+
+/* ─── Notifications pane ───────────────────────────────────────────────── */
+.notifications-view {
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 16px 0;
+  max-height: 240px;
+  overflow-y: auto;
+}
+.notifications-view h3 {
+  margin-top: 0;
+  font-size: 1.25rem;
+  color: var(--accent-dark-green);
+}
+.notification {
+  border-bottom: 1px solid #e0e0e0;
+  padding: 8px 0;
+}
+.notification:last-child {
+  border-bottom: none;
+}
+.notification p {
+  margin: 0;
+}
+.notification small {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.75rem;
+  color: #666;
 }
