@@ -5,7 +5,7 @@ import './EmployeeLanding.css';
 import logo from '../../Components/Images/CashPilot.png';
 import ManualEntryForm from './ManualEntryForm.js';
 import ReceiptUploadForm from './ReceiptUploadForm.js';
-// import UserExpenseReportList from './UserExpenseReportList.js';
+import UserExpenseReportList from './UserExpenseReportList.js';
 
 function EmployeeLanding() {
     const [menuOpen, setMenuOpen] = useState(false);
@@ -76,11 +76,7 @@ function EmployeeLanding() {
   // 1. handler
   const handleSaveToDb = async (formData) => {
     try {
-<<<<<<< HEAD
-      const payload = {userId: sessionStorage.getItem("userId"), ...formData};
-=======
       const payload = {user_id: userId, ...formData};
->>>>>>> 09ce522a02c87a801766ad52a2031f3e8b321657
       const res = await fetch("http://localhost:5000/api/receipts/confirm-receipt", {
            method: "POST",
            headers: { "Content-Type": "application/json" },
@@ -88,11 +84,7 @@ function EmployeeLanding() {
         });
       const json = await res.json();
       if (res.ok) {
-<<<<<<< HEAD
-        alert("Receipt was successfully uploaded, Receipt ID " + json.receiptId);
-=======
         showSuccessToast("Receipt saved!");
->>>>>>> 09ce522a02c87a801766ad52a2031f3e8b321657
         setManualData(null);      // clear the form / reset state
         setNotifications(n => [
           {
@@ -141,15 +133,9 @@ function EmployeeLanding() {
             <img src={logo} className="navbar-logo" alt="logo" />
           </div>
           <nav className="navbar">
-<<<<<<< HEAD
-            <button className="Buttonoption" onClick={() => setView("notifications")}>Notifications</button>
-            <button className="Buttonoption" onClick={() => setView("uploadReceipt")}>Upload Receipt</button>
-            <button className="Buttonoption" onClick={() => setView("expenseReportList")}>View Reports</button>
-=======
             <button className="Buttonoption" onClick={() => handleViewChange("uploadReceipt")}>Upload Receipt</button>
             <button className="Buttonoption" onClick={() => handleViewChange("expenseReportList")}>View Reports</button>
             <button className="Buttonoption" onClick={() => handleViewChange("notifications")}>Notifications</button>
->>>>>>> 09ce522a02c87a801766ad52a2031f3e8b321657
           </nav>
         </div>
       </div>
@@ -168,15 +154,11 @@ function EmployeeLanding() {
             }
           </div>
         )}
-<<<<<<< HEAD
-        {/* {view === "expenseReportList" && (
-=======
         {view === "expenseReportList" && (
->>>>>>> 09ce522a02c87a801766ad52a2031f3e8b321657
           <div className="expenseReportListContainer">
             <UserExpenseReportList key={viewKey} user={user} />
          </div>
-        )} */}
+        )}
         {view === "uploadReceipt" && (
           <div className="uploadReceipt">
             <div className="uploadReceiptHeader">
