@@ -10,6 +10,7 @@ import "../../Design Functionality/fslightbox.js";
 import { useNavigate } from "react-router-dom";
 // import "./ViewDashboard.css";
 import "./dash.css";
+import "boxicons";
 
 window.$ = $;
 window.jQuery = $;
@@ -18,6 +19,8 @@ function ViewDashboard() {
   const [employees, setEmployees] = useState([]);
   const [availableEmployees, setAvailableEmployees] = useState([]); // New available employees
   const [selectedEmployees, setSelectedEmployees] = useState([]); // Selected employee IDs
+  const [username, setUsername] = useState("");
+  const [pendingRequestsCount, setPendingRequestsCount] = useState(0);
 
   const [searchTerm, setSearchTerm] = useState("");
   const [barData, setBarData] = useState({});
@@ -39,6 +42,7 @@ function ViewDashboard() {
       const userId = user.user_id; // match your DB fields!
       const supervisorId = user.supervisor_id; // match your DB fields!
       setSupervisorId(supervisorId); // Set the supervisor ID in state
+      setUsername(user.username);
 
       console.log("User ID:", userId);
       console.log("Supervisor ID:", supervisorId);
@@ -61,21 +65,25 @@ function ViewDashboard() {
 
   const fetchAssignedEmployees = async () => {
     if (!supervisorId) return;
-  
+
     try {
-      const response = await fetch(`http://localhost:5000/api/manages/${supervisorId}`);
+      const response = await fetch(
+        `http://localhost:5000/api/manages/${supervisorId}`
+      );
       if (!response.ok) {
         throw new Error("Failed to fetch assigned employees.");
       }
       const data = await response.json();
-      console.log("🟡 Employees already assigned to this supervisor (manages table):", data);
+      console.log(
+        "🟡 Employees already assigned to this supervisor (manages table):",
+        data
+      );
       setEmployees(data);
     } catch (error) {
       console.error("Error fetching assigned employees:", error);
       setEmployees([]); // fallback to empty
     }
   };
-  
 
   const handleAssignEmployees = async () => {
     if (selectedEmployees.length === 0 || !supervisorId) {
@@ -84,13 +92,15 @@ function ViewDashboard() {
     }
 
     try {
-      for (const employeeId of selectedEmployees) {
-        await fetch(`http://localhost:5000/api/manages/assign`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ supervisorId, employeeId }),
-        });
-      }
+      await fetch(`http://localhost:5000/api/manages/assign`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          supervisorId,
+          employeeIds: selectedEmployees,
+        }),
+      });
+
       alert("Employees assigned successfully!");
       setSelectedEmployees([]);
       setView("viewAssignedEmployees"); // Go back to view assigned
@@ -174,7 +184,10 @@ function ViewDashboard() {
                   href="#!"
                   onClick={() => {
                     fetchAvailableEmployees();
-                    console.log("🟣 Available employees for assignment:", availableEmployees);
+                    console.log(
+                      "🟣 Available employees for assignment:",
+                      availableEmployees
+                    );
                     setView("addAssignedEmployees");
                   }}
                 >
@@ -238,35 +251,72 @@ function ViewDashboard() {
         {/* Content */}
         <div id="content-wrapper" className="d-flex flex-column">
           <div id="content">
-            {/* Topbar */}
-            <nav className="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+            <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+              {/* <!-- Sidebar Toggle (Topbar) --> */}
               <button
                 id="sidebarToggleTop"
-                className="btn btn-link d-md-none rounded-circle mr-3"
+                class="btn btn-link d-md-none rounded-circle mr-3"
               >
-                <i className="fa fa-bars"></i>
+                <i class="fa fa-bars"></i>
               </button>
 
-              {/* Search Bar */}
-              <form className="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                <div className="input-group">
+              {/* <!-- Topbar Search --> */}
+              <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                <div class="input-group">
                   <input
                     type="text"
-                    className="form-control bg-light border-0 small"
+                    class="form-control bg-light border-0 small"
                     placeholder="Search for..."
                     aria-label="Search"
                   />
-                  <div className="input-group-append">
-                    <button className="btn btn-primary" type="button">
-                      <i className="fas fa-search fa-sm"></i>
+                  <div class="input-group-append">
+                    <button class="btn btn-primary" type="button">
+                      <i class="fas fa-search fa-sm"></i>
                     </button>
                   </div>
                 </div>
               </form>
 
-              {/* Topbar Navbar */}
-              <ul className="navbar-nav ml-auto">
-                {/* Alerts */}
+              {/* <!-- Topbar Navbar --> */}
+              <ul class="navbar-nav ml-auto">
+                {/* <!-- Nav Item - Search Dropdown (Visible Only XS) --> */}
+                <li class="nav-item dropdown no-arrow d-sm-none">
+                  <a
+                    class="nav-link dropdown-toggle"
+                    href="#"
+                    id="searchDropdown"
+                    role="button"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
+                    <i class="fas fa-search fa-fw"></i>
+                  </a>
+                  {/* <!-- Dropdown - Messages --> */}
+                  <div
+                    class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
+                    aria-labelledby="searchDropdown"
+                  >
+                    <form class="form-inline mr-auto w-100 navbar-search">
+                      <div class="input-group">
+                        <input
+                          type="text"
+                          class="form-control bg-light border-0 small"
+                          placeholder="Search for..."
+                          aria-label="Search"
+                          aria-describedby="basic-addon2"
+                        />
+                        <div class="input-group-append">
+                          <button class="btn btn-primary" type="button">
+                            <i class="fas fa-search fa-sm"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </li>
+
+                {/* <!-- Nav Item - Alerts --> */}
                 <li className="nav-item dropdown no-arrow mx-1">
                   <a
                     className="nav-link dropdown-toggle"
@@ -277,70 +327,65 @@ function ViewDashboard() {
                     aria-haspopup="true"
                     aria-expanded="false"
                   >
-                    <i className="bx bxs-bell"></i>
-                    <span className="badge badge-danger badge-counter">3+</span>
+                    <span className="badge badge-danger badge-counter">
+                      <i id="dashbellicon" class="bx bxs-bell"></i> 3+
+                    </span>
                   </a>
                   <div
                     className="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                     aria-labelledby="alertsDropdown"
                   >
                     <h6 className="dropdown-header">Alerts Center</h6>
+
                     <a
-                      className="dropdown-item d-flex align-items-center"
-                      href="#!"
+                      class="dropdown-item text-center small text-gray-500"
+                      href="#"
                     >
-                      <div className="mr-3">
-                        <div className="icon-circle bg-primary">
-                          <i className="fas fa-file-alt text-white"></i>
-                        </div>
-                      </div>
-                      <div>
-                        <div className="small text-gray-500">
-                          December 12, 2019
-                        </div>
-                        <span className="font-weight-bold">
-                          A new monthly report is ready to download!
-                        </span>
-                      </div>
+                      Show All Alerts
                     </a>
                   </div>
                 </li>
 
-                {/* User Information */}
-                <li className="nav-item dropdown no-arrow">
+                <div class="topbar-divider d-none d-sm-block"></div>
+
+                {/* <!-- Nav Item - User Information --> */}
+                <li class="nav-item dropdown no-arrow">
                   <a
-                    className="nav-link dropdown-toggle"
-                    href="#!"
+                    class="nav-link dropdown-toggle"
+                    href="#"
                     id="userDropdown"
                     role="button"
                     data-toggle="dropdown"
                     aria-haspopup="true"
                     aria-expanded="false"
                   >
-                    <span className="mr-2 d-none d-lg-inline text-gray-600 small">
-                      Supervisor
+                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">
+                      {username}
                     </span>
+                    <i id="dashusericon" class="bx bxs-user-circle"></i>
                   </a>
+                  {/* <!-- Dropdown - User Information --> */}
                   <div
-                    className="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                    class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                     aria-labelledby="userDropdown"
                   >
-                    <a className="dropdown-item" href="#!">
-                      <i className="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                    <a class="dropdown-item" href="#">
+                      <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                       Profile
                     </a>
-                    <a className="dropdown-item" href="#!">
-                      <i className="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                    <a class="dropdown-item" href="#">
+                      <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                       Settings
                     </a>
-                    <div className="dropdown-divider"></div>
+
+                    <div class="dropdown-divider"></div>
                     <a
-                      className="dropdown-item"
-                      href="#!"
+                      class="dropdown-item"
+                      href="#"
                       data-toggle="modal"
                       data-target="#logoutModal"
                     >
-                      <i className="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                      <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                       Logout
                     </a>
                   </div>
@@ -352,11 +397,44 @@ function ViewDashboard() {
             <div className="container-fluid">
               {view === "dashboard" && (
                 <>
-                  <h1 className="h3 mb-2 text-gray-800">Dashboard</h1>
+                  <div className="d-sm-flex align-items-center justify-content-between mb-4">
+                    <h1 className="h3 mb-0 text-gray-800">Dashboard</h1>
+                    <a
+                      href="#"
+                      className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
+                    >
+                      <i id="dashdownloadicon" className="bx bxs-download"></i>{" "}
+                      Generate Report
+                    </a>
+                  </div>
+
                   <p>
                     Welcome to the Supervisor Dashboard. Here you can view
                     employee reports and statistics.
                   </p>
+
+                  {/* Pending Requests Card */}
+                  <div className="row">
+                    <div className="col-xl-3 col-md-6 mb-4">
+                      <div className="card border-left-warning shadow h-100 py-2">
+                        <div className="card-body">
+                          <div className="row no-gutters align-items-center">
+                            <div className="col mr-2">
+                              <div className="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                Pending Requests
+                              </div>
+                              <div className="h5 mb-0 font-weight-bold text-gray-800">
+                                {pendingRequestsCount}
+                              </div>
+                            </div>
+                            <div className="col-auto">
+                              <i className="fas fa-comments fa-2x text-gray-300"></i>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </>
               )}
 

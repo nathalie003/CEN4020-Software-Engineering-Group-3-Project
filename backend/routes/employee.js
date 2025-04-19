@@ -1,12 +1,14 @@
-// backend/routes/supervisor.js
+// backend/routes/employee.js
 const router = require("express").Router();
-// const { Employee } = require("../models/userClass");
 const employeeController = require("../controllers/employeeController");
 
-router.post("/analytics", employeeController.analytics);
+// Route to get ALL employees (should be listed FIRST!)
+router.get("/all", employeeController.getAllEmployees);
 
+// Route to get a single employee by userId
 router.get("/:userId", employeeController.getEmployeeByUserId);
 
-router.get('/all', employeeController.getAllEmployees);
+// Route for employee analytics
+router.post("/analytics", employeeController.analytics);
 
 module.exports = router;

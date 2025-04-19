@@ -30,29 +30,41 @@ exports.getAssignedEmployees = async (req, res) => {
   }
 };
 
-// Assign an employee to a supervisor
+// Assign multiple employees to a supervisor
 exports.assignEmployee = async (req, res) => {
-  const { supervisorId, employeeId } = req.body;
-
-  if (!supervisorId || !employeeId) {
-    return res.status(400).json({ error: "Missing supervisorId or employeeId" });
-  }
-
-  try {
-    const db = await dbPromise;
-    const supervisor = new Supervisor(supervisorId);  // create Supervisor instance
-    supervisor.assignEmployeeToSupervisor(db, employeeId, (err, result) => {
-      if (err) {
-        console.error("Error assigning employee:", err);
-        return res.status(500).json({ error: "Failed to assign employee" });
-      }
-      res.json({ message: "Employee assigned successfully", result });
-    });
-  } catch (err) {
-    console.error("Server error during assignment:", err);
-    res.status(500).json({ error: "Server error" });
-  }
-};
+    const { supervisorId, employeeIds } = req.body;
+  
+    if (!supervisorId || !employeeIds || !Array.isArray(employeeIds)) {
+      return res.status(400).json({ error: "Missing or invalid supervisorId or employeeIds" });
+    }
+  
+    try {
+      const db = await dbPromise;
+      const supervisor = new Supervisor(supervisorId);
+  
+      // assign each employee
+      const promises = employeeIds.map((employeeId) => {
+        return new Promise((resolve, reject) => {
+          supervisor.assignEmployeeToSupervisor(db, employeeId, (err, result) => {
+            if (err) {
+              reject(err);
+            } else {
+              resolve(result);
+            }
+          });
+        });
+      });
+  
+      await Promise.all(promises);
+  
+      res.json({ message: "All employees assigned successfully" });
+    } catch (err) {
+      console.error("Server error during assignment:", err);
+      res.status(500).json({ error: "Server error" });
+    }
+  };
+  
+  
 
 // Unassign an employee from a supervisor
 exports.unassignEmployee = async (req, res) => {

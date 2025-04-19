@@ -8,12 +8,66 @@
     --white: #ffffff;
 }
 
-/* Full height layout */
-html, body, #page-top, #wrapper {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    background-color: var(--main-green);
+/* Topbar */
+.topbar {
+    height: 4.375rem;
+}
+
+.mb-4, .my-4 {
+    margin-bottom: 1.5rem !important;
+}
+
+
+
+.shadow {
+    box-shadow: 0 .15rem 1.75rem 0 rgba(58, 59, 69, .15) !important;
+}
+
+.bg-white {
+    background-color: #fff !important;
+}
+
+.navbar-expand {
+    flex-flow: row nowrap;
+}
+
+.navbar {
+    position: relative;
+    display: flex;
+
+    align-items: center;
+}
+
+.navbar.navbar-expand.navbar-light.bg-white.topbar.mb-4.static-top.shadow{
+    padding: 4rem;
+}
+article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
+    display: block;
+}
+.navbar-nav.ml-auto{
+    margin-right: 4rem !important;
+    margin-top: 1.5rem !important;
+}
+.input-group{
+    margin-top: 3rem !important;
+    margin-left: -2rem !important;
+    
+}
+.dashbellicon{
+    color:red !important;
+    z-index: 1 !important;
+}
+
+*, ::after, ::before {
+    box-sizing: border-box;
+}
+.h3, h3 {
+    font-size: 1.75rem !important;
+}
+
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+    font-weight: 400;
+    line-height: 1.2;
 }
 
 /* Sidebar */
@@ -89,36 +143,6 @@ html, body, #page-top, #wrapper {
     flex-direction: column;
 }
 
-/* Topbar */
-.topbar {
-    background-color: var(--white) !important;
-    border-bottom: 1px solid var(--accent-light-green-secondary);
-    padding: 0.5rem 1rem;
-    height: 4rem;
-    display: flex;
-    align-items: center;
-    position: sticky;
-    top: 0;
-    z-index: 1030;
-}
-
-/* Topbar text */
-.topbar .navbar-nav .nav-link,
-.topbar .navbar-nav .nav-link span,
-.topbar .navbar-nav .dropdown-menu a {
-    color: var(--black) !important;
-}
-
-/* Topbar input (search bar) */
-.topbar .form-control {
-    background-color: #f8f9fc;
-}
-
-/* Page content area */
-.container-fluid {
-    padding: 2rem;
-    flex-grow: 1;
-}
 
 /* Text coloring for dashboard, tables, etc */
 h1, p, .container-fluid p, .container-fluid h1, .table th, .table td {

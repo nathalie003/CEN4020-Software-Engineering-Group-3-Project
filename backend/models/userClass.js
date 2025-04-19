@@ -107,7 +107,7 @@ class Supervisor extends User {
     db.query(sql, [this.id], callback);
   }
 
-  assignEmployee(db, employeeId, callback) {
+  assignEmployeeToSupervisor(db, employeeId, callback) {
     const checkSql = "SELECT * FROM manages WHERE supervisor_id = ? AND employee_id = ?";
     const insertSql = "INSERT INTO manages (supervisor_id, employee_id) VALUES (?, ?)";
   
