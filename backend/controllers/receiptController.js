@@ -20,6 +20,7 @@ exports.uploadReceipt = async (req, res) => {
 
   const systemPrompt = `
 You are a receipt‑parsing assistant.
+Note: for the category entry, select from these options: Travel, Meals, Office Supplies, Transportation, Training and Education, Communication, Software and Subscriptions, Equipment, Entertainment, or Miscellaneous.
 Extract ONLY the following and reply **valid JSON**:
 {
   "storeName":      string,
@@ -30,7 +31,8 @@ Extract ONLY the following and reply **valid JSON**:
   "paymentMethod":  string,
   "total":          string,
   "items":          [ { "description": string, "price": number } ],
-  "category":       string
+  "category":       string, 
+  "subcategory":    string,
 }`;
 
   let completion;
@@ -107,7 +109,7 @@ exports.confirmReceipt = (req, res) => {
   const receiptSql = `
     INSERT INTO receipts
       (user_id, receipt_total, receipt_date, payment_method,
-       store_address, store_phone, category_id, subcategory_name)
+       store_address, store_phone, store_website, category_id, subcategory_name)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
   `;
   const receiptParams = [
@@ -117,6 +119,7 @@ exports.confirmReceipt = (req, res) => {
     r.paymentMethod || "",
     r.storeAddress  || "",
     r.storePhone    || "",
+    r.storeWebsite || null,
     r.category_id   || null,
     r.subcategory_name || null  // <-- your new subcategory field
   ];

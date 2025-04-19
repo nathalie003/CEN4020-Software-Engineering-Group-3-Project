@@ -13,9 +13,27 @@ function EmployeeLanding() {
     const [manualEntry, setManualEntry] = useState('');
     const [receiptSummary, setReceiptSummary] = useState(null);
     const [user, setUser] = useState(null);
-    const userId = sessionStorage.getItem("userId");
+    const [userId, setUserId] = useState(null);
+
+    useEffect(() => {
+      const storedUser = sessionStorage.getItem("user");
+      if (storedUser) {
+        setUser(JSON.parse(storedUser));
+      }
+    }, []);
+
+    useEffect(() => {
+      if (user) {
+        setUserId(user.user_id);
+        console.log("User ID:", user.user_id);
+      }
+    }, [user]);
+
+
     const [manualData, setManualData] = useState(null);
     const [categories, setCategories] = useState([]);
+    const [notifications, setNotifications] = useState([]);
+
       // fetch categories once
   useEffect(() => {
       fetch("http://localhost:5000/api/category")
@@ -24,19 +42,13 @@ function EmployeeLanding() {
         .catch(console.error);
    }, []);
    useEffect(() => {
-    if (!userId) return;
+    if (!userId || user) return; // Skip fetch if userId is missing or user is already set
     fetch(`http://localhost:5000/api/user/${userId}`)
-      .then((res) => {
-        if (!res.ok) throw new Error("User fetch failed");
-        return res.json();
-      })
+      .then((res) => res.json())
       .then((data) => setUser(data))
       .catch((err) => console.error("Error fetching user:", err));
-  }, [userId]);
+    }, [user]);
 
-  const handleFileChange = (e) => {
-    setSelectedFile(e.target.files[0]);
-  };
 
   const handleFileSubmit = async (file) => {
     if (!file) {
@@ -64,15 +76,7 @@ function EmployeeLanding() {
   // 1. handler
   const handleSaveToDb = async (formData) => {
     try {
-      // const res = await fetch("http://localhost:5000/api/receipts/confirm-receipt", {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify(formData),
-      // });
-      const payload = {
-           userId: sessionStorage.getItem("userId"),
-           ...formData
-      };
+      const payload = {userId: sessionStorage.getItem("userId"), ...formData};
       const res = await fetch("http://localhost:5000/api/receipts/confirm-receipt", {
            method: "POST",
            headers: { "Content-Type": "application/json" },
@@ -80,8 +84,16 @@ function EmployeeLanding() {
         });
       const json = await res.json();
       if (res.ok) {
-        alert("Saved! receipt ID " + json.receiptId);
+        alert("Receipt was successfully uploaded, Receipt ID " + json.receiptId);
         setManualData(null);      // clear the form / reset state
+        setNotifications(n => [
+          {
+            id:    Date.now(),
+            message: `Receipt #${json.receiptId} uploaded → report created.`,
+            time:    new Date()
+          },
+          ...n
+        ]);
       } else {
         alert("DB errors: " + json.message);
       }
@@ -90,12 +102,14 @@ function EmployeeLanding() {
       alert("Network / server error.");
     }
   };
-  // const traveltoSup = async (e) => {
-  //   e.preventDefault();
-  //   window.location.href = '/supervisor-landing';
-  // };
 
-  const [view, setView] = useState("expenseReportList"); // default view
+  const [view, setView] = useState("expenseReportList");
+  const [viewKey, setViewKey] = useState(0);
+
+  const handleViewChange = (newView) => {
+    setView(newView);
+    setViewKey(prev => prev + 1);
+  };
 
   return (
     <div className="EmployeeLanding">
@@ -105,15 +119,30 @@ function EmployeeLanding() {
             <img src={logo} className="navbar-logo" alt="logo" />
           </div>
           <nav className="navbar">
-            <button className="Buttonoption" onClick={() => setView("uploadReceipt")}>Upload Receipt</button>
-            <button className="Buttonoption" onClick={() => setView("expenseReportList")}>View Reports</button>
+            <button className="Buttonoption" onClick={() => handleViewChange("notifications")}>Notifications</button>
+            <button className="Buttonoption" onClick={() => handleViewChange("uploadReceipt")}>Upload Receipt</button>
+            <button className="Buttonoption" onClick={() => handleViewChange("expenseReportList")}>View Reports</button>
           </nav>
         </div>
       </div>
       <div className="Employee-main">
+          {view === "notifications" && (
+          <div className="notifications-view">
+            <h3>Notifications</h3>
+            {notifications.length === 0
+              ? <p>No new notifications</p>
+              : notifications.map(n => (
+                  <div key={n.id} className="notification">
+                    <p>{n.message}</p>
+                    <small>{n.time.toLocaleString()}</small>
+                  </div>
+                ))
+            }
+          </div>
+        )}
         {view === "expenseReportList" && (
           <div className="expenseReportListContainer">
-            <UserExpenseReportList user={user} />
+            <UserExpenseReportList key={viewKey} user={user} />
          </div>
         )}
         {view === "uploadReceipt" && (

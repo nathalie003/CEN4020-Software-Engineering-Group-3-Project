@@ -16,6 +16,7 @@ app.use('/api/receipts',    require('./routes/receipts'));    // e.g. POST /api/
 app.use('/api/category',  require('./routes/category'));    // e.g. GET  /api/categories, POST /api/categories
 app.use("/api/user", require("./routes/user"));
 app.use('/api/supervisor', require('./routes/supervisor'));  // e.g. POST /api/supervisor/analytics
+app.use('/api/reports', require('./routes/reports'))
 app.use('/api/employee', require('./routes/employee'));  // e.g. POST /api/employee/analytics
 app.use('/api/manages', require('./routes/manages'));
 
