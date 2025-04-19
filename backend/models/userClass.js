@@ -1,10 +1,8 @@
 //backend/models/userClass.js
 class User {
-  constructor(user_id, username, password, email, role) {
+  constructor(user_id, username, role) {
     this.user_id = user_id;
     this.username = username;
-    this.password = password;
-    this.email = email;
     this.role = role;
   }
 
@@ -38,8 +36,8 @@ class User {
       if (err) return callback(err, null);
       if (results.length === 0) return callback(null, null); // No user found
 
-      const { id, username, password, email, role } = results[0];
-      const user = new User(id, username, password, email, role);
+      const { id, username,  role } = results[0];
+      const user = new User(id, username, role);
       callback(null, user);
     });
   }
@@ -47,52 +45,52 @@ class User {
 
 // Employee Class
 class Employee extends User {
-  constructor(user_id, username, password, email, role) {
-    super(user_id, username, password, email, role);
+  constructor(user_id, username, role, employee_id) {
+    super(user_id, username, role, employee_id);
   }
 
   viewExpenseReports(db, callback) {
     const sql = "SELECT * FROM expense_report WHERE employee_id = ?";
-    db.query(sql, [this.id], callback);
+    db.query(sql, [this.employee_id], callback);
   }
 
   viewDashboard(db, callback) {
     const sql = "SELECT * FROM expense_report WHERE employee_id = ?";
-    db.query(sql, [this.id], callback);
+    db.query(sql, [this.employee_id], callback);
   }
 }
 
 // Supervisor Class
 class Supervisor extends User {
-  constructor(id, username, password, email, role) {
-    super(id, username, password, email, role);
+  constructor(id, username, role, supervisor_id) {
+    super(id, username, role, supervisor_id);
   }
 
   // View all expense reports from employees
   viewExpenseReports(db, callback) {
     const sql = "SELECT * FROM expense_report WHERE supervisor_id = ?";
-    db.query(sql, [this.id], callback);
+    db.query(sql, [this.supervisor_id], callback);
   }
 
   // View a specific employee's expense reports
   viewEmployeeReports(db, employeeId, callback) {
     const sql =
       "SELECT * FROM expense_report WHERE employee_id = ? AND supervisor_id = ?";
-    db.query(sql, [employeeId, this.id], callback);
+    db.query(sql, [employeeId, this.supervisor_id], callback);
   }
 
   // Track the status of a specific expense report
   trackExpenseReportStatus(db, reportId, callback) {
     const sql =
       "SELECT status FROM expense_report WHERE id = ? AND supervisor_id = ?";
-    db.query(sql, [reportId, this.id], callback);
+    db.query(sql, [reportId, this.supervisor_id], callback);
   }
 
   // Flag an expense report for review (change status to "Flagged")
   flagExpenseReport(db, reportId, callback) {
     const sql =
       "UPDATE expense_report SET status = 'Flagged' WHERE id = ? AND supervisor_id = ?";
-    db.query(sql, [reportId, this.id], callback);
+    db.query(sql, [reportId, this.supervisor_id], callback);
   }
 
   // Route for supervisor to generate expense analytics by category
@@ -104,21 +102,47 @@ class Supervisor extends User {
       WHERE supervisor_id = ?
       GROUP BY category
     `;
-    db.query(sql, [this.id], callback);
+    db.query(sql, [this.supervisor_id], callback);
   }
 
-  // Assign an employee to the supervisor (relationship between employee and supervisor)
-  assignEmployeeToSupervisor(db, employeeId, callback) {
-    const sql = "UPDATE user SET supervisor_id = ? WHERE id = ?";
-    db.query(sql, [this.id, employeeId], callback);
+  assignEmployee(db, employeeId, callback) {
+    const checkSql = "SELECT * FROM manages WHERE supervisor_id = ? AND employee_id = ?";
+    const insertSql = "INSERT INTO manages (supervisor_id, employee_id) VALUES (?, ?)";
+  
+    // First check if already assigned
+    db.query(checkSql, [this.supervisor_id, employeeId], (err, results) => {
+      if (err) {
+        return callback(err);
+      }
+  
+      if (results.length > 0) {
+        // Already exists
+        return callback(new Error("Employee already assigned to this supervisor."));
+      }
+  
+      // If not assigned yet, insert
+      db.query(insertSql, [this.supervisor_id, employeeId], (insertErr, insertResult) => {
+        if (insertErr) {
+          return callback(insertErr);
+        }
+        callback(null, insertResult);
+      });
+    });
   }
+  
+  
 
   // Remove an employee from supervisor's management (unassign)
   removeEmployeeFromSupervisor(db, employeeId, callback) {
-    const sql =
-      "UPDATE user SET supervisor_id = NULL WHERE id = ? AND supervisor_id = ?";
-    db.query(sql, [employeeId, this.id], callback);
+    const sql = "DELETE FROM manages WHERE supervisor_id = ? AND employee_id = ?";
+    db.query(sql, [this.supervisor_id, employeeId], (err, result) => {
+      if (err) {
+        return callback(err);
+      }
+      callback(null, result);
+    });
   }
+  
 }
 
 module.exports = { User, Employee, Supervisor };

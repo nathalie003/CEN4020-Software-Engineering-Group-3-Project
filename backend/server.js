@@ -1,8 +1,8 @@
 // server.js
-const express = require('express');
-const cors = require('cors');
-const path = require('path');
-require('dotenv').config();
+const express = require("express");
+const cors = require("cors");
+const path = require("path");
+require("dotenv").config();
 const app = express();
 const port = process.env.PORT || 5000;
 
@@ -17,6 +17,9 @@ app.use('/api/category',  require('./routes/category'));    // e.g. GET  /api/ca
 app.use("/api/user", require("./routes/user"));
 app.use('/api/supervisor', require('./routes/supervisor'));  // e.g. POST /api/supervisor/analytics
 app.use('/api/reports', require('./routes/reports'))
+app.use('/api/employee', require('./routes/employee'));  // e.g. POST /api/employee/analytics
+app.use('/api/manages', require('./routes/manages'));
+
 
 // Root endpoint for basic server check
 app.get("/", (req, res) => {
@@ -24,12 +27,14 @@ app.get("/", (req, res) => {
 });
 
 // Start the server after ensuring a DB connection
-const dbPromise = require('./config/database.js');
-dbPromise.then(db => {
-  app.listen(port, '0.0.0.0', () => {
-    console.log("Server running on port " + port);
+const dbPromise = require("./config/database.js");
+dbPromise
+  .then((db) => {
+    app.listen(port, "0.0.0.0", () => {
+      console.log("Server running on port " + port);
+    });
+  })
+  .catch((err) => {
+    console.error("Failed to connect to database. Server not started.", err);
+    process.exit(1);
   });
-}).catch(err => {
-  console.error("Failed to connect to database. Server not started.", err);
-  process.exit(1);
-});

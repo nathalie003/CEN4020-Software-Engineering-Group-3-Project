@@ -1,9 +1,9 @@
 // backend/controllers/receiptController.js
 require("dotenv").config();
 const dbPromise = require("../config/database");
-const fs       = require("fs");
+const fs = require("fs");
 const { OpenAI } = require("openai");
-const openai   = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 // ── Phase 1: parse image via OpenAI Vision ─────────────────────────────────
 exports.uploadReceipt = async (req, res) => {
@@ -113,7 +113,7 @@ exports.confirmReceipt = (req, res) => {
     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
   `;
   const receiptParams = [
-    r.userId,                   // must come from your front‑end payload
+    r.user_id,                   // must come from your front‑end payload
     total,                      // pure number, e.g. 50.59
     receiptDate,                // ISO date, e.g. "2025-01-20"
     r.paymentMethod || "",
@@ -121,7 +121,7 @@ exports.confirmReceipt = (req, res) => {
     r.storePhone    || "",
     r.storeWebsite || null,
     r.category_id   || null,
-    r.subcategory_name || null  // <-- your new subcategory field
+    r.subcategory_name || ""  // <-- your new subcategory field
   ];
 
   dbPromise.then(db => {
@@ -164,7 +164,7 @@ exports.confirmReceipt = (req, res) => {
         });
       });
     })
-    .catch(err => {
+    .catch((err) => {
       console.error("DB connection error:", err);
       res.status(500).json({ message: "DB connection failed." });
     });

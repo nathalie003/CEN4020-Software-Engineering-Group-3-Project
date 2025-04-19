@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./LoginLanding.css"; // Import the necessary CSS file
+import { User, Employee, Supervisor } from "../../Classes/userClass.js";
 
 function LoginLanding() {
   const navigate = useNavigate();
@@ -34,23 +35,46 @@ function LoginLanding() {
       const result = await response.json();
 
       if (response.ok) {
-        const { userId, role } = result;
-        sessionStorage.setItem("userId", userId);
-        sessionStorage.setItem("role", role);
-      
+        console.log("response ok so far"); // 🔍 Check the result
+        const { userId, username, role } = result;
+
+        let apiUrl;
         if (role === "employee") {
-              navigate("/employee-landing");
+          apiUrl = `http://localhost:5000/api/employee/${userId}`;
         } else if (role === "supervisor") {
-              navigate("/supervisor-landing");
+          apiUrl = `http://localhost:5000/api/supervisor/${userId}`;
+        }
+
+        const res = await fetch(apiUrl);
+        const data = await res.json();
+        console.log(data)
+
+        let currentUser;
+        if (role === "employee") {
+          currentUser = new Employee(userId, username, role, data.employee_id);
+        } else if (role === "supervisor") {
+          currentUser = new Supervisor(userId, username, role, data.supervisor_id);
+        }
+
+        console.log("Constructed User Object:", currentUser); // 🔍 Check the object
+
+        // Save to sessionStorage
+        sessionStorage.setItem("user", JSON.stringify(currentUser));
+
+        // Navigate
+        if (role === "employee") {
+          navigate("/employee-landing");
+        } else if (role === "supervisor") {
+          navigate("/supervisor-landing");
         }
       } else {
         setErrorMessage(result.error || "Invalid login credentials");
       }
     } catch (error) {
+      console.error("Login error:", error);
       setErrorMessage("An error occurred. Please try again.");
     }
   };
-
   return (
     <div className="form-bg">
       <div className="login-container">

@@ -13,7 +13,23 @@ function EmployeeLanding() {
     const [manualEntry, setManualEntry] = useState('');
     const [receiptSummary, setReceiptSummary] = useState(null);
     const [user, setUser] = useState(null);
-    const userId = sessionStorage.getItem("userId");
+    const [userId, setUserId] = useState(null);
+
+    useEffect(() => {
+      const storedUser = sessionStorage.getItem("user");
+      if (storedUser) {
+        setUser(JSON.parse(storedUser));
+      }
+    }, []);
+
+    useEffect(() => {
+      if (user) {
+        setUserId(user.user_id);
+        console.log("User ID:", user.user_id);
+      }
+    }, [user]);
+
+
     const [manualData, setManualData] = useState(null);
     const [categories, setCategories] = useState([]);
     const [notifications, setNotifications] = useState([]);
@@ -26,15 +42,12 @@ function EmployeeLanding() {
         .catch(console.error);
    }, []);
    useEffect(() => {
-    if (!userId) return;
+    if (!userId || user) return; // Skip fetch if userId is missing or user is already set
     fetch(`http://localhost:5000/api/user/${userId}`)
-      .then((res) => {
-        if (!res.ok) throw new Error("User fetch failed");
-        return res.json();
-      })
+      .then((res) => res.json())
       .then((data) => setUser(data))
       .catch((err) => console.error("Error fetching user:", err));
-  }, [userId]);
+    }, [user]);
 
 
   const handleFileSubmit = async (file) => {
@@ -63,7 +76,11 @@ function EmployeeLanding() {
   // 1. handler
   const handleSaveToDb = async (formData) => {
     try {
+<<<<<<< HEAD
       const payload = {userId: sessionStorage.getItem("userId"), ...formData};
+=======
+      const payload = {user_id: userId, ...formData};
+>>>>>>> 09ce522a02c87a801766ad52a2031f3e8b321657
       const res = await fetch("http://localhost:5000/api/receipts/confirm-receipt", {
            method: "POST",
            headers: { "Content-Type": "application/json" },
@@ -71,7 +88,11 @@ function EmployeeLanding() {
         });
       const json = await res.json();
       if (res.ok) {
+<<<<<<< HEAD
         alert("Receipt was successfully uploaded, Receipt ID " + json.receiptId);
+=======
+        showSuccessToast("Receipt saved!");
+>>>>>>> 09ce522a02c87a801766ad52a2031f3e8b321657
         setManualData(null);      // clear the form / reset state
         setNotifications(n => [
           {
@@ -90,19 +111,45 @@ function EmployeeLanding() {
     }
   };
 
-  const [view, setView] = useState("expenseReportList"); // default view
+  const [toastMessage, setToastMessage] = useState("");
+  const [showToast, setShowToast] = useState(false);
+  const showSuccessToast = (message) => {
+    console.log("Triggering toast with message:", message);
+    setToastMessage(message);
+    setShowToast(true);
+    setTimeout(() => setShowToast(false), 6000); // hide after 3s
+  };
+
+  const [view, setView] = useState("expenseReportList");
+  const [viewKey, setViewKey] = useState(0);
+
+  const handleViewChange = (newView) => {
+    setView(newView);
+    setViewKey(prev => prev + 1);
+  };
 
   return (
     <div className="EmployeeLanding">
+      {showToast && (
+        <div id="toast">
+          {toastMessage}
+        </div>
+      )}
       <div className="Employee-sidebar">
         <div className="contentHolder">
           <div className="navbar-logo-container">
             <img src={logo} className="navbar-logo" alt="logo" />
           </div>
           <nav className="navbar">
+<<<<<<< HEAD
             <button className="Buttonoption" onClick={() => setView("notifications")}>Notifications</button>
             <button className="Buttonoption" onClick={() => setView("uploadReceipt")}>Upload Receipt</button>
             <button className="Buttonoption" onClick={() => setView("expenseReportList")}>View Reports</button>
+=======
+            <button className="Buttonoption" onClick={() => handleViewChange("uploadReceipt")}>Upload Receipt</button>
+            <button className="Buttonoption" onClick={() => handleViewChange("expenseReportList")}>View Reports</button>
+            <button className="Buttonoption" onClick={() => handleViewChange("notifications")}>Notifications</button>
+>>>>>>> 09ce522a02c87a801766ad52a2031f3e8b321657
           </nav>
         </div>
       </div>
@@ -121,9 +168,13 @@ function EmployeeLanding() {
             }
           </div>
         )}
+<<<<<<< HEAD
         {/* {view === "expenseReportList" && (
+=======
+        {view === "expenseReportList" && (
+>>>>>>> 09ce522a02c87a801766ad52a2031f3e8b321657
           <div className="expenseReportListContainer">
-            <UserExpenseReportList user={user} />
+            <UserExpenseReportList key={viewKey} user={user} />
          </div>
         )} */}
         {view === "uploadReceipt" && (

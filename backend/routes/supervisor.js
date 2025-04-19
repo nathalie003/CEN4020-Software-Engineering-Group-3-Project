@@ -5,5 +5,6 @@ const supervisorController    = require('../controllers/supervisorController');
 
 router.post('/analytics', supervisorController.analytics);
 
+router.get('/:userId', supervisorController.getSupervisorByUserId);
 
 module.exports = router;

@@ -5,6 +5,9 @@ const reportController = require('../controllers/reportController.js');
 
 
 router.get('/getReceipt/:id', reportController.getReceipt);
-router.post('/createReceipt', reportController.createReport)
+router.post('/createReport/:uid/:rid', reportController.createReport);
+router.get('/getAllUserReports/:id', reportController.getAllUserReports);
+router.post('/updateReceipt',reportController.updateReceipt);
+router.get('/getItems/:rid', reportController.getItems);
 
 module.exports = router;
