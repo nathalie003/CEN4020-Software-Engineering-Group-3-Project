@@ -103,12 +103,12 @@ function EmployeeLanding() {
     }
   };
 
-  const [view, setView] = useState("expenseReportList"); // default view
+  const [view, setView] = useState("expenseReportList");
+  const [viewKey, setViewKey] = useState(0);
 
   const handleViewChange = (newView) => {
-    if (view !== newView) {
-      setView(newView);
-    }
+    setView(newView);
+    setViewKey(prev => prev + 1);
   };
 
   return (
@@ -142,7 +142,7 @@ function EmployeeLanding() {
         )}
         {view === "expenseReportList" && (
           <div className="expenseReportListContainer">
-            <UserExpenseReportList user={user} />
+            <UserExpenseReportList key={viewKey} user={user} />
          </div>
         )}
         {view === "uploadReceipt" && (

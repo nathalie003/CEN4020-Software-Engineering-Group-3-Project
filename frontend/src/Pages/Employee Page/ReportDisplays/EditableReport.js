@@ -2,7 +2,7 @@ import React, {useState, useEffect, useRef} from 'react';
 
 import './EditableReport.css';
 
-function EditableReport ({selectedReceiptID, onSubmit}) {
+function EditableReport ({selectedReceiptID, goBack, onSubmit}) {
     console.log("EditableReport mounted with receipt ID:", selectedReceiptID);
     const [categories, setCategories] = useState([]);
     const prevReceiptIDRef = useRef();
@@ -45,10 +45,15 @@ function EditableReport ({selectedReceiptID, onSubmit}) {
               const receiptResponse = await fetch(`http://localhost:5000/api/reports/getReceipt/${receiptID}`);
               const receiptInfo = await receiptResponse.json();
               console.log("Fetched receipt:", receiptInfo);
+
+              const formattedReceiptData = {
+                ...receiptInfo.reports[0],
+                receipt_date: new Date(receiptInfo.reports[0].receipt_date).toISOString().split('T')[0]  // Format date as YYYY-MM-DD
+              };
       
               setReceiptData((prev) => ({
                 ...prev,
-                ...receiptInfo.reports[0], // This should include all fields except items
+                ...formattedReceiptData, // This should include all fields except items
               }));
       
               // Fetch items
@@ -106,145 +111,151 @@ function EditableReport ({selectedReceiptID, onSubmit}) {
     
 
     return(
-        <form className="editableReport" onSubmit={handleSubmit}>
-            <label>
-                Store Name:
-                <input className="fullWidthInput"
-                    type="text"
-                    name="store_name"
-                    value={receiptData.store_name}
-                    onChange={handleChange}
-                    placeholder="Name"
-                />
-            </label>
-            <label>
-                Store Address:
-                <input className="fullWidthInput"
-                    type="text"
-                    name="store_address"
-                    value={receiptData.store_address}
-                    onChange={handleChange}
-                    placeholder="Address"
-                />
-            </label>
-            <label>
-                Store Website:
-                <input className="fullWidthInput"
-                    type="text"
-                    name="store_website"
-                    value={receiptData.store_website}
-                    onChange={handleChange}
-                    placeholder="Website"
-                />
-            </label>
-            <div className="twoColumnLayout">
-                <label className="halfItem1">
-                    Store Phone:
-                    <input
-                        type="text"
-                        name="store_phone"
-                        value={receiptData.store_phone}
-                        onChange={handleChange}
-                        placeholder="###-###-####"
-                    />
-                </label>
-                <label className="halfItem2">
-                    Date of Purchase:
-                    <input
-                        type="text"
-                        name="receipt_date"
-                        value={receiptData.receipt_date}
-                        onChange={handleChange}
-                        placeholder="MM/DD/YYYY"
-                    />
-                </label>
+        <div id="editable">
+            <div className="editHeader">
+                <button onClick={goBack} >&lt; Back</button>
+                <h2>Edit Report</h2>
             </div>
-            <div className="items-section">
-                <label>Items Purchased:</label>
-                {receiptData.items.map((it, i) => (
-                    <div key={i} className="item-row">
-                        <input id="descER"
+            <form className="editableReport" onSubmit={handleSubmit}>
+                <label>
+                    Store Name:
+                    <input className="fullWidthInput"
+                        type="text"
+                        name="store_name"
+                        value={receiptData.store_name}
+                        onChange={handleChange}
+                        placeholder="Name"
+                    />
+                </label>
+                <label>
+                    Store Address:
+                    <input className="fullWidthInput"
+                        type="text"
+                        name="store_address"
+                        value={receiptData.store_address}
+                        onChange={handleChange}
+                        placeholder="Address"
+                    />
+                </label>
+                <label>
+                    Store Website:
+                    <input className="fullWidthInput"
+                        type="text"
+                        name="store_website"
+                        value={receiptData.store_website}
+                        onChange={handleChange}
+                        placeholder="Website"
+                    />
+                </label>
+                <div className="twoColumnLayout">
+                    <label className="halfItem1">
+                        Store Phone:
+                        <input
                             type="text"
-                            placeholder="Description"
-                            value={it.item_description}
-                            onChange={e => handleItemChange(i, "description", e.target.value)}
+                            name="store_phone"
+                            value={receiptData.store_phone}
+                            onChange={handleChange}
+                            placeholder="###-###-####"
                         />
-                        <input id="priceER"
-                            type="number"
-                            placeholder="Price"
-                            step="0.01"
-                            value={it.item_price}
-                            onChange={e => handleItemChange(i, "price", e.target.value)}
+                    </label>
+                    <label className="halfItem2">
+                        Date of Purchase:
+                        <input
+                            type="text"
+                            name="receipt_date"
+                            value={receiptData.receipt_date}
+                            onChange={handleChange}
+                            placeholder="MM/DD/YYYY"
                         />
-                        <button
-                            type="button"
-                            className="remove-item-btn"
-                            onClick={() => removeItem(i)}
-                        >
-                            ×
-                        </button>
+                    </label>
+                </div>
+                <div className="items-section">
+                    <label>Items Purchased:</label>
+                    {receiptData.items.map((it, i) => (
+                        <div key={i} className="item-row">
+                            <input id="descER"
+                                type="text"
+                                placeholder="Description"
+                                value={it.item_description}
+                                onChange={e => handleItemChange(i, "item_description", e.target.value)}
+                            />
+                            <input id="priceER"
+                                type="number"
+                                placeholder="Price"
+                                step="0.01"
+                                value={it.item_price}
+                                onChange={e => handleItemChange(i, "item_price", e.target.value)}
+                            />
+                            <button
+                                type="button"
+                                className="remove-item-btn"
+                                onClick={() => removeItem(i)}
+                            >
+                                ×
+                            </button>
+                        </div>
+                    ))}
+                    <button type="button" id="add-item-btn" onClick={addItem}>+ Add Item</button>
+                </div>
+                <div className="twoColumnLayout">
+                    <div className="halfItem1">
+                        <label>
+                            Total:
+                            <input
+                                type="text"
+                                name="receipt_total"
+                                value={receiptData.receipt_total}
+                                onChange={handleChange}
+                                placeholder="$0.00"
+                            />
+                        </label>
                     </div>
-                ))}
-                <button type="button" id="add-item-btn" onClick={addItem}>+ Add Item</button>
-            </div>
-            <div className="twoColumnLayout">
-                <div className="halfItem1">
-                    <label>
-                        Total:
-                        <input
-                            type="text"
-                            name="receipt_total"
-                            value={receiptData.receipt_total}
+                    <div className="halfItem2">
+                        <label>
+                            Payment Method:
+                            <input
+                                type="text"
+                                name="payment_method"
+                                value={receiptData.payment_method}
+                                onChange={handleChange}
+                                placeholder="Method"
+                            />
+                        </label>
+                    </div>
+                </div>
+                <div className="twoColumnLayout">
+                    <div className="halfItem1">
+                        <label>
+                            Category:
+                            <select
+                            name="category_id"
+                            value={receiptData.category_id}
                             onChange={handleChange}
-                            placeholder="$0.00"
-                        />
-                    </label>
+                            >
+                            <option value="">— pick one —</option>
+                            {categories.map(c => (
+                                <option key={c.category_id} value={c.category_id}>
+                                {c.category_name}
+                                </option>
+                            ))}
+                            </select>
+                        </label>
+                    </div>
+                    <div className="halfItem2">
+                        <label>
+                            Subcategory:
+                            <input 
+                                type="text"
+                                name="subcategory_name"
+                                value={receiptData.subcategory_name}
+                                onChange={handleChange}
+                            />
+                        </label>
+                    </div>
                 </div>
-                <div className="halfItem2">
-                    <label>
-                        Payment Method:
-                        <input
-                            type="text"
-                            name="payment_method"
-                            value={receiptData.payment_method}
-                            onChange={handleChange}
-                            placeholder="Method"
-                        />
-                    </label>
-                </div>
-            </div>
-            <div className="twoColumnLayout">
-                <div className="halfItem1">
-                    <label>
-                        Category:
-                        <select
-                        name="category_id"
-                        value={receiptData.category_id}
-                        onChange={handleChange}
-                        >
-                        <option value="">— pick one —</option>
-                        {categories.map(c => (
-                            <option key={c.category_id} value={c.category_id}>
-                            {c.category_name}
-                            </option>
-                        ))}
-                        </select>
-                    </label>
-                </div>
-                <div className="halfItem2">
-                    <label>
-                        Subcategory:
-                        <input 
-                            type="text"
-                            name="subcategory_name"
-                            value={receiptData.subcategory_name}
-                            onChange={handleChange}
-                        />
-                    </label>
-                </div>
-            </div>
-            <button id="submit-receipt-form-btn" type="submit">Submit Expense</button>
-        </form>
+                <button id="submit-receipt-form-btn" type="submit" >Submit Changes</button>
+            </form>
+        </div>
     );
 }
 

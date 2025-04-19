@@ -76,10 +76,11 @@ class ReportController {
   }
 
   async updateReceipt(req, res) { // use on submission
-    const {receiptContent} = req.body;
+    const receiptContent = req.body;
     if (!receiptContent) return res.status(400).json({ message: "No receipt id." });
     const receiptID = receiptContent.receipt_id;
     if (!receiptID) return res.status(400).json({ message: "No receipt ID provided." });
+
 
     const receiptParams = [
       receiptContent.receipt_total,                      // pure number, e.g. 50.59
@@ -96,34 +97,36 @@ class ReportController {
     try {
       const sql = `UPDATE receipts 
         SET 
-        receipt_total = ?, 
-        receipt_date = ?, 
-        payment_method = ?, 
-        store_address = ?, 
-        store_phone = ?, 
-        store_website = ?,
-        category_id = ?,
-        subcategory_name = ?
-        WHERE receipt_id = ?
-        `
-      await new Promise((resolve, reject) => {
-        db.query(sql, [receiptParams], (err, result) => {
-          if (err) {
-            console.error("Error updating receipt:", err);
-            reject(err);
-          } else {
-            resolve(result);
-          }
-        });
+          receipt_total = ?, 
+          receipt_date = ?, 
+          payment_method = ?, 
+          store_address = ?, 
+          store_phone = ?, 
+          store_website = ?,
+          category_id = ?,
+          subcategory_name = ?
+        WHERE receipt_id = ?`;
+    
+      const db = await dbPromise;
+    
+      db.query(sql, receiptParams, (err) => {
+        if (err) {
+          console.error("Error updating receipt:", err);
+        } else {
+          console.log("Receipt updated successfully.");
+        }
       });
+    
+      // continue immediately to items insertion
     } catch (e) {
-        console.error("Error during receipt update:", e);
-        res.status(500).json({ error: "Failed to update receipt" });
+      console.error("DB connection or SQL error:", e);
+      return res.status(500).json({ error: "Failed to update receipt" });
     }
-    const itemSql = "INSERT INTO item (receipt_id, description, price) VALUES ?";
+    const itemSql = "INSERT INTO item (receipt_id, item_description, item_price) VALUES ?";
     let items = [];
     if (Array.isArray(receiptContent.items)) {
       items = receiptContent.items;
+      console.log("Parsed items from array:", items);
     } else if (typeof receiptContent.items === "string") {
       items = receiptContent.items
         .split(",")
@@ -134,14 +137,19 @@ class ReportController {
             ? { description: m[1].trim(), price: parseFloat(m[2]) }
             : { description: s, price: null };
         });
+    } else {
+      console.log("No valid items format found in request.");
     }
     try {
       // Clear all items for this receipt first
-      await db.query("DELETE FROM item WHERE receipt_id = ?", [receiptID]);
+      const db = await dbPromise;
+      db.query("DELETE FROM item WHERE receipt_id = ?", receiptID);
     
       if (items.length > 0) {
-        const values = items.map(it => [receiptID, it.description, it.price ?? null]);
-    
+        const values = items.map(it => [receiptID, it.item_description, it.item_price ?? null]);
+        console.log("Raw items:", items);
+        console.log("Formatted insert values:", values);
+        const db = await dbPromise;
         db.query(itemSql, [values], (err2) => {
           if (err2) {
             console.error("Item bulk insert error:", err2);
@@ -184,3 +192,5 @@ class ReportController {
 }
 
 module.exports = new ReportController();
+
+

@@ -38,17 +38,17 @@ function UserExpenseReportList ({ user }) {
 
       const handleEditSubmit = async (formData) => {
         try {
-          const payload = {
-               ...formData
-          };
+          console.log("payload", formData);
+          console.log("items:", formData.items[0]);
           const res = await fetch("http://localhost:5000/api/reports/updateReceipt", {
-               method: "POST",
-               headers: { "Content-Type": "application/json" },
-               body: JSON.stringify(payload),
-            });
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(formData), // directly send formData
+          });
           const json = await res.json();
           if (res.ok) {
-            alert("Saved! receipt ID " + json.receiptId);
+            showSuccessToast("Receipt saved!");
+            setView("reportsList");
           } else {
             alert("DB errors: " + json.message);
           }
@@ -58,16 +58,35 @@ function UserExpenseReportList ({ user }) {
         }
       };
 
+      const [toastMessage, setToastMessage] = useState("");
+      const [showToast, setShowToast] = useState(false);
+      const showSuccessToast = (message) => {
+        console.log("Triggering toast with message:", message);
+        setToastMessage(message);
+        setShowToast(true);
+        setTimeout(() => setShowToast(false), 6000); // hide after 3s
+      };
+
     const [view, setView] = useState("reportsList");
     const [selectedReport, setSelectedReport] = useState(null);
     const handleViewReport = (report) => {
       const newID = report.receipt_id;
       setSelectedReport(newID);
+      console.log("Report status:", report.status);
       console.log("Setting report ID to:", newID);
-      setView(report.status === "pending" ? "staticReport" : "editableReport");
+      if (report.status === "Pending") {
+        setView("editableReport");
+      } else {
+        setView("staticReport");
+      }
     };
     return (
         <div>
+          {showToast && (
+            <div id="toast">
+              {toastMessage}
+            </div>
+          )}
           {view === "reportsList" && (
             <div className="UserExpenseReportContainer">
               <h2>Your Expense Reports</h2>
@@ -103,9 +122,7 @@ function UserExpenseReportList ({ user }) {
         {view === "editableReport" && selectedReport && (
           <>
             {console.log("Rendering EditableReport with selectedReceiptID:", selectedReport)}
-            <div id="editHeader">
-              <h2>Edit Report</h2>
-            </div>
+
             <EditableReport selectedReceiptID={selectedReport} goBack={() => setView("reportsList")} onSubmit={handleEditSubmit} />
           </>
         )}
