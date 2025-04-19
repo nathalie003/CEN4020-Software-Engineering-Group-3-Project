@@ -96,7 +96,7 @@ function UserExpenseReportList ({ user }) {
                   {reports.map((report) => (
                     <div key={report.report_id} className="ExpenseReportCard">
                       <div className="CardInfo">
-                        <h4>Report ID: {report.report_id} ReceiptID: {report.receipt_id}</h4>
+                        <h4>Report #{report.report_id}</h4>
                         <p>Date Submitted: {formatDate(report.date_generated)}</p>
                         <p>Status: {report.status}</p>
 
