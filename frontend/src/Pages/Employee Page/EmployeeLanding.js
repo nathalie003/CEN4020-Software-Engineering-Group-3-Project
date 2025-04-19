@@ -34,9 +34,6 @@ function EmployeeLanding() {
       .catch((err) => console.error("Error fetching user:", err));
   }, [userId]);
 
-  const handleFileChange = (e) => {
-    setSelectedFile(e.target.files[0]);
-  };
 
   const handleFileSubmit = async (file) => {
     if (!file) {
@@ -64,11 +61,6 @@ function EmployeeLanding() {
   // 1. handler
   const handleSaveToDb = async (formData) => {
     try {
-      // const res = await fetch("http://localhost:5000/api/receipts/confirm-receipt", {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify(formData),
-      // });
       const payload = {
            userId: sessionStorage.getItem("userId"),
            ...formData
@@ -90,10 +82,6 @@ function EmployeeLanding() {
       alert("Network / server error.");
     }
   };
-  // const traveltoSup = async (e) => {
-  //   e.preventDefault();
-  //   window.location.href = '/supervisor-landing';
-  // };
 
   const [view, setView] = useState("expenseReportList"); // default view
 
