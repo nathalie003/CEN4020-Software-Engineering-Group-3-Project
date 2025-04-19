@@ -4,6 +4,7 @@ import logo from '../../Components/Images/CashPilot.png';
 import ReceiptUploadForm from '../Employee Page/ReceiptUploadForm.js';
 import ManualEntryForm from '../Employee Page/ManualEntryForm.js';
 import ReceiptConfirmation from '../Employee Page/ReceiptConfirmation.js';
+import DashboardLanding from './DashboardLanding.js';
 
 function SupervisorLanding() {
     const [menuOpen, setMenuOpen] = useState(false);
@@ -149,7 +150,7 @@ function SupervisorLanding() {
         )}
         {view === "viewDashboard" && (
           <div className="viewDashboard">
-            <DashboardLanding />
+            <DashboardLanding/>
           </div>
         )}
       </div>
