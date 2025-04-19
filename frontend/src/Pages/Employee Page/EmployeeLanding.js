@@ -16,6 +16,8 @@ function EmployeeLanding() {
     const userId = sessionStorage.getItem("userId");
     const [manualData, setManualData] = useState(null);
     const [categories, setCategories] = useState([]);
+    const [notifications, setNotifications] = useState([]);
+
       // fetch categories once
   useEffect(() => {
       fetch("http://localhost:5000/api/category")
@@ -58,10 +60,7 @@ function EmployeeLanding() {
   // 1. handler
   const handleSaveToDb = async (formData) => {
     try {
-      const payload = {
-           userId: sessionStorage.getItem("userId"),
-           ...formData
-      };
+      const payload = {userId: sessionStorage.getItem("userId"), ...formData};
       const res = await fetch("http://localhost:5000/api/receipts/confirm-receipt", {
            method: "POST",
            headers: { "Content-Type": "application/json" },
@@ -69,8 +68,16 @@ function EmployeeLanding() {
         });
       const json = await res.json();
       if (res.ok) {
-        alert("Saved! receipt ID " + json.receiptId);
+        alert("Receipt was successfully uploaded, Receipt ID " + json.receiptId);
         setManualData(null);      // clear the form / reset state
+        setNotifications(n => [
+          {
+            id:    Date.now(),
+            message: `Receipt #${json.receiptId} uploaded → report created.`,
+            time:    new Date()
+          },
+          ...n
+        ]);
       } else {
         alert("DB errors: " + json.message);
       }
@@ -96,12 +103,27 @@ function EmployeeLanding() {
             <img src={logo} className="navbar-logo" alt="logo" />
           </div>
           <nav className="navbar">
-          <button className="Buttonoption" onClick={() => handleViewChange("uploadReceipt")}>Upload Receipt</button>
-          <button className="Buttonoption" onClick={() => handleViewChange("expenseReportList")}>View Reports</button>
+            <button className="Buttonoption" onClick={() => setView("notifications")}>Notifications</button>
+            <button className="Buttonoption" onClick={() => setView("uploadReceipt")}>Upload Receipt</button>
+            <button className="Buttonoption" onClick={() => setView("expenseReportList")}>View Reports</button>
           </nav>
         </div>
       </div>
       <div className="Employee-main">
+          {view === "notifications" && (
+          <div className="notifications-view">
+            <h3>Notifications</h3>
+            {notifications.length === 0
+              ? <p>No new notifications</p>
+              : notifications.map(n => (
+                  <div key={n.id} className="notification">
+                    <p>{n.message}</p>
+                    <small>{n.time.toLocaleString()}</small>
+                  </div>
+                ))
+            }
+          </div>
+        )}
         {view === "expenseReportList" && (
           <div className="expenseReportListContainer">
             <UserExpenseReportList user={user} />
