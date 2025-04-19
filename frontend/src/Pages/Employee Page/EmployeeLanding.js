@@ -24,15 +24,12 @@ function EmployeeLanding() {
         .catch(console.error);
    }, []);
    useEffect(() => {
-    if (!userId) return;
+    if (!userId || user) return; // Skip fetch if userId is missing or user is already set
     fetch(`http://localhost:5000/api/user/${userId}`)
-      .then((res) => {
-        if (!res.ok) throw new Error("User fetch failed");
-        return res.json();
-      })
+      .then((res) => res.json())
       .then((data) => setUser(data))
       .catch((err) => console.error("Error fetching user:", err));
-  }, [userId]);
+    }, [userId, user]);
 
 
   const handleFileSubmit = async (file) => {
@@ -85,6 +82,12 @@ function EmployeeLanding() {
 
   const [view, setView] = useState("expenseReportList"); // default view
 
+  const handleViewChange = (newView) => {
+    if (view !== newView) {
+      setView(newView);
+    }
+  };
+
   return (
     <div className="EmployeeLanding">
       <div className="Employee-sidebar">
@@ -93,8 +96,8 @@ function EmployeeLanding() {
             <img src={logo} className="navbar-logo" alt="logo" />
           </div>
           <nav className="navbar">
-            <button className="Buttonoption" onClick={() => setView("uploadReceipt")}>Upload Receipt</button>
-            <button className="Buttonoption" onClick={() => setView("expenseReportList")}>View Reports</button>
+          <button className="Buttonoption" onClick={() => handleViewChange("uploadReceipt")}>Upload Receipt</button>
+          <button className="Buttonoption" onClick={() => handleViewChange("expenseReportList")}>View Reports</button>
           </nav>
         </div>
       </div>

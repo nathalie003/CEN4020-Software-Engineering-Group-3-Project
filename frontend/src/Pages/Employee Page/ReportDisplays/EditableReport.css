@@ -1,0 +1,148 @@
+.editableReport {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: left;
+    height: 100%;
+    width: 60%;
+    margin: 10px;
+  }
+  .editableReport label {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* optional, for left-aligning the label text */
+    gap: 2px; /* adds spacing between label text and input */
+    font-size: 17px;
+    color: var(--accent-dark-green);
+  }
+
+  .editableReport select {
+    padding: 2px;
+    border: 1px solid #EEE;
+    background-color: #EEE;
+    width: 100%;
+    font-size: 15px;
+  }
+
+  #priceER {
+    width: 20%;
+    margin-left: 10px;
+    padding: 2px;
+  }
+  #descER {
+    width: 60%;
+    padding: 2px;
+  }
+
+  :root {
+    --main-green: #c2ddae;
+    --accent-dark-green: #1D5E12;
+    --accent-light-green-primary: #59A42C;
+    --accent-light-green-secondary: #236715;
+    --blue-click: #007bff;
+    --black: #000000;
+    --white: #ffffff;
+    --bs-font-sans-serif: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    --bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    --bs-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
+  }
+  
+  
+    
+    /* optional: on hover give a bit of feedback */
+    .remove-item-btn:hover {
+      background-color: var(--accent-light-green-primary);
+    }
+    .fullWidthInput{
+      padding: 2px;
+      border: 1px solid #EEE;
+      width: 100%;
+      background-color: #EEE;
+      font-size: 15px;
+    }
+  
+    .twoColumnLayout {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: left;
+  
+      width: 100%;
+      gap: 20px;
+    }
+  
+  
+    .twoColumnLayout input {
+      padding: 2px;
+      border: 1px solid #EEE;
+      background-color: #EEE;
+      width: 100%;
+      font-size: 15px;
+    }
+    .halfItem1,
+    .halfItem2 {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+  
+    }
+  
+  .remove-item-btn {
+    background-color: var(--accent-dark-green);
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 8px 11px;
+    font-size: 1rem;
+    margin-left: 10px;
+    align-self: center;
+    line-height: 1;
+  }
+  
+  .item-row input {
+    padding: 5px;
+    border: 1px solid #EEE;
+    background-color: #EEE;
+  }
+  
+  .item-row {
+    margin: 0px;
+  }
+  
+    
+  .items-section {
+    margin: 0px;
+  }
+  #add-item-btn {
+    background-color: var(--accent-dark-green);
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    margin-top: 8px;
+  }
+  
+  #add-item-btn:hover {
+    background-color: var(--accent-light-green-primary);
+  }
+  
+  #submit-receipt-form-btn {
+    background-color: #1D5E12;
+    color: white;
+    width: 40%;
+    border: none;
+    align-self: center;
+    padding: 8px;
+  }
+  
+  #submit-receipt-form-btn:hover {
+    background-color: var(--accent-light-green-primary);
+  }
+  
+  @media (max-width: 768px) {
+    .editableReport {
+      width: 100%;
+      margin: 0px;
+      margin-top: 20px;
+    }
+  }

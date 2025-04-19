@@ -221,6 +221,8 @@ button.Buttonoption {
     flex-direction: column;
     justify-content: center;
   }
-
+  .expenseReportListContainer{
+    width: 90%;
+  }
   
 }

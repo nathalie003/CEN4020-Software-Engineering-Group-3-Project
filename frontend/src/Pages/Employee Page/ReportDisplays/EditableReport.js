@@ -1,45 +1,118 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 
 import './EditableReport.css';
 
-function EditableReport ({selectedReceiptID}) {
+function EditableReport ({selectedReceiptID, onSubmit}) {
+    console.log("EditableReport mounted with receipt ID:", selectedReceiptID);
     const [categories, setCategories] = useState([]);
+    const prevReceiptIDRef = useRef();
           // fetch categories once
-    useEffect(() => {
-        fetch("http://localhost:5000/api/category")
-        .then(r => r.json())
-        .then(data => setCategories(data))
-        .catch(console.error);
-    }, []);
-
     const [receiptData, setReceiptData] = useState({
-        storeName:      '',
-        storeAddress:   '',
-        storePhone:    '',
-        storeWebsite: '',
-        dateOfPurchase: '',
+        receipt_id: selectedReceiptID,
+        receipt_total: '',
+        receipt_date: "",
+        payment_method: "",
+        store_name: null,
+        store_address: "",
+        store_phone: "",
+        store_website: null,
+        category_id: 8,
+        subcategory_name: "",
         items: [ { description: "", price: "" } ],
-        total:          '',
-        paymentMethod:      '',
-        category_id:       '',
-        subcategory: '',
     });
 
+    console.log(receiptData);
+
+    // Add a loading state to manage the loading status
+    const [loading, setLoading] = useState(true);
+
     useEffect(() => {
-        fetch(`http://localhost:5000/api/reports/getReceipt/${selectedReceiptID}`)
-        .then(r => r.json())
-        .then(recData => setReceiptData(recData))
-        .catch(console.error);
-    }, []);
+        if (prevReceiptIDRef.current === selectedReceiptID) return;
+        prevReceiptIDRef.current = selectedReceiptID;
+        const fetchData = async () => {
+          const receiptID = selectedReceiptID;
+      
+          if (receiptID) {
+            setLoading(true);
+      
+            try {
+                const getCategories = await fetch("http://localhost:5000/api/category");
+                const catData = await getCategories.json();
+                console.log("Fetched categories");
+                setCategories(catData);
+            
+              // Fetch receipt data
+              const receiptResponse = await fetch(`http://localhost:5000/api/reports/getReceipt/${receiptID}`);
+              const receiptInfo = await receiptResponse.json();
+              console.log("Fetched receipt:", receiptInfo);
+      
+              setReceiptData((prev) => ({
+                ...prev,
+                ...receiptInfo.reports[0], // This should include all fields except items
+              }));
+      
+              // Fetch items
+              const itemsResponse = await fetch(`http://localhost:5000/api/reports/getItems/${receiptID}`);
+              const itemsData = await itemsResponse.json();
+              console.log("Fetched items:", itemsData);
+      
+              setReceiptData((prev) => ({
+                ...prev,
+                items: itemsData.items || [],
+              }));
+      
+            } catch (error) {
+              console.error(error);
+            } finally {
+              setLoading(false); // Stop loading after both fetches are done
+            }
+          }
+        };
+      
+        fetchData();
+      }, [selectedReceiptID]); // Dependency array is still selectedReceiptID
+
+    const handleChange = e => {
+        const { name, value } = e.target;
+        setReceiptData(f => ({ ...f, [name]: value }));
+      };
+
+        // helper for updating a single item row:
+        const handleItemChange = (index, field, value) => {
+            setReceiptData(f => {
+            const newItems = [...f.items];
+            newItems[index] = { ...newItems[index], [field]: value };
+            return { ...f, items: newItems };
+            });
+        };
+    
+        // helper to add / remove rows:
+        const addItem = () =>
+            setReceiptData(f => ({ ...f, items: [...f.items, { description: "", price: "" }] }));
+        const removeItem = idx =>
+            setReceiptData(f => ({
+            ...f,
+            items: f.items.filter((_, i) => i !== idx)
+            }));
+      
+        const handleSubmit = e => {
+            e.preventDefault();
+            if (typeof onSubmit === 'function') onSubmit(receiptData);
+        };
+
+        if (loading) {
+            return <div>Loading...</div>;
+          }
+    
 
     return(
-        <form className="manualEntryForm" onSubmit={handleSubmit}>
+        <form className="editableReport" onSubmit={handleSubmit}>
             <label>
                 Store Name:
                 <input className="fullWidthInput"
                     type="text"
-                    name="storeName"
-                    value={formData.storeName}
+                    name="store_name"
+                    value={receiptData.store_name}
                     onChange={handleChange}
                     placeholder="Name"
                 />
@@ -48,8 +121,8 @@ function EditableReport ({selectedReceiptID}) {
                 Store Address:
                 <input className="fullWidthInput"
                     type="text"
-                    name="storeAddress"
-                    value={formData.storeAddress}
+                    name="store_address"
+                    value={receiptData.store_address}
                     onChange={handleChange}
                     placeholder="Address"
                 />
@@ -58,8 +131,8 @@ function EditableReport ({selectedReceiptID}) {
                 Store Website:
                 <input className="fullWidthInput"
                     type="text"
-                    name="storeWebsite"
-                    value={formData.storeWebsite}
+                    name="store_website"
+                    value={receiptData.store_website}
                     onChange={handleChange}
                     placeholder="Website"
                 />
@@ -69,8 +142,8 @@ function EditableReport ({selectedReceiptID}) {
                     Store Phone:
                     <input
                         type="text"
-                        name="storePhone"
-                        value={formData.storePhone}
+                        name="store_phone"
+                        value={receiptData.store_phone}
                         onChange={handleChange}
                         placeholder="###-###-####"
                     />
@@ -79,8 +152,8 @@ function EditableReport ({selectedReceiptID}) {
                     Date of Purchase:
                     <input
                         type="text"
-                        name="dateOfPurchase"
-                        value={formData.dateOfPurchase}
+                        name="receipt_date"
+                        value={receiptData.receipt_date}
                         onChange={handleChange}
                         placeholder="MM/DD/YYYY"
                     />
@@ -88,15 +161,15 @@ function EditableReport ({selectedReceiptID}) {
             </div>
             <div className="items-section">
                 <label>Items Purchased:</label>
-                {formData.items.map((it, i) => (
+                {receiptData.items.map((it, i) => (
                     <div key={i} className="item-row">
-                        <input id="desc"
+                        <input id="descER"
                             type="text"
                             placeholder="Description"
                             value={it.description}
                             onChange={e => handleItemChange(i, "description", e.target.value)}
                         />
-                        <input id="price"
+                        <input id="priceER"
                             type="number"
                             placeholder="Price"
                             step="0.01"
@@ -120,8 +193,8 @@ function EditableReport ({selectedReceiptID}) {
                         Total:
                         <input
                             type="text"
-                            name="total"
-                            value={formData.total}
+                            name="receipt_total"
+                            value={receiptData.receipt_total}
                             onChange={handleChange}
                             placeholder="$0.00"
                         />
@@ -132,8 +205,8 @@ function EditableReport ({selectedReceiptID}) {
                         Payment Method:
                         <input
                             type="text"
-                            name="paymentMethod"
-                            value={formData.paymentMethod}
+                            name="payment_method"
+                            value={receiptData.payment_method}
                             onChange={handleChange}
                             placeholder="Method"
                         />
@@ -146,7 +219,7 @@ function EditableReport ({selectedReceiptID}) {
                         Category:
                         <select
                         name="category_id"
-                        value={formData.category_id}
+                        value={receiptData.category_id}
                         onChange={handleChange}
                         >
                         <option value="">— pick one —</option>
@@ -163,8 +236,8 @@ function EditableReport ({selectedReceiptID}) {
                         Subcategory:
                         <input 
                             type="text"
-                            name="subcategory"
-                            value={formData.subcategory} // NEED TO CHANGE VALUE
+                            name="subcategory_name"
+                            value={receiptData.subcategory_name}
                             onChange={handleChange}
                         />
                     </label>
