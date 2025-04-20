@@ -108,15 +108,16 @@ exports.confirmReceipt = (req, res) => {
   // 4) Insert receipt, now including subcategory_name
   const receiptSql = `
     INSERT INTO receipts
-      (user_id, receipt_total, receipt_date, payment_method,
+      (user_id, receipt_total, receipt_date, payment_method, store_name,
        store_address, store_phone, store_website, category_id, subcategory_name)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `;
   const receiptParams = [
     r.user_id,                   // must come from your front‑end payload
     total,                      // pure number, e.g. 50.59
     receiptDate,                // ISO date, e.g. "2025-01-20"
     r.paymentMethod || "",
+    r.storeName  || "",
     r.storeAddress  || "",
     r.storePhone    || "",
     r.storeWebsite || null,
@@ -128,7 +129,7 @@ exports.confirmReceipt = (req, res) => {
       db.query(receiptSql, receiptParams, (err, result) => {
         if (err) {
           console.error("Receipt insert error:", err);
-          return res.status(500).json({ message: "DB insert failed." });
+          return res.status(500).json({ message: "DB insert failed. error 1" });
         }
         const receiptId = result.insertId;
          // 5) Create the expense report entry
@@ -137,7 +138,8 @@ exports.confirmReceipt = (req, res) => {
             (user_id, date_generated, receipt_id)
           VALUES (?, CURDATE(), ?)
         `;
-      db.query(reportSql, [r.user_id, receiptId], (err2) => {
+        db.query(reportSql, [r.user_id, receiptId], (err2) => {
+
         if (err2) {
           console.error("Expense report insert error:", err2);
           // not fatal: we can still attempt items
@@ -154,7 +156,7 @@ exports.confirmReceipt = (req, res) => {
         db.query(itemSql, [values], err2 => {
           if (err2) {
             console.error("Item bulk insert error:", err2);
-            return res.status(500).json({ message: "DB insert failed." });
+            return res.status(500).json({ message: "DB insert failed. Error 2." });
           }
           return res.status(200).json({ message: "Receipt saved.", receiptId });
         });

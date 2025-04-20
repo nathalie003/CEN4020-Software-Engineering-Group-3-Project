@@ -192,6 +192,7 @@ function EditableReport ({selectedReceiptID, goBack, onSubmit}) {
                                     }
                                 }}
                             />
+                            
                             <button
                                 type="button"
                                 className="remove-item-btn"

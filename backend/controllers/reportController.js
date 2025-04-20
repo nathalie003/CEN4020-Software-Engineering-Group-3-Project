@@ -153,7 +153,7 @@ class ReportController {
         db.query(itemSql, [values], (err2) => {
           if (err2) {
             console.error("Item bulk insert error:", err2);
-            return res.status(500).json({ message: "DB insert failed." });
+            return res.status(500).json({ message: "DB insert failed. Error 3." });
           }
           return res.status(200).json({ message: "Receipt saved." });
         });

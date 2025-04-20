@@ -221,9 +221,12 @@ button.Buttonoption {
     flex-direction: column;
     justify-content: center;
   }
+<<<<<<< HEAD
+=======
   .expenseReportListContainer{
     width: 90%;
   }
+>>>>>>> 09ce522a02c87a801766ad52a2031f3e8b321657
   
   .navbar .Buttonoption + .Buttonoption {
     margin-top: 8px;   /* space between buttons */
