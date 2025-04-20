@@ -185,7 +185,14 @@ function EditableReport ({selectedReceiptID, goBack, onSubmit}) {
                                 step="0.01"
                                 value={it.item_price}
                                 onChange={e => handleItemChange(i, "item_price", e.target.value)}
+                                onBlur={e => {
+                                    const formatted = parseFloat(e.target.value).toFixed(2);
+                                    if (!isNaN(formatted)) {
+                                        handleItemChange(i, "item_price", formatted);
+                                    }
+                                }}
                             />
+                            
                             <button
                                 type="button"
                                 className="remove-item-btn"

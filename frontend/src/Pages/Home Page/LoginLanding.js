@@ -50,17 +50,16 @@ function LoginLanding() {
         console.log(data)
 
         let currentUser;
+     
         if (role === "employee") {
           currentUser = new Employee(userId, username, role, data.employee_id);
         } else if (role === "supervisor") {
           currentUser = new Supervisor(userId, username, role, data.supervisor_id);
         }
-
         console.log("Constructed User Object:", currentUser); // 🔍 Check the object
 
         // Save to sessionStorage
         sessionStorage.setItem("user", JSON.stringify(currentUser));
-
         // Navigate
         if (role === "employee") {
           navigate("/employee-landing");
