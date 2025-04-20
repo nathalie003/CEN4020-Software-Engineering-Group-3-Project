@@ -137,7 +137,7 @@ exports.confirmReceipt = (req, res) => {
             (user_id, date_generated, receipt_id)
           VALUES (?, CURDATE(), ?)
         `;
-      db.query(reportSql, [r.userId, receiptId], (err2) => {
+      db.query(reportSql, [r.user_id, receiptId], (err2) => {
         if (err2) {
           console.error("Expense report insert error:", err2);
           // not fatal: we can still attempt items
